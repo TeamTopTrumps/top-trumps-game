@@ -1,42 +1,42 @@
 {
-	"name": "top-trumps-game",
-	"version": "1.0.0",
-	"description": "## Introduction",
-	"main": "index.js",
-	"directories": {
-		"doc": "docs"
-	},
-	"scripts": {
-		"start-server": "cd server && npm start",
-		"start-client": "cd client && npm start",
-		"test-client": "cd client && npm test",
-		"test-server": "cd server && npm test",
-		"start": "concurrently -n client,server -c cyan,magenta \"npm run start-client\" \"npm run start-server\""
-	},
-	"dependencies": {
-		"@types/express": "^4.17.14",
-		"@types/node": "^18.11.18",
-		"concurrently": "^7.6.0",
-		"cors": "^2.8.5",
-		"eslint": "^8.29.0",
-		"eslint-config-prettier": "^8.5.0",
-		"express": "^4.18.2",
-		"nodemon": "^2.0.20",
-		"prettier": "^2.8.1",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.9.4"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/techreturners/lm-code-intro-react-router-fakelandia.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/techreturners/lm-code-intro-react-router-fakelandia/issues"
-	},
-	"homepage": "https://github.com/techreturners/lm-code-intro-react-router-fakelandia#readme",
-	"devDependencies": {
-		"@types/cors": "^2.8.13"
-	}
+  "name": "top-trumps-game",
+  "version": "1.0.0",
+  "description": "## Introduction",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start-server": "cd server && npm start",
+    "start-client": "cd client && npm run dev",
+    "test-client": "cd client && npm test",
+    "test-server": "cd server && npm test",
+    "start": "concurrently -n client,server -c cyan,magenta \"npm run start-client\" \"npm run start-server\""
+  },
+  "dependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.18",
+    "concurrently": "^7.6.0",
+    "cors": "^2.8.5",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techreturners/lm-code-intro-react-router-fakelandia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techreturners/lm-code-intro-react-router-fakelandia/issues"
+  },
+  "homepage": "https://github.com/techreturners/lm-code-intro-react-router-fakelandia#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.13"
+  }
 }
