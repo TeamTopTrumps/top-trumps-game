@@ -28,17 +28,20 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
   allRounds.splice(0, roundScores.length, ...roundScores);
 
   return (
-    <>
-      <TextInput
-        value={playerName}
-        label=""
-        name={playerId}
-        id={playerId}
-        onChange={updateName}
-      />
-      <span>{playerScore}</span>
+    <div className="player-score">
+      <div>
+        <TextInput
+          className="player-score__name"
+          value={playerName}
+          label=""
+          name={playerId}
+          id={playerId}
+          onChange={updateName}
+        />
+        <span className="player-score__total">{playerScore}</span>
+      </div>
       <RoundTracker rounds={allRounds} currentRound={currentRound} />
-    </>
+    </div>
   );
 };
 

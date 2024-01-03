@@ -12,14 +12,16 @@ const RoundTracker: React.FC<RoundTrackerProps> = ({
 }) => {
   return (
     <>
-      <span>Rounds:{currentRound}</span>
-      <div>
-        {rounds.map((round, i) => (
-          <RoundTrackerPip
-            isCurrentRound={i + 1 === currentRound}
-            roundState={round}
-          />
-        ))}
+      <div className="player-score__round-tracker">
+        Rounds:
+        <ol className="player-score__round-list">
+          {rounds.map((round, i) => (
+            <RoundTrackerPip
+              isCurrentRound={i + 1 === currentRound}
+              roundState={round}
+            />
+          ))}
+        </ol>
       </div>
     </>
   );

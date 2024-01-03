@@ -10,12 +10,13 @@ const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
   isCurrentRound,
   roundState,
 }) => {
-  const classNames = classnames({
-    "current-round": isCurrentRound,
-    [`round-${roundState}`]: roundState,
+  const baseClassName = "player-score__round";
+  const classNames = classnames(baseClassName, {
+    [`${baseClassName}--current`]: isCurrentRound,
+    [`${baseClassName}--${roundState}`]: roundState,
   });
 
-  return <span className={classNames}></span>;
+  return <li className={classNames}></li>;
 };
 
 export default RoundTrackerPip;
