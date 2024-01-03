@@ -1,4 +1,5 @@
-import { RoundTrackerPip, RoundState } from "./RoundTrackerPip/RoundTrackerPip";
+import RoundTrackerPip from "./RoundTrackerPip/RoundTrackerPip";
+import { RoundState } from "./RoundTracker.types";
 
 interface RoundTrackerProps {
   currentRound: number;

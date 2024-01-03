@@ -1,14 +1,12 @@
 import classnames from "classnames";
-
-export const ROUND_STATES = ["won", "lost", "unresolved"] as const;
-export type RoundState = (typeof ROUND_STATES)[number];
+import { RoundState } from "../RoundTracker.types";
 
 interface RoundTrackerPipProps {
   isCurrentRound: boolean;
   roundState: RoundState;
 }
 
-export const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
+const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
   isCurrentRound,
   roundState,
 }) => {
@@ -19,3 +17,5 @@ export const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
 
   return <span className={classNames}></span>;
 };
+
+export default RoundTrackerPip;
