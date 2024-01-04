@@ -1,13 +1,15 @@
 {
-	"name": "server",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "",
-		"start": "nodemon index.ts --no-warnings"
-	},
-	"author": "",
-	"license": "ISC",
-	"dependencies": {}
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "start": "nodemon index.ts --no-warnings"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^1.1.1"
+  }
 }
