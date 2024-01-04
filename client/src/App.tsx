@@ -3,7 +3,24 @@ import "./App.scss";
 function App() {
   return (
     <>
-      <h1>This is our Client server running!!!</h1>
+      <PlayerScore
+        playerName={"Player 1"}
+        playerId={"player1"}
+        updateName={() => {}}
+        playerScore={0}
+        currentRound={1}
+        totalRounds={DEFAULT_ROUNDS}
+        roundWinners={[]}
+      />
+      <PlayerScore
+        playerName={"Player 2"}
+        playerId={"player2"}
+        updateName={() => {}}
+        playerScore={0}
+        currentRound={1}
+        totalRounds={DEFAULT_ROUNDS}
+        roundWinners={[]}
+      />
     </>
   );
 }
