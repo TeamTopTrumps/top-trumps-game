@@ -17,6 +17,7 @@ const RoundTracker: React.FC<RoundTrackerProps> = ({
         <ol className="player-score__round-list">
           {rounds.map((round, i) => (
             <RoundTrackerPip
+              key={i}
               isCurrentRound={i + 1 === currentRound}
               roundState={round}
             />
