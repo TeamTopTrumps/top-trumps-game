@@ -1,10 +1,10 @@
 import "./App.scss";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
-import { DEFAULT_ROUNDS } from "./constants/constants";
+import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
 import { Header } from "./components/header/Header";
 import { initialiseGame } from "./service/game";
 function App() {
-  const game = initialiseGame(2, 5);
+  const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS);
   const player1 = game.players[0];
   const player2 = game.players[1];
 
