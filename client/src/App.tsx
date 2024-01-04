@@ -1,7 +1,8 @@
 import "./App.scss";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { DEFAULT_ROUNDS } from "./constants/constants";
-import { Header } from "./components/Header";
+
+import { Header } from "./components/header/Header";
 
 function App() {
   return (
@@ -28,5 +29,4 @@ function App() {
     </>
   );
 }
-
 export default App;
