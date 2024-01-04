@@ -33,20 +33,18 @@ describe("toPokemon", () => {
 
     const converted = toCard(dto);
 
-    console.log("converted: ", converted);
-
     const expected = {
       id: 2,
       name: "fred",
       imageUrl: "https://pokeapi/sprites/front_shiny/2.png",
       description: "",
-      type: "grass, poison",
+      type: "grass,poison",
       stats: [
-        { position: 0, name: "attack", value: 101 },
-        { position: 1, name: "defense", value: 102 },
-        { position: 2, name: "speed", value: 105 },
-        { position: 3, name: "weight", value: 42 },
-        { position: 4, name: "hp", value: 100 },
+        { name: "attack", value: 101 },
+        { name: "defense", value: 102 },
+        { name: "speed", value: 105 },
+        { name: "weight", value: 42 },
+        { name: "hp", value: 100 },
       ],
     };
 

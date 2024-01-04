@@ -1,14 +1,15 @@
-import { Card } from "../card/card.types";
-import { PokemonDto, STAT_NAMES } from "./pokemon.types";
+import { Card, STAT_NAME } from "../card/card.types";
+import { PokemonDto } from "./pokemon.types";
 
 function toCard(dto: PokemonDto) {
-  const stats = STAT_NAMES.map((statName, index) => {
-    const value = dto.hasOwnProperty(statName)
-      ? dto[statName]
-      : dto.stats.find((s) => s.stat.name === statName)?.base_stat;
+  const stats = STAT_NAME.map((statName, index) => {
+    const value =
+      statName in dto
+        ? // @ts-ignore
+          Number(dto[statName])
+        : dto.stats.find((s) => s.stat.name === statName)?.base_stat;
 
     return {
-      position: index,
       name: statName,
       value,
     };
@@ -17,10 +18,7 @@ function toCard(dto: PokemonDto) {
   const type = dto.types
     .sort((a, b) => a.slot - b.slot)
     .map((t) => t.type.name)
-    .join(", ");
-
-  console.log("dto.types: ", dto.types);
-  console.log("type: ", type);
+    .join(",");
 
   return {
     id: dto.id,
