@@ -1,4 +1,6 @@
 import "./App.scss";
+import PlayerScore from "./components/PlayerScore/PlayerScore";
+import { DEFAULT_ROUNDS } from "./constants/constants";
 
 function App() {
   return (
