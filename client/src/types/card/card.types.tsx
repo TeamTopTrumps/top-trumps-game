@@ -7,7 +7,7 @@ export type Card = {
   stats: Stat[];
 };
 
-type Stat = {
+export type Stat = {
   name: StatName;
   value: number;
 };

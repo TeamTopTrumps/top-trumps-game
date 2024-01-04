@@ -13,16 +13,19 @@ describe("Game", () => {
     expect(player1.id).toBe("player-1");
     expect(player1.name).toBe("Player 1");
     expect(player1.score).toBe(0);
+    expect(player1.cards.length).toBe(4);
 
     const player2 = game.players[1];
     expect(player2.id).toBe("player-2");
     expect(player2.name).toBe("Player 2");
     expect(player2.score).toBe(0);
+    expect(player2.cards.length).toBe(4);
 
     const player3 = game.players[2];
     expect(player3.id).toBe("player-3");
     expect(player3.name).toBe("Player 3");
     expect(player3.score).toBe(0);
+    expect(player3.cards.length).toBe(4);
   });
 
   it("throw an error if number of players is less than 2", () => {
