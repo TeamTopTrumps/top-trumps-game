@@ -1,9 +1,10 @@
-import { Character } from "../types/character/character.types";
+export const DEFAULT_PLAYERS = 2;
+import { Card } from "../types/card/card.types";
 import { Player } from "../types/player/player.types";
 
 export const DEFAULT_ROUNDS = 5;
 
-export const DUMMY_CARD_DATA1: Character[] = [
+export const DUMMY_CARD_DATA1: Card[] = [
   {
     id: 25,
     name: "pikachu",
@@ -12,27 +13,22 @@ export const DUMMY_CARD_DATA1: Character[] = [
     type: "",
     stats: [
       {
-        position: 1,
         name: "hp",
         value: 35,
       },
       {
-        position: 2,
         name: "attack",
         value: 55,
       },
       {
-        position: 3,
         name: "defense",
         value: 40,
       },
       {
-        position: 4,
         name: "speed",
         value: 90,
       },
       {
-        position: 5,
         name: "weight",
         value: 60,
       },
@@ -46,27 +42,22 @@ export const DUMMY_CARD_DATA1: Character[] = [
     type: "",
     stats: [
       {
-        position: 1,
         name: "hp",
         value: 45,
       },
       {
-        position: 2,
         name: "attack",
         value: 49,
       },
       {
-        position: 3,
         name: "defense",
         value: 49,
       },
       {
-        position: 4,
         name: "speed",
         value: 45,
       },
       {
-        position: 5,
         name: "weight",
         value: 69,
       },
@@ -74,7 +65,7 @@ export const DUMMY_CARD_DATA1: Character[] = [
   },
 ];
 
-export const DUMMY_CARD_DATA2: Character[] = [
+export const DUMMY_CARD_DATA2: Card[] = [
   {
     id: 4,
     name: "charmander",
@@ -83,27 +74,22 @@ export const DUMMY_CARD_DATA2: Character[] = [
     type: "",
     stats: [
       {
-        position: 1,
         name: "hp",
         value: 39,
       },
       {
-        position: 2,
         name: "attack",
         value: 52,
       },
       {
-        position: 3,
         name: "defense",
         value: 43,
       },
       {
-        position: 4,
         name: "speed",
         value: 65,
       },
       {
-        position: 5,
         name: "weight",
         value: 85,
       },
@@ -117,27 +103,22 @@ export const DUMMY_CARD_DATA2: Character[] = [
     type: "",
     stats: [
       {
-        position: 1,
         name: "hp",
         value: 44,
       },
       {
-        position: 2,
         name: "attack",
         value: 48,
       },
       {
-        position: 3,
         name: "defense",
         value: 65,
       },
       {
-        position: 4,
         name: "speed",
         value: 43,
       },
       {
-        position: 5,
         name: "weight",
         value: 90,
       },

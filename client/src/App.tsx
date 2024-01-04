@@ -3,10 +3,14 @@ import { useState } from "react";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import {
   DEFAULT_ROUNDS,
+  DEFAULT_PLAYERS,
   DEFAULT_STARTING_PLAYERS,
 } from "./constants/constants";
+import { Header } from "./components/header/Header";
+import { initialiseGame } from "./service/game";
+import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
-import { StatName } from "./types/character/character.types";
+import { StatName } from "./types/card/card.types";
 
 const calculateRoundWinner = (players: Player[], statName: StatName) =>
   players.reduce(
@@ -25,6 +29,12 @@ const calculateRoundWinner = (players: Player[], statName: StatName) =>
   );
 
 function App() {
+  const [game, setGame] = useState<Game>(
+    initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
+  );
+  const player1 = game.players[0];
+  const player2 = game.players[1];
+
   //round starts with two players each with five cards
   //at start of round the top card from the playing player is revealed
   //player chooses a characteristic from the list by clicking on the characteristic
@@ -87,25 +97,25 @@ function App() {
   return (
     <>
       <PlayerScore
-        playerName={"Player 1"}
-        playerId={"player1"}
+        playerName={player1.name}
+        playerId={player1.id}
         updateName={() => {}}
-        playerScore={0}
-        currentRound={1}
-        totalRounds={DEFAULT_ROUNDS}
+        playerScore={player1.score}
+        currentRound={game.currentRound}
+        totalRounds={game.totalRounds}
         roundWinners={[]}
       />
       <PlayerScore
-        playerName={"Player 2"}
-        playerId={"player2"}
+        playerName={player2.name}
+        playerId={player2.id}
         updateName={() => {}}
-        playerScore={0}
-        currentRound={1}
-        totalRounds={DEFAULT_ROUNDS}
+        playerScore={player2.score}
+        currentRound={game.currentRound}
+        totalRounds={game.totalRounds}
         roundWinners={[]}
       />
+      <Header />
     </>
   );
 }
-
 export default App;
