@@ -5,6 +5,5 @@ export type Game = {
   currentRound: number;
   totalRounds: number;
   roundsPlayed: number;
-
   roundWinners: Player[];
 };

@@ -24,4 +24,13 @@ describe("Game", () => {
     expect(player3.name).toBe("Player 3");
     expect(player3.score).toBe(0);
   });
+
+  it("throw an error if number of players is less than 2", () => {
+    expect(() => {
+      initialiseGame(1, 4);
+    }).toThrow(Error);
+    expect(() => {
+      initialiseGame(0, 4);
+    }).toThrow("Number of players must be at least 2");
+  });
 });
