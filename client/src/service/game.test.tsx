@@ -33,4 +33,13 @@ describe("Game", () => {
       initialiseGame(0, 4);
     }).toThrow("Number of players must be at least 2");
   });
+
+  it("throw an error if number of rounds is less than 1", () => {
+    expect(() => {
+      initialiseGame(2, -1);
+    }).toThrow(Error);
+    expect(() => {
+      initialiseGame(3, 0);
+    }).toThrow("Number of rounds must be at least 1");
+  });
 });

@@ -6,6 +6,8 @@ export function initialiseGame(
   numberOfRoundsToPlay: number
 ): Game {
   if (numberPlayers < 2) throw Error("Number of players must be at least 2");
+  if (numberOfRoundsToPlay < 1)
+    throw Error("Number of rounds must be at least 1");
 
   const players: Player[] = [];
 
