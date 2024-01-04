@@ -1,7 +1,7 @@
 import "./App.scss";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { DEFAULT_ROUNDS } from "./constants/constants";
-
+import { Header } from "./components/header/Header";
 function App() {
   return (
     <>
@@ -23,8 +23,8 @@ function App() {
         totalRounds={DEFAULT_ROUNDS}
         roundWinners={[]}
       />
+      <Header />
     </>
   );
 }
-
 export default App;
