@@ -1,8 +1,8 @@
-import { Character } from "../character/character";
+import { Card } from "../card/card.types";
 
 export type Player = {
   id: string;
   name: string;
   score: number;
-  cards: Character[];
+  cards: Card[];
 };
