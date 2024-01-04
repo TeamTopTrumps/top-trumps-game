@@ -31,6 +31,21 @@ describe("pokemon_api", () => {
     expect(pokemon.stats[5].stat.name).toBe("speed");
     expect(pokemon.sprites.other["official-artwork"]["front-shiny"]).not
       .toBeNull;
-    expect(pokemon.types).toBe("grass, poison");
+    expect(pokemon.types).toEqual([
+      {
+        slot: 1,
+        type: {
+          name: "grass",
+          url: "https://pokeapi.co/api/v2/type/12/",
+        },
+      },
+      {
+        slot: 2,
+        type: {
+          name: "poison",
+          url: "https://pokeapi.co/api/v2/type/4/",
+        },
+      },
+    ]);
   });
 });

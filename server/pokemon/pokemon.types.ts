@@ -1,12 +1,3 @@
-export const STAT_NAMES = [
-  "attack",
-  "defense",
-  "speed",
-  "weight",
-  "hp", //hit points
-] as const;
-export type StatName = (typeof STAT_NAMES)[number];
-
 export type PokemonResponse = {
   count: number;
   next: string | null;
@@ -20,7 +11,6 @@ export type PokemonDto = {
   base_experience: number;
   height: number;
   weight: number;
-  stats: Array<{ base_stat: number; stat: { name: string } }>;
   sprites: {
     other: {
       "official-artwork": {
@@ -28,5 +18,6 @@ export type PokemonDto = {
       };
     };
   };
+  stats: Array<{ base_stat: number; stat: { name: string } }>;
   types: Array<{ slot: number; type: { name: string } }>;
 };
