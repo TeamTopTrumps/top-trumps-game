@@ -1,6 +1,6 @@
 import { Game } from "../types/game/game.types";
 import { Player } from "../types/player/player.types";
-import { Card, Stat } from "../types/card/card.types";
+import { Card } from "../types/card/card.types";
 
 export function initialiseGame(
   numberPlayers: number,
