@@ -1,12 +1,13 @@
-import { Card, STAT_NAME, Stat } from "../types/card/card.types";
-import { Player } from "../types/player/player.types";
+import { Card, STAT_NAME, Stat } from "../../types/card/card.types";
+import { Player } from "../../types/player/player.types";
+import { NonEmptyArray } from "../../types/utility/utility.types";
 
 export const moveTopCardToBottom = (cards: Card[]) => {
   const [topCard, ...rest] = cards;
   return [...rest, topCard];
 };
 
-export const chooseRandomStat = (stats: Stat[]) =>
+export const chooseRandomStat = (stats: NonEmptyArray<Stat>) =>
   stats[Math.floor(Math.random() * STAT_NAME.length)];
 
 export const calculateRoundWinner = (

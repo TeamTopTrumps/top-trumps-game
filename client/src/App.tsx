@@ -7,7 +7,7 @@ import {
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
 import { Header } from "./components/Header/Header";
-import { initialiseGame } from "./service/game";
+import { initialiseGame } from "./service/game/game";
 import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
 import { Stat } from "./types/card/card.types";
@@ -19,7 +19,7 @@ import {
   updatePlayerCards,
   updatePlayerIsCardShown,
   updatePlayerIsCardShownAll,
-} from "./service/round";
+} from "./service/round/round";
 
 //Game starts with two players each with five cards
 //Clicking "Play" triggers startRound to start the first round (and the game)
