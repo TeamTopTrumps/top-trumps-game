@@ -77,20 +77,20 @@ describe("Determine overall winner", () => {
     const player1 = {
       id: `player1`,
       name: `Player 1`,
-      score: 1,
+      score: 2,
       cards: [],
     };
     const player2 = {
       id: `player2`,
       name: `Player 2`,
-      score: 1,
+      score: 2,
       cards: [],
     };
     const game: Game = {
       players: [player1, player2],
       totalRounds: 5,
-      currentRound: 2,
-      roundWinners: ["player1", "player2"],
+      currentRound: 4,
+      roundWinners: ["player1", "player2", "player2", "player1"],
     };
 
     const overallWinner = determineGameWinner(game);
