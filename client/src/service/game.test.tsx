@@ -5,8 +5,8 @@ describe("Game initialisation", () => {
     const game = initialiseGame(3, 4);
 
     expect(game.totalRounds).toBe(4);
-    expect(game.currentRound).toBe(0);
     expect(game.roundWinners.length).toBe(0);
+    expect(game.currentRound).toBe(0);
 
     expect(game.players.length).toBe(3);
     const player1 = game.players[0];
@@ -61,11 +61,10 @@ describe("Determine overall winner", () => {
       score: 1,
       cards: [],
     };
-    const game = {
+    const game: Game = {
       players: [player1, player2],
-      currentRound: 0,
       totalRounds: 5,
-      roundsPlayed: 5,
+      currentRound: 0,
       roundWinners: ["player1", "player1", "player1", "player1", "player2"],
     };
 
