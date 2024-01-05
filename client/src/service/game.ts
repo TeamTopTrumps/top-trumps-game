@@ -23,12 +23,11 @@ export function initialiseGame(
     players.push(player);
   }
 
-  const game = {
+  const game: Game = {
     players: players,
-    currentRound: 0,
     totalRounds: numberOfRoundsToPlay,
-    roundsPlayed: 0,
     roundWinners: [],
+    currentRound: 0,
   };
   return game;
 }
