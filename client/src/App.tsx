@@ -53,7 +53,7 @@ function App() {
   const player1 = game.players[0];
   const player2 = game.players[1];
 
-  const { players, totalRounds, roundWinners, roundsPlayed } = game;
+  const { players, totalRounds, roundWinners } = game;
 
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(players[0]);
@@ -113,7 +113,10 @@ function App() {
     showPlayerCard(player);
 
     if (!player.isHuman) {
-      const stat = chooseRandomStat(player.cards[0].stats);
+      const stat = chooseRandomStat(
+        player.cards[0].stats,
+        player.cards[0].stats.length
+      );
       setTimeout(() => {
         playRound(stat, player);
       }, DEFAULT_TIMEOUT);
@@ -132,7 +135,7 @@ function App() {
           ...prevGame,
           players: updatePlayerScores(prevGame.players, id),
           roundWinners: updateRoundWinners(prevGame.roundWinners, id),
-          roundsPlayed: prevGame.roundsPlayed + 1,
+          //roundsPlayed: prevGame.roundsPlayed + 1,
         };
       });
 
@@ -179,7 +182,6 @@ function App() {
       <button onClick={() => startRound(currentPlayerRef.current)}>
         Start Round
       </button>
-      <p>Number of rounds played: {roundsPlayed}</p>
       <p>Current round is: {game.currentRound}</p>
       <p>Player 1 score is: {player1.score}</p>
       <p>Player 1 card is: {player1.cards[0].name}</p>
