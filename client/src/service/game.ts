@@ -1,6 +1,7 @@
 import { Game } from "../types/game/game.types";
 import { Player } from "../types/player/player.types";
 import { Card } from "../types/card/card.types";
+import { DUMMY_CARD_DATA1, DUMMY_CARD_DATA2 } from "../constants/constants";
 
 export function initialiseGame(
   numberPlayers: number,
@@ -13,18 +14,26 @@ export function initialiseGame(
   const players: Player[] = [];
 
   for (let i = 1; i < numberPlayers + 1; i++) {
-    const cards = getCardsForPlayer(numberOfRoundsToPlay);
+    const cards =
+      i === 1
+        ? DUMMY_CARD_DATA1
+        : i === 2
+        ? DUMMY_CARD_DATA2
+        : getCardsForPlayer(numberOfRoundsToPlay);
     const player: Player = {
       id: `player-${i}`,
       name: `Player ${i}`,
       score: 0,
       cards: cards,
+      isCardShown: false,
+      isHuman: false,
     };
     players.push(player);
   }
 
   const game = {
     players: players,
+    currentPlayerIndex: 0,
     currentRound: 0,
     totalRounds: numberOfRoundsToPlay,
     roundsPlayed: 0,

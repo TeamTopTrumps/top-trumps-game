@@ -1,8 +1,9 @@
-export const DEFAULT_PLAYERS = 2;
 import { Card } from "../types/card/card.types";
-import { Player } from "../types/player/player.types";
 
+export const DEFAULT_PLAYERS = 2;
 export const DEFAULT_ROUNDS = 5;
+
+export const DEFAULT_TIMEOUT = 3000;
 
 export const DUMMY_CARD_DATA1: Card[] = [
   {
@@ -126,7 +127,7 @@ export const DUMMY_CARD_DATA2: Card[] = [
   },
 ];
 
-export const DEFAULT_STARTING_PLAYERS: Player[] = [
+/*export const DEFAULT_STARTING_PLAYERS: Player[] = [
   {
     name: "Player 1",
     id: "player1",
@@ -141,4 +142,4 @@ export const DEFAULT_STARTING_PLAYERS: Player[] = [
     cards: DUMMY_CARD_DATA2,
     isCardShown: false,
   },
-];
+];*/

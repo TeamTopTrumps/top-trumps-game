@@ -1,32 +1,50 @@
 import "./App.scss";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import {
   DEFAULT_ROUNDS,
   DEFAULT_PLAYERS,
-  DEFAULT_STARTING_PLAYERS,
+  DEFAULT_TIMEOUT,
 } from "./constants/constants";
-import { Header } from "./components/header/Header";
+import { Header } from "./components/Header/Header";
 import { initialiseGame } from "./service/game";
 import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
-import { StatName } from "./types/card/card.types";
+import { Stat } from "./types/card/card.types";
+import {
+  chooseRandomStat,
+  calculateRoundWinner,
+  updateRoundWinners,
+  updatePlayerScores,
+  updatePlayerCards,
+  updatePlayerIsCardShown,
+  updatePlayerIsCardShownAll,
+} from "./service/round";
 
-const calculateRoundWinner = (players: Player[], statName: StatName) =>
-  players.reduce(
-    (acc, { id, cards }) => {
-      const cardScore = cards[0].stats.find(
-        ({ name }) => name === statName
-      )?.value;
+//Game starts with two players each with five cards
+//Clicking "Play" triggers startRound to start the first round (and the game)
+//showPlayerCard reveals the top card in the current player's hand
 
-      if (cardScore && cardScore > acc.score) {
-        acc = { id: id, score: cardScore };
-      }
+//If the player !isHuman there is a setTimeout to mimic a human choosing a stat
+//chooseRandomStat selects a random stat from the current player's card
+//playRound then runs with the chosen stat
 
-      return acc;
-    },
-    { id: "", score: 0 }
-  );
+//If the player isHuman there should be a prompt to pick a stat from the card i.e. "Please chose a stat player 2"
+//The player clicks on a stat which triggers playRound to run with their chosen stat
+
+//showAllCards reveals all of the player's top cards
+//A setTimeout is used to allow time for all the cards to be shown
+//calculateRoundWinner then compares the value of chosen stat with the value of that stat on the top card of every other player
+//The player with the card with the highest value for that characteristic wins the round
+//If there is a draw between multiple highest values then the current player wins the round
+
+//endRound then runs to end the round and prepare for the next round
+//hideAllCards turns all the cards face down
+//A setTimeout is used to allow time for all of the cards to be hidden
+//The top card, i.e. the card used this round, for each player is set to the bottom of their hand
+
+//If the currentRoundRef === game.totalRounds then the game ends and a winner is declared
+//If the curerntRoundRef !== game.totalRounds then startRound() runs and to start the round for the next player
 
 function App() {
   const [game, setGame] = useState<Game>(
@@ -35,86 +53,141 @@ function App() {
   const player1 = game.players[0];
   const player2 = game.players[1];
 
-  //round starts with two players each with five cards
-  //at start of round the top card from the playing player is revealed
-  //player chooses a characteristic from the list by clicking on the characteristic
-  //function then compares the value of that characteristic with the value of that characteristic on the top card of every other player
-  //player with the card with the highest value for that characteristic wins the round
+  const { players, totalRounds, roundWinners, roundsPlayed } = game;
 
-  const [players, setPlayers] = useState<Player[]>(DEFAULT_STARTING_PLAYERS);
-  const [roundWinners, setRoundWinners] = useState<string[]>([]);
-  const [statName, setStatName] = useState<string>("");
+  const currentRoundRef = useRef<number>(0);
+  const currentPlayerRef = useRef<Player>(players[0]);
 
-  const showPlayerCard = (id: string) => {
-    const updatedPlayers = players.map((player) =>
-      player.id === id
-        ? { ...player, isCardFlipped: !player.isCardShown }
-        : player
-    );
-    setPlayers(updatedPlayers);
+  const showPlayerCard = (player: Player) => {
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShown(prevGame.players, player.id),
+      };
+    });
   };
 
   const showAllCards = () => {
-    const updatedPlayers = players.map((player) => {
-      return { ...player, isCardFlipped: true };
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShownAll(prevGame.players, true),
+      };
     });
-    setPlayers(updatedPlayers);
   };
 
   const hideAllCards = () => {
-    const updatedPlayers = players.map((player) => {
-      return { ...player, isCardFlipped: false };
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShownAll(prevGame.players, false),
+      };
     });
-    setPlayers(updatedPlayers);
   };
 
-  const updatePlayerScore = (id: string) => {
-    const updatedPlayers = players.map((player) =>
-      player.id === id ? { ...player, score: player.score + 1 } : player
+  const nextPlayer = () => {
+    const prevPlayer = currentPlayerRef.current;
+    const prevPlayerIndex = players.findIndex(
+      (player) => player.id === prevPlayer.id
     );
-    setPlayers(updatedPlayers);
+    let nextPlayer: Player;
+    if (prevPlayerIndex === players.length - 1) {
+      nextPlayer = players[0];
+    } else {
+      nextPlayer = players[prevPlayerIndex + 1];
+    }
+    currentPlayerRef.current = nextPlayer;
+    startRound(nextPlayer);
   };
 
-  const updateRoundWinners = (id: string) => {
-    setRoundWinners([...roundWinners, id]);
+  const startRound = (player: Player) => {
+    currentRoundRef.current = currentRoundRef.current + 1;
+
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        currentRound: prevGame.currentRound + 1,
+      };
+    });
+
+    showPlayerCard(player);
+
+    if (!player.isHuman) {
+      const stat = chooseRandomStat(player.cards[0].stats);
+      setTimeout(() => {
+        playRound(stat, player);
+      }, DEFAULT_TIMEOUT);
+    }
   };
 
-  const startRound = (id: string) => {
-    showPlayerCard(id);
-  };
-
-  const playRound = (players: Player[], statName: StatName) => {
+  const playRound = (stat: Stat, player: Player) => {
     showAllCards();
 
-    const { id } = calculateRoundWinner(players, statName);
+    setTimeout(() => {
+      const { id } = calculateRoundWinner(players, stat, player);
+      console.log("winner " + id);
 
-    updateRoundWinners(id);
-    updatePlayerScore(id);
+      setGame((prevGame: Game) => {
+        return {
+          ...prevGame,
+          players: updatePlayerScores(prevGame.players, id),
+          roundWinners: updateRoundWinners(prevGame.roundWinners, id),
+          roundsPlayed: prevGame.roundsPlayed + 1,
+        };
+      });
 
+      endRound();
+    }, DEFAULT_TIMEOUT);
+  };
+
+  const endRound = () => {
     hideAllCards();
+
+    setTimeout(() => {
+      setGame((prevGame: Game) => {
+        return { ...prevGame, players: updatePlayerCards(prevGame.players) };
+      });
+      if (currentRoundRef.current === totalRounds) {
+        console.log("end of game");
+      } else {
+        nextPlayer();
+      }
+    }, DEFAULT_TIMEOUT);
   };
 
   return (
     <>
+      <Header />
       <PlayerScore
         playerName={player1.name}
         playerId={player1.id}
         updateName={() => {}}
         playerScore={player1.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
+        currentRound={currentRoundRef.current}
+        totalRounds={totalRounds}
+        roundWinners={roundWinners}
       />
       <PlayerScore
         playerName={player2.name}
         playerId={player2.id}
         updateName={() => {}}
         playerScore={player2.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
+        currentRound={currentRoundRef.current}
+        totalRounds={totalRounds}
+        roundWinners={roundWinners}
       />
-      <Header />
+      <button onClick={() => startRound(currentPlayerRef.current)}>
+        Start Round
+      </button>
+      <p>Number of rounds played: {roundsPlayed}</p>
+      <p>Current round is: {game.currentRound}</p>
+      <p>Player 1 score is: {player1.score}</p>
+      <p>Player 1 card is: {player1.cards[0].name}</p>
+      <p>Player 1 card is shown: {player1.isCardShown ? "true" : "false"}</p>
+      <p>Player 2 score is {player2.score}</p>
+      <p>Player 2 card is: {player2.cards[0].name}</p>
+      <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
+      <p>The Round Winners are: {roundWinners}</p>
     </>
   );
 }
