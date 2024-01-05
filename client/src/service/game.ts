@@ -50,3 +50,9 @@ function getCardsForPlayer(numCards: number): Card[] {
   }
   return cards;
 }
+
+export function determineGameWinner(game: Game): Player {
+  return game.players.reduce((prev, current) => {
+    return prev.score > current.score ? prev : current;
+  });
+}

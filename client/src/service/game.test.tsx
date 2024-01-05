@@ -1,6 +1,6 @@
-import { initialiseGame } from "./game";
+import { initialiseGame, determineGameWinner } from "./game";
 
-describe("Game", () => {
+describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
     const game = initialiseGame(3, 4);
 
@@ -44,5 +44,32 @@ describe("Game", () => {
     expect(() => {
       initialiseGame(3, 0);
     }).toThrow("Number of rounds must be at least 1");
+  });
+});
+
+describe("Determine overall winner", () => {
+  it("when all rounds played determines who has the most wins", () => {
+    const player1 = {
+      id: `player1`,
+      name: `Player 1`,
+      score: 4,
+      cards: [],
+    };
+    const player2 = {
+      id: `player2`,
+      name: `Player 2`,
+      score: 1,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2],
+      currentRound: 0,
+      totalRounds: 5,
+      roundsPlayed: 5,
+      roundWinners: ["player1", "player1", "player1", "player1", "player2"],
+    };
+
+    const overallWinner = determineGameWinner(game);
+    expect(overallWinner).toEqual(player1);
   });
 });
