@@ -1,5 +1,7 @@
 import * as express from "express";
 import { Express } from "express";
+import { fetch_pokemon, fetch_pokemon_list } from "../pokemon/pokemon_api";
+import { toCard } from "../pokemon/toCard";
 
 export function initialiseRoutes(app: Express) {
   console.log("🏗️  Setting up routers...");
@@ -40,39 +42,65 @@ function addAPIRoutes(app: Express) {
     next();
   });
 
-  // this route allows clients to GET misdemeanours
-  // console.log('📨  Adding GET misdemeanour route...');
-  // apiRouter.get('/misdemeanours/:amount', async (req, res) => {
-  // 	const amount = req.params.amount;
+  // this route allows clients to GET a list of pokemons
+  console.log("📨  Adding GET pokemon list route...");
+  apiRouter.get("/pokemon", async (req, res) => {
+    try {
+      const getId = (url: string) => {
+        const segments = url.split("/");
 
-  // 	const requestedAmount = Number.parseInt(amount);
+        if (url.endsWith("1/")) {
+          console.log("url: ", url);
+          console.log(segments);
+        }
 
-  // 	if (Number.isNaN(requestedAmount)) {
-  // 		res.status(500).send({ message: 'Invalid amount' });
-  // 		return;
-  // 	}
+        const last = segments[segments.length - 2];
 
-  // 	const result = JSON.stringify({
-  // 		misdemeanours: await getMisdemeanours(requestedAmount),
-  // 	});
-  // 	res.status(200).send(result);
-  //});
+        return Number.isNaN(last) ? undefined : parseInt(last, 10);
+      };
 
-  // this route allows clients to POST confessions
-  // console.log('📨  Adding POST confession route...');
-  // apiRouter.post('/confess/', async (req, res) => {
-  // 	const { body } = req;
+      const response = await fetch_pokemon_list();
 
-  // 	if (weaklyValidateConfession(body)) {
-  // 		const result = await handleConfession(body);
-  // 		res.status(200).send(JSON.stringify(result));
-  // 	} else {
-  // 		res.status(500).send({
-  // 			success: false,
-  // 			message: 'Invalid Confession',
-  // 		});
-  // 	}
-  // });
+      const list = response.results.map((s) => ({
+        id: getId(s.url),
+        name: s.name,
+      }));
+
+      res.status(200).send(list);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).send({ message: "Unable to fetch list of pokemons" });
+      }
+    }
+  });
+
+  // this route allows clients to GET a Pokemon Card
+  console.log("📨  Adding GET pokemon route...");
+  apiRouter.get("/pokemon/:id", async (req, res) => {
+    const id = req.params.id;
+
+    if (Number.isNaN(id)) {
+      res.status(400).send({ message: `id must be an integer value` });
+    } else {
+      try {
+        const pokemon = await fetch_pokemon(parseInt(id, 10));
+
+        res.status(200).send(toCard(pokemon));
+      } catch (error) {
+        if (error instanceof Error) {
+          const parts = error.message.split(" ");
+
+          if (parts.length === 0 || Number.isNaN(parts[0])) {
+            res.status(500).send({ message: error.message });
+          } else {
+            const status = parseInt(parts[0], 10);
+
+            res.status(status).send({ message: error.message });
+          }
+        }
+      }
+    }
+  });
 
   console.log("🛠️  Applying API router to Express server...");
   app.use("/api", apiRouter);
