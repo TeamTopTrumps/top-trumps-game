@@ -25,8 +25,6 @@ describe("dealCards", () => {
   test("2 players, 3 rounds, gets 2 hands of 3 cards", () => {
     const hands = dealCards(2, 3, [1, 2, 3, 4, 5, 6]);
 
-    console.log("hands: ", hands);
-
     expect(hands.length).toBe(2);
     expect(hands[0].length).toBe(3);
     expect(hands[1].length).toBe(3);
