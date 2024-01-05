@@ -9,7 +9,7 @@ const GameWinner: React.FC<GameWinnerProps> = ({ player }) => {
     <>
       {player && (
         <div className="game-winner">
-          Congratulations {player.name}! You caught them all!{" "}
+          Congratulations {player.name}! You caught them all!
         </div>
       )}
     </>
