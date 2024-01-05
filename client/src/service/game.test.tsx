@@ -1,3 +1,4 @@
+import { Game } from "../types/game/game.types";
 import { initialiseGame, determineGameWinner } from "./game";
 
 describe("Game initialisation", () => {
@@ -70,5 +71,29 @@ describe("Determine overall winner", () => {
 
     const overallWinner = determineGameWinner(game);
     expect(overallWinner).toEqual(player1);
+  });
+
+  it("when rounds is less than total rounds and no clear winner return no overall winner", () => {
+    const player1 = {
+      id: `player1`,
+      name: `Player 1`,
+      score: 4,
+      cards: [],
+    };
+    const player2 = {
+      id: `player2`,
+      name: `Player 2`,
+      score: 1,
+      cards: [],
+    };
+    const game: Game = {
+      players: [player1, player2],
+      totalRounds: 5,
+      currentRound: 2,
+      roundWinners: ["player1", "player2"],
+    };
+
+    const overallWinner = determineGameWinner(game);
+    expect(overallWinner).toEqual(null);
   });
 });
