@@ -11,6 +11,7 @@ describe("Game", () => {
     const player1 = game.players[0];
     expect(player1.id).toBe("player-1");
     expect(player1.name).toBe("Player 1");
+    expect(game.currentRound).toBe(0);
     expect(player1.score).toBe(0);
     expect(player1.cards.length).toBe(4);
 
