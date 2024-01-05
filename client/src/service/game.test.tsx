@@ -77,7 +77,7 @@ describe("Determine overall winner", () => {
     const player1 = {
       id: `player1`,
       name: `Player 1`,
-      score: 4,
+      score: 1,
       cards: [],
     };
     const player2 = {
@@ -95,5 +95,29 @@ describe("Determine overall winner", () => {
 
     const overallWinner = determineGameWinner(game);
     expect(overallWinner).toEqual(null);
+  });
+
+  it("will determine a winner when player has reached score that no one else can reach", () => {
+    const player1 = {
+      id: `player1`,
+      name: `Player 1`,
+      score: 1,
+      cards: [],
+    };
+    const player2 = {
+      id: `player2`,
+      name: `Player 2`,
+      score: 3,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2],
+      currentRound: 4,
+      totalRounds: 5,
+      roundWinners: ["player2", "player1", "player2", "player2"],
+    };
+
+    const overallWinner = determineGameWinner(game);
+    expect(overallWinner).toEqual(player2);
   });
 });

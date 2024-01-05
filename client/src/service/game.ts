@@ -51,10 +51,23 @@ function getCardsForPlayer(numCards: number): Card[] {
 }
 
 export function determineGameWinner(game: Game): Player | null {
-  if (game.roundWinners.length < game.totalRounds) return null;
-  else {
-    return game.players.reduce((prev, current) => {
-      return prev.score > current.score ? prev : current;
-    });
+  const minRequiredToWinGame = Math.ceil(game.totalRounds / 2);
+
+  if (game.roundWinners.length < game.totalRounds) {
+    const anyPlayersWithMinRequiredWins = game.players.filter(
+      (player) => player.score >= minRequiredToWinGame
+    );
+
+    return anyPlayersWithMinRequiredWins.length > 0
+      ? findPlayWithMaxWins(anyPlayersWithMinRequiredWins)
+      : null;
+  } else {
+    return findPlayWithMaxWins(game.players);
   }
+}
+
+function findPlayWithMaxWins(players: Player[]) {
+  return players.reduce((prev, current) => {
+    return prev.score > current.score ? prev : current;
+  });
 }
