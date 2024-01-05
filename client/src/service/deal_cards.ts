@@ -1,4 +1,4 @@
-function dealCards(players: number, rounds: number, pack: number[]) {
+function dealCards(players: number, rounds: number, pack: number[] = []) {
   if (players < 1) {
     // no players, no hands
     return [];
