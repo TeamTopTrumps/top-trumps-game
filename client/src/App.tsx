@@ -31,7 +31,7 @@ function App() {
     if (errorMessages.length === 0) {
       setGame((currentGame) => {
         const updatedPlayers = currentGame.players.map((player) => {
-          return player.id === id ? { ...player, name: value } : player;
+          return player.id === id ? { ...player, name: value.trim() } : player;
         });
         return {
           ...currentGame,
