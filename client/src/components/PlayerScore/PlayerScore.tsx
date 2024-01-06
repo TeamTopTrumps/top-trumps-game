@@ -35,7 +35,8 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
         <TextInput
           className="player-score__name"
           value={name}
-          label=""
+          label="Player name"
+          isHiddenLabel={true}
           name={id}
           id={id}
           onChange={updateName}
