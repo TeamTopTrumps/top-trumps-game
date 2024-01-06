@@ -1,10 +1,12 @@
 import "./App.scss";
-import PlayerScore from "./components/PlayerScore/PlayerScore";
-import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
-import { Header } from "./components/header/Header";
-import { initialiseGame } from "./service/game";
 import { useState } from "react";
+import { Header } from "./components/Header/Header";
+import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { Game } from "./types/game/game.types";
+import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
+import { initialiseGame, getInitialPlayerNames } from "./service/game";
+import validatePlayerName from "./validation/validate_player_name";
+
 function App() {
   const [game, setGame] = useState<Game>(
     initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
@@ -12,26 +14,62 @@ function App() {
   const player1 = game.players[0];
   const player2 = game.players[1];
 
+  const [inputPlayerNames, setInputPlayerNames] = useState<
+    { id: string; value: string }[]
+  >(getInitialPlayerNames(game.players));
+
+  const updatePlayerName = (id: string, value: string) => {
+    const errorMessages = validatePlayerName(value);
+
+    setInputPlayerNames((currentInput) => {
+      return currentInput.map((input) =>
+        input.id === id ? { id: id, value: value } : input
+      );
+    });
+    if (errorMessages.length === 0) {
+      setGame((currentGame) => {
+        const updatedPlayers = currentGame.players.map((player) => {
+          return player.id === id ? { ...player, name: value } : player;
+        });
+        return {
+          ...currentGame,
+          players: updatedPlayers,
+        };
+      });
+    }
+  };
+
   return (
     <>
       <PlayerScore
-        playerName={player1.name}
-        playerId={player1.id}
-        updateName={() => {}}
-        playerScore={player1.score}
+        name={
+          inputPlayerNames.find(({ id }) => id === player1.id)?.value ??
+          player1.name
+        }
+        id={player1.id}
+        updateName={updatePlayerName}
+        validateName={validatePlayerName}
+        score={player1.score}
         currentRound={game.currentRound}
         totalRounds={game.totalRounds}
         roundWinners={[]}
       />
+      <script></script>
+      Player 1 name in game object is: {player1.name}
       <PlayerScore
-        playerName={player2.name}
-        playerId={player2.id}
-        updateName={() => {}}
-        playerScore={player2.score}
+        name={
+          inputPlayerNames.find(({ id }) => id === player2.id)?.value ??
+          player1.name
+        }
+        id={player2.id}
+        updateName={updatePlayerName}
+        validateName={validatePlayerName}
+        score={player2.score}
         currentRound={game.currentRound}
         totalRounds={game.totalRounds}
         roundWinners={[]}
       />
+      Player 2 name in game object is: {player2.name}
       <Header />
     </>
   );
