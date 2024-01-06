@@ -23,7 +23,7 @@ const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
           ? "Round Won"
           : roundState === "lost"
           ? "Round Lost"
-          : "Unplayed Round"}
+          : "Un-played Round"}
       </span>
     </li>
   );
