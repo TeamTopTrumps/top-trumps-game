@@ -52,5 +52,5 @@ function getCardsForPlayer(numCards: number): Card[] {
 
 export const getInitialPlayerNames = (players: Player[]) =>
   players.map(({ id, name }) => {
-    return { id: id, value: name };
+    return { id: id, name: name };
   });

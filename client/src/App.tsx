@@ -6,6 +6,7 @@ import { Game } from "./types/game/game.types";
 import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
 import { initialiseGame, getInitialPlayerNames } from "./service/game";
 import validatePlayerName from "./validation/validate_player_name";
+import { PlayerNameAndId } from "./types/player/player.types";
 
 function App() {
   const [game, setGame] = useState<Game>(
@@ -14,18 +15,19 @@ function App() {
   const player1 = game.players[0];
   const player2 = game.players[1];
 
-  const [inputPlayerNames, setInputPlayerNames] = useState<
-    { id: string; value: string }[]
-  >(getInitialPlayerNames(game.players));
+  const [inputPlayerNames, setInputPlayerNames] = useState<PlayerNameAndId[]>(
+    getInitialPlayerNames(game.players)
+  );
 
   const updatePlayerName = (id: string, value: string) => {
-    const errorMessages = validatePlayerName(value);
-
     setInputPlayerNames((currentInput) => {
       return currentInput.map((input) =>
-        input.id === id ? { id: id, value: value } : input
+        input.id === id ? { id: id, name: value } : input
       );
     });
+
+    const errorMessages = validatePlayerName(value);
+
     if (errorMessages.length === 0) {
       setGame((currentGame) => {
         const updatedPlayers = currentGame.players.map((player) => {
@@ -43,7 +45,7 @@ function App() {
     <>
       <PlayerScore
         name={
-          inputPlayerNames.find(({ id }) => id === player1.id)?.value ??
+          inputPlayerNames.find(({ id }) => id === player1.id)?.name ??
           player1.name
         }
         id={player1.id}
@@ -58,7 +60,7 @@ function App() {
       Player 1 name in game object is: {player1.name}
       <PlayerScore
         name={
-          inputPlayerNames.find(({ id }) => id === player2.id)?.value ??
+          inputPlayerNames.find(({ id }) => id === player2.id)?.name ??
           player1.name
         }
         id={player2.id}

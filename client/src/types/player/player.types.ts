@@ -6,3 +6,8 @@ export type Player = {
   score: number;
   cards: Card[];
 };
+
+export type PlayerNameAndId = {
+  id: string;
+  name: string;
+};
