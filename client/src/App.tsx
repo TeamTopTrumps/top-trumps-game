@@ -19,7 +19,6 @@ function App() {
         playerId={player1.id}
         updateName={() => {}}
         playerScore={player1.score}
-        currentRound={game.currentRound}
         totalRounds={game.totalRounds}
         roundWinners={[]}
       />
@@ -28,7 +27,6 @@ function App() {
         playerId={player2.id}
         updateName={() => {}}
         playerScore={player2.score}
-        currentRound={game.currentRound}
         totalRounds={game.totalRounds}
         roundWinners={[]}
       />
