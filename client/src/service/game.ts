@@ -27,7 +27,6 @@ export function initialiseGame(
     players: players,
     totalRounds: numberOfRoundsToPlay,
     roundWinners: [],
-    currentRound: 0,
   };
   return game;
 }

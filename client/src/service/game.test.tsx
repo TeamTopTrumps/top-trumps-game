@@ -6,7 +6,6 @@ describe("Game", () => {
 
     expect(game.totalRounds).toBe(4);
     expect(game.roundWinners.length).toBe(0);
-    expect(game.currentRound).toBe(0);
 
     expect(game.players.length).toBe(3);
     const player1 = game.players[0];

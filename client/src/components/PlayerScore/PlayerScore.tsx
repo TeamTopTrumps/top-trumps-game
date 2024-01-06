@@ -6,7 +6,6 @@ interface PlayerScoreProps {
   playerId: string;
   updateName: (id: string, value: string) => void;
   playerScore: number;
-  currentRound: number;
   totalRounds: number;
   roundWinners: string[];
 }
@@ -16,7 +15,6 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
   playerId,
   updateName,
   playerScore,
-  currentRound,
   totalRounds,
   roundWinners,
 }) => {
@@ -40,7 +38,7 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
         />
         <span className="player-score__total">{playerScore}</span>
       </div>
-      <RoundTracker rounds={allRounds} currentRound={currentRound} />
+      <RoundTracker rounds={allRounds} currentRound={roundWinners.length + 1} />
     </div>
   );
 };
