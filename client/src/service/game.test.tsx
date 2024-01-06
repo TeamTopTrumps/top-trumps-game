@@ -70,7 +70,7 @@ describe("Determine overall winner", () => {
     };
 
     const overallWinner = determineGameWinner(game);
-    expect(overallWinner).toEqual(player1);
+    expect(overallWinner).toEqual([player1]);
   });
 
   it("when rounds is less than total rounds and no clear winner return no overall winner", () => {
@@ -118,7 +118,37 @@ describe("Determine overall winner", () => {
     };
 
     const overallWinner = determineGameWinner(game);
-    expect(overallWinner).toEqual(player2);
+    expect(overallWinner).toEqual([player2]);
+  });
+
+  it("should call a draw", () => {
+    const player1 = {
+      id: `player1`,
+      name: `Player 1`,
+      score: 2,
+      cards: [],
+    };
+    const player2 = {
+      id: `player2`,
+      name: `Player 2`,
+      score: 2,
+      cards: [],
+    };
+    const player3 = {
+      id: `player3`,
+      name: `Player 2`,
+      score: 1,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2, player3],
+      currentRound: 4,
+      totalRounds: 5,
+      roundWinners: ["not using"],
+    };
+
+    const overallWinners = determineGameWinner(game);
+    expect(overallWinners).toEqual([player1, player2]);
   });
 });
 

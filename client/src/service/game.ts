@@ -50,8 +50,8 @@ function getCardsForPlayer(numCards: number): Card[] {
   return cards;
 }
 
-export function determineGameWinner(game: Game): Player | null {
-  return keepPlaying(game) ? null : findPlayWithMaxWins(game.players);
+export function determineGameWinner(game: Game): Player[] | null {
+  return keepPlaying(game) ? null : findWinningPlayers(game);
 }
 
 export function keepPlaying(game: Game) {
@@ -67,7 +67,7 @@ export function keepPlaying(game: Game) {
     if (roundsLeft > totalRoundsPlayed) return true;
     else {
       //see if any other player can also win/draw
-      const playWithHighestScore = findPlayWithMaxWins(game.players);
+      const playWithHighestScore = findPlayerWithMaxWins(game.players);
       const playersThatCanStillWin = game.players.filter(
         (p) => p.score === playWithHighestScore.score
       );
@@ -78,8 +78,13 @@ export function keepPlaying(game: Game) {
   }
 }
 
-function findPlayWithMaxWins(players: Player[]) {
+function findPlayerWithMaxWins(players: Player[]) {
   return players.reduce((prev, current) => {
     return prev.score > current.score ? prev : current;
   });
+}
+
+function findWinningPlayers(game: Game) {
+  const highestScore = findPlayerWithMaxWins(game.players);
+  return game.players.filter((p) => p.score === highestScore.score);
 }
