@@ -1,9 +1,5 @@
 import { Game } from "../types/game/game.types";
-import {
-  initialiseGame,
-  determineGameWinner,
-  minimumRoundsToWin,
-} from "./game";
+import { initialiseGame, determineGameWinner, keepPlaying } from "./game";
 
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -126,29 +122,108 @@ describe("Determine overall winner", () => {
   });
 });
 
-describe("Determine minimum number of rounds to win the game", () => {
-  it("the minimum number of games to win should be 1/2 total plus 1", () => {
-    const player = {
-      id: `player`,
-      name: `Player `,
+describe("Determine if game should end", () => {
+  it("the game shoud end when no rounds are left", () => {
+    const player1 = {
+      id: `player-1`,
+      name: `Player 1`,
+      score: 2,
+      cards: [],
+    };
+
+    const player2 = {
+      id: `player-2`,
+      name: `Player 1`,
+      score: 3,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2],
+      currentRound: 5,
+      totalRounds: 5,
+      roundWinners: ["not using this"],
+    };
+
+    expect(keepPlaying(game)).toBe(false);
+  });
+
+  it("the game shoud keep going", () => {
+    const player1 = {
+      id: `player-1`,
+      name: `Player 1`,
       score: 1,
       cards: [],
     };
 
-    const game1 = {
-      players: Array(2).fill(player),
+    const player2 = {
+      id: `player-2`,
+      name: `Player 1`,
+      score: 1,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2],
       currentRound: 4,
       totalRounds: 5,
-      roundWinners: [],
+      roundWinners: ["not using this"],
     };
-    expect(minimumRoundsToWin(game1)).toBe(3);
 
-    const game2 = {
-      players: Array(2).fill(player),
-      currentRound: 4,
-      totalRounds: 8,
-      roundWinners: [],
+    expect(keepPlaying(game)).toBe(true);
+  });
+
+  it("the game should stop if a player has high enough score to win - 2player game", () => {
+    const player1 = {
+      id: `player-1`,
+      name: `Player 1`,
+      score: 3,
+      cards: [],
     };
-    expect(minimumRoundsToWin(game2)).toBe(5);
+
+    const player2 = {
+      id: `player-2`,
+      name: `Player 1`,
+      score: 1,
+      cards: [],
+    };
+    const game = {
+      players: [player1, player2],
+      currentRound: 4,
+      totalRounds: 5,
+      roundWinners: ["not using this"],
+    };
+
+    expect(keepPlaying(game)).toBe(false);
+  });
+
+  it("the game should stop if a player has high enough score to win -  3 player game", () => {
+    const player1 = {
+      id: `player-1`,
+      name: `Player 1`,
+      score: 3,
+      cards: [],
+    };
+
+    const player2 = {
+      id: `player-2`,
+      name: `Player 1`,
+      score: 3,
+      cards: [],
+    };
+
+    const player3 = {
+      id: `player-2`,
+      name: `Player 1`,
+      score: 1,
+      cards: [],
+    };
+
+    const game = {
+      players: [player1, player2, player3],
+      currentRound: 7,
+      totalRounds: 8,
+      roundWinners: ["not using this"],
+    };
+
+    expect(keepPlaying(game)).toBe(false);
   });
 });

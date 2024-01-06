@@ -72,7 +72,26 @@ function findPlayWithMaxWins(players: Player[]) {
   });
 }
 
-export function minimumRoundsToWin(game: Game) {
-  const half = Math.ceil(game.totalRounds / 2);
-  return game.totalRounds % half === 0 ? half + 1 : half;
+export function keepPlaying(game: Game) {
+  const totalRoundsPlayed = game.players.reduce(
+    (sum, current) => sum + current.score,
+    0
+  );
+  const roundsLeft = game.totalRounds - totalRoundsPlayed;
+
+  if (roundsLeft === 0) return false;
+  else {
+    //not hit amount any player can win yet
+    if (roundsLeft > totalRoundsPlayed) return true;
+    else {
+      //see if any other player can also win/draw
+      const playWithHighestScore = findPlayWithMaxWins(game.players);
+      const playersThatCanStillWin = game.players.filter((p) => {
+        p.score === playWithHighestScore.score ||
+          playWithHighestScore.score - p.score === roundsLeft;
+      });
+      if (playersThatCanStillWin.length > 1) return true;
+      else return false;
+    }
+  }
 }
