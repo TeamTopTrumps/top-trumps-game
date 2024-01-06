@@ -49,3 +49,8 @@ function getCardsForPlayer(numCards: number): Card[] {
   }
   return cards;
 }
+
+export const getInitialPlayerNames = (players: Player[]) =>
+  players.map(({ id, name }) => {
+    return { id: id, value: name };
+  });
