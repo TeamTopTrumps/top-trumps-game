@@ -5,6 +5,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 interface TextInputProps {
   className?: string;
   label: string;
+  isHiddenLabel?: boolean;
   name: string;
   id: string;
   value: string;
@@ -13,7 +14,16 @@ interface TextInputProps {
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
-  const { className, label, name, id, value, onChange, validate } = props;
+  const {
+    className,
+    label,
+    isHiddenLabel = false,
+    name,
+    id,
+    value,
+    onChange,
+    validate,
+  } = props;
 
   const errorMessages = validate && validate(value);
 
@@ -25,7 +35,9 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         className
       )}
     >
-      {label && `${label}: `}
+      <span
+        className={classnames({ "visually-hidden": isHiddenLabel })}
+      >{`${label}: `}</span>
       <input
         className="text-input"
         type="text"
