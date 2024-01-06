@@ -71,3 +71,8 @@ function findPlayWithMaxWins(players: Player[]) {
     return prev.score > current.score ? prev : current;
   });
 }
+
+export function minimumRoundsToWin(game: Game) {
+  const half = Math.ceil(game.totalRounds / 2);
+  return game.totalRounds % half === 0 ? half + 1 : half;
+}

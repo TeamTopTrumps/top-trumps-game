@@ -1,5 +1,9 @@
 import { Game } from "../types/game/game.types";
-import { initialiseGame, determineGameWinner } from "./game";
+import {
+  initialiseGame,
+  determineGameWinner,
+  minimumRoundsToWin,
+} from "./game";
 
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -119,5 +123,32 @@ describe("Determine overall winner", () => {
 
     const overallWinner = determineGameWinner(game);
     expect(overallWinner).toEqual(player2);
+  });
+});
+
+describe("Determine minimum number of rounds to win the game", () => {
+  it("the minimum number of games to win should be 1/2 total plus 1", () => {
+    const player = {
+      id: `player`,
+      name: `Player `,
+      score: 1,
+      cards: [],
+    };
+
+    const game1 = {
+      players: Array(2).fill(player),
+      currentRound: 4,
+      totalRounds: 5,
+      roundWinners: [],
+    };
+    expect(minimumRoundsToWin(game1)).toBe(3);
+
+    const game2 = {
+      players: Array(2).fill(player),
+      currentRound: 4,
+      totalRounds: 8,
+      roundWinners: [],
+    };
+    expect(minimumRoundsToWin(game2)).toBe(5);
   });
 });
