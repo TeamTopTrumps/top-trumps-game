@@ -2,26 +2,28 @@ import RoundTracker from "../RoundTracker/RoundTracker";
 import TextInput from "../TextInput/TextInput";
 
 interface PlayerScoreProps {
-  playerName: string;
-  playerId: string;
+  name: string;
+  id: string;
   updateName: (id: string, value: string) => void;
-  playerScore: number;
+  score: number;
   currentRound: number;
   totalRounds: number;
   roundWinners: string[];
+  validateName: (value: string) => string[];
 }
 
 const PlayerScore: React.FC<PlayerScoreProps> = ({
-  playerName,
-  playerId,
+  name,
+  id,
   updateName,
-  playerScore,
+  score,
   currentRound,
   totalRounds,
   roundWinners,
+  validateName,
 }) => {
-  const roundScores = roundWinners.map((round) =>
-    round === playerId ? "won" : "lost"
+  const roundScores = roundWinners.map((roundWinner) =>
+    roundWinner === id ? "won" : "lost"
   );
   const allRounds = Array(totalRounds).fill("unresolved");
 
@@ -32,13 +34,14 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
       <div>
         <TextInput
           className="player-score__name"
-          value={playerName}
+          value={name}
           label=""
-          name={playerId}
-          id={playerId}
+          name={id}
+          id={id}
           onChange={updateName}
+          validate={validateName}
         />
-        <span className="player-score__total">{playerScore}</span>
+        <span className="player-score__total">{score}</span>
       </div>
       <RoundTracker rounds={allRounds} currentRound={currentRound} />
     </div>
