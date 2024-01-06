@@ -51,25 +51,7 @@ function getCardsForPlayer(numCards: number): Card[] {
 }
 
 export function determineGameWinner(game: Game): Player | null {
-  const minRequiredToWinGame = Math.ceil(game.totalRounds / 2);
-
-  if (game.roundWinners.length < game.totalRounds) {
-    const anyPlayersWithMinRequiredWins = game.players.filter(
-      (player) => player.score >= minRequiredToWinGame
-    );
-
-    return anyPlayersWithMinRequiredWins.length > 0
-      ? findPlayWithMaxWins(anyPlayersWithMinRequiredWins)
-      : null;
-  } else {
-    return findPlayWithMaxWins(game.players);
-  }
-}
-
-function findPlayWithMaxWins(players: Player[]) {
-  return players.reduce((prev, current) => {
-    return prev.score > current.score ? prev : current;
-  });
+  return keepPlaying(game) ? null : findPlayWithMaxWins(game.players);
 }
 
 export function keepPlaying(game: Game) {
@@ -86,12 +68,18 @@ export function keepPlaying(game: Game) {
     else {
       //see if any other player can also win/draw
       const playWithHighestScore = findPlayWithMaxWins(game.players);
-      const playersThatCanStillWin = game.players.filter((p) => {
-        p.score === playWithHighestScore.score ||
-          playWithHighestScore.score - p.score === roundsLeft;
-      });
+      const playersThatCanStillWin = game.players.filter(
+        (p) => p.score === playWithHighestScore.score
+      );
+
       if (playersThatCanStillWin.length > 1) return true;
       else return false;
     }
   }
+}
+
+function findPlayWithMaxWins(players: Player[]) {
+  return players.reduce((prev, current) => {
+    return prev.score > current.score ? prev : current;
+  });
 }

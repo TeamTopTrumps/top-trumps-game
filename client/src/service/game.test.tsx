@@ -77,20 +77,20 @@ describe("Determine overall winner", () => {
     const player1 = {
       id: `player1`,
       name: `Player 1`,
-      score: 2,
+      score: 1,
       cards: [],
     };
     const player2 = {
       id: `player2`,
       name: `Player 2`,
-      score: 2,
+      score: 1,
       cards: [],
     };
     const game: Game = {
       players: [player1, player2],
       totalRounds: 5,
       currentRound: 4,
-      roundWinners: ["player1", "player2", "player2", "player1"],
+      roundWinners: ["not using"],
     };
 
     const overallWinner = determineGameWinner(game);
@@ -101,7 +101,7 @@ describe("Determine overall winner", () => {
     const player1 = {
       id: `player1`,
       name: `Player 1`,
-      score: 1,
+      score: 0,
       cards: [],
     };
     const player2 = {
@@ -112,9 +112,9 @@ describe("Determine overall winner", () => {
     };
     const game = {
       players: [player1, player2],
-      currentRound: 4,
+      currentRound: 3,
       totalRounds: 5,
-      roundWinners: ["player2", "player1", "player2", "player2"],
+      roundWinners: ["not using"],
     };
 
     const overallWinner = determineGameWinner(game);
@@ -199,14 +199,14 @@ describe("Determine if game should end", () => {
     const player1 = {
       id: `player-1`,
       name: `Player 1`,
-      score: 3,
+      score: 4,
       cards: [],
     };
 
     const player2 = {
       id: `player-2`,
       name: `Player 1`,
-      score: 3,
+      score: 2,
       cards: [],
     };
 
