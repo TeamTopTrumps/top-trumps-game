@@ -1,3 +1,5 @@
+import "./PlayerScore.scss";
+
 import RoundTracker from "../RoundTracker/RoundTracker";
 import TextInput from "../TextInput/TextInput";
 
@@ -31,20 +33,22 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
 
   return (
     <div className="player-score">
-      <div>
-        <TextInput
-          className="player-score__name"
-          value={name}
-          label="Player name"
-          isHiddenLabel={true}
-          name={id}
-          id={id}
-          onChange={updateName}
-          validate={validateName}
-        />
-        <span className="player-score__total">{score}</span>
-      </div>
-      <RoundTracker rounds={allRounds} currentRound={currentRound} />
+      <TextInput
+        className="player-score__name"
+        value={name}
+        label="Player name"
+        isHiddenLabel={true}
+        name={id}
+        id={id}
+        onChange={updateName}
+        validate={validateName}
+      />
+      <RoundTracker
+        className={"player-score__rounds"}
+        rounds={allRounds}
+        currentRound={currentRound}
+      />
+      <span className="player-score__total">{score}</span>
     </div>
   );
 };
