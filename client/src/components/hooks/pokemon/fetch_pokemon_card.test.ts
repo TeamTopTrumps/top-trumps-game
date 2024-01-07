@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { fetchPokemonCard } from "./query_pokemon_card";
+import { fetchPokemonCard } from "./fetch_pokemon_card";
 import {
   pokemon_cards,
   pokemon_list,

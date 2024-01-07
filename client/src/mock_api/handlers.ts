@@ -4,7 +4,6 @@ import { pokemon_cards, pokemon_list } from "./mock_pokemon_data";
 
 export const handlers = [
   http.get(`${POKEMON_BASE_URL}/pokemon`, async () => {
-    await delay(500);
     return HttpResponse.json(pokemon_list);
   }),
 
@@ -22,6 +21,7 @@ export const handlers = [
     const pokemon = pokemon_cards.find((p) => p.id === pokemonId);
 
     if (pokemon === undefined) {
+      await delay(250);
       return new HttpResponse(null, {
         status: 404,
       });

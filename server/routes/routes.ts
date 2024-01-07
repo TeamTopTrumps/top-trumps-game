@@ -49,11 +49,6 @@ function addAPIRoutes(app: Express) {
       const getId = (url: string) => {
         const segments = url.split("/");
 
-        if (url.endsWith("1/")) {
-          console.log("url: ", url);
-          console.log(segments);
-        }
-
         const last = segments[segments.length - 2];
 
         return Number.isNaN(last) ? undefined : parseInt(last, 10);
