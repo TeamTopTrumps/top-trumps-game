@@ -42,7 +42,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         >{`${label}: `}</span>
         <input
           className="text-input__field"
-          type="textarea"
+          type="text"
           name={name}
           id={id}
           value={value}
