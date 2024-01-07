@@ -43,35 +43,35 @@ function App() {
 
   return (
     <>
-      <PlayerScore
-        name={
-          inputPlayerNames.find(({ id }) => id === player1.id)?.name ??
-          player1.name
-        }
-        id={player1.id}
-        updateName={updatePlayerName}
-        validateName={validatePlayerName}
-        score={player1.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
-      />
-      <script></script>
-      Player 1 name in game object is: {player1.name}
-      <PlayerScore
-        name={
-          inputPlayerNames.find(({ id }) => id === player2.id)?.name ??
-          player1.name
-        }
-        id={player2.id}
-        updateName={updatePlayerName}
-        validateName={validatePlayerName}
-        score={player2.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
-      />
-      Player 2 name in game object is: {player2.name}
+      <div className="player-scores">
+        <PlayerScore
+          name={
+            inputPlayerNames.find(({ id }) => id === player1.id)?.name ??
+            player1.name
+          }
+          id={player1.id}
+          updateName={updatePlayerName}
+          validateName={validatePlayerName}
+          score={player1.score}
+          currentRound={game.currentRound}
+          totalRounds={game.totalRounds}
+          roundWinners={[]}
+        />
+        <PlayerScore
+          name={
+            inputPlayerNames.find(({ id }) => id === player2.id)?.name ??
+            player1.name
+          }
+          id={player2.id}
+          updateName={updatePlayerName}
+          validateName={validatePlayerName}
+          score={player2.score}
+          currentRound={game.currentRound}
+          totalRounds={game.totalRounds}
+          roundWinners={[]}
+        />
+      </div>
+
       <Header />
     </>
   );
