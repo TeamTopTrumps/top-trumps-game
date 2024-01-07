@@ -1,0 +1,69 @@
+@import "../../../styles/variables";
+@import "../../../styles/functions";
+
+.round-pip {
+  --fill-color: #{$light-grey};
+  --border-color: #{$dark-grey};
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: 2px solid var(--border-color);
+  background-color: var(--fill-color);
+
+  @media (prefers-color-scheme: dark) {
+    --fill-color: #{$grey};
+    --border-color: #{$light-grey};
+  }
+
+  &--won {
+    --fill-color: #{$round-won-color};
+    --border-color: #{shade($round-won-color, 50%)};
+
+    @media (prefers-color-scheme: dark) {
+      --border-color: #{tint($round-won-color, 50%)};
+    }
+  }
+
+  &--lost {
+    --fill-color: #{$round-lost-color};
+    --border-color: #{shade($round-lost-color, 50%)};
+
+    @media (prefers-color-scheme: dark) {
+      --border-color: #{tint($round-lost-color, 50%)};
+    }
+  }
+
+  &--unresolved {
+    --fill-color: #{$round-unresolved-color};
+
+    @media (prefers-color-scheme: dark) {
+      --fill-color: #{$round-unresolved-color--dark};
+    }
+  }
+
+  &--current {
+    background: linear-gradient(180deg, $red 50%, $white 50%);
+    position: relative;
+    --border-color: #{$black};
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      top: calc(50% - 1px);
+      background-color: $black;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      border-radius: 100%;
+      background-color: $white;
+      width: 50%;
+      height: 50%;
+      top: 25%;
+      left: 25%;
+      border: 2px solid black;
+    }
+  }
+}
