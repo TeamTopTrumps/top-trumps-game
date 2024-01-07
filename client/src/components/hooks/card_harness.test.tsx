@@ -1,5 +1,4 @@
 import { describe, expect, test } from "vitest";
-// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { CardHarness } from "./card_harness";
 import { pokemon_cards, pokemon_list } from "../../mock_api/mock_pokemon_data";

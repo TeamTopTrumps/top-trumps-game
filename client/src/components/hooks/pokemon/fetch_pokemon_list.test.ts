@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { fetchPokemonList } from "./query_pokemon_list";
+import { fetchPokemonList } from "./fetch_pokemon_list";
 import { pokemon_list } from "../../../mock_api/mock_pokemon_data";
 import { server } from "../../../mock_api/node";
 import { POKEMON_BASE_URL } from "../../../constants/environment_constants";

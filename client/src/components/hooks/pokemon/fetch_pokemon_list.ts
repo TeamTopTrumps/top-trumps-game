@@ -1,7 +1,6 @@
 import { POKEMON_BASE_URL } from "../../../constants/environment_constants";
 
 async function fetchPokemonList() {
-  console.log("Fetch from: ", `${POKEMON_BASE_URL}`);
   try {
     const response = await fetch(`${POKEMON_BASE_URL}/pokemon`, {
       headers: {
