@@ -1,5 +1,6 @@
 import { initialiseGame, determineGameWinner, keepPlaying } from "./game";
-
+import { Game } from "../../types/game/game.types";
+import { Player } from "../../types/player/player.types";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
     const game = initialiseGame(3, 4);
@@ -54,12 +55,17 @@ describe("Determine overall winner", () => {
       name: `Player 1`,
       score: 4,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
+
     const player2 = {
       id: `player2`,
       name: `Player 2`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game: Game = {
       players: [player1, player2],
@@ -78,12 +84,16 @@ describe("Determine overall winner", () => {
       name: `Player 1`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const player2 = {
       id: `player2`,
       name: `Player 2`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game: Game = {
       players: [player1, player2],
@@ -102,12 +112,16 @@ describe("Determine overall winner", () => {
       name: `Player 1`,
       score: 0,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const player2 = {
       id: `player2`,
       name: `Player 2`,
       score: 3,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game = {
       players: [player1, player2],
@@ -126,12 +140,16 @@ describe("Determine overall winner", () => {
       name: `Player 1`,
       score: 2,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const player2 = {
       id: `player2`,
       name: `Player 2`,
       score: 2,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const player3 = {
       id: `player3`,
@@ -158,6 +176,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 2,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const player2 = {
@@ -165,6 +185,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 3,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game = {
       players: [player1, player2],
@@ -182,6 +204,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const player2 = {
@@ -189,6 +213,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game = {
       players: [player1, player2],
@@ -206,6 +232,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 3,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const player2 = {
@@ -213,6 +241,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
     const game = {
       players: [player1, player2],
@@ -230,6 +260,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 4,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const player2 = {
@@ -237,6 +269,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 2,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const player3 = {
@@ -244,6 +278,8 @@ describe("Determine if game should end", () => {
       name: `Player 1`,
       score: 1,
       cards: [],
+      isCardShown: false,
+      isHuman: false,
     };
 
     const game = {
