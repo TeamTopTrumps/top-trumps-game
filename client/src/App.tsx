@@ -7,7 +7,7 @@ import {
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
 import { Header } from "./components/Header/Header";
-import { initialiseGame } from "./service/game/game";
+import { determineGameWinner, initialiseGame } from "./service/game/game";
 import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
 import { Stat } from "./types/card/card.types";
@@ -20,6 +20,7 @@ import {
   updatePlayerIsCardShown,
   updatePlayerIsCardShownAll,
 } from "./service/round/round";
+import GameWinner from "./components/Winner/GameWinner";
 
 //Game starts with two players each with five cards
 //Clicking "Play" triggers startRound to start the first round (and the game)
@@ -158,6 +159,8 @@ function App() {
     }, DEFAULT_TIMEOUT);
   };
 
+  const overallWinners = determineGameWinner(game);
+
   return (
     <>
       <Header />
@@ -190,6 +193,7 @@ function App() {
       <p>Player 2 card is: {player2.cards[0].name}</p>
       <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
       <p>The Round Winners are: {roundWinners}</p>
+      {overallWinners && <GameWinner players={overallWinners} />}
     </>
   );
 }
