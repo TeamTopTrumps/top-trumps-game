@@ -1,11 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchPokemonCard } from "./pokemon/fetch_pokemon_card";
+import { useCard } from "./use_card";
 
 function CardHarness({ id }: { id: number }) {
-  const query = useQuery({
-    queryKey: ["card", id],
-    queryFn: () => fetchPokemonCard(id),
-  });
+  const query = useCard(id);
 
   return (
     <div>
