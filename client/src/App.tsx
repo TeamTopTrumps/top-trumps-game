@@ -3,12 +3,17 @@ import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
 import { Header } from "./components/header/Header";
 import { initialiseGame } from "./service/game";
-import { useState } from "react";
-import { Game } from "./types/game/game.types";
+import { usePack } from "./components/hooks/use_pack";
+
 function App() {
-  const [game, setGame] = useState<Game>(
-    initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
-  );
+  const { isPending, data: pack, error } = usePack("pokemon");
+
+  if (isPending) return <p>Loading pack...</p>;
+
+  if (error) return <p>Failed to load pack</p>;
+
+  const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
+
   const player1 = game.players[0];
   const player2 = game.players[1];
 

@@ -1,8 +1,9 @@
+import { pokemon_cards } from "../mock_api/mock_pokemon_data";
 import { initialiseGame } from "./game";
 
 describe("Game", () => {
   it("initialise games with 3 players and 4 rounds", () => {
-    const game = initialiseGame(3, 4);
+    const game = initialiseGame(3, 4, pokemon_cards);
 
     expect(game.totalRounds).toBe(4);
     expect(game.roundWinners.length).toBe(0);
@@ -30,19 +31,19 @@ describe("Game", () => {
 
   it("throw an error if number of players is less than 2", () => {
     expect(() => {
-      initialiseGame(1, 4);
+      initialiseGame(1, 4, pokemon_cards);
     }).toThrow(Error);
     expect(() => {
-      initialiseGame(0, 4);
+      initialiseGame(0, 4, pokemon_cards);
     }).toThrow("Number of players must be at least 2");
   });
 
   it("throw an error if number of rounds is less than 1", () => {
     expect(() => {
-      initialiseGame(2, -1);
+      initialiseGame(2, -1, pokemon_cards);
     }).toThrow(Error);
     expect(() => {
-      initialiseGame(3, 0);
+      initialiseGame(3, 0, pokemon_cards);
     }).toThrow("Number of rounds must be at least 1");
   });
 });
