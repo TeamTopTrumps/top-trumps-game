@@ -17,7 +17,17 @@ const GameWinner: React.FC<GameWinnerProps> = (props) => {
         )}
       </>
     );
-  } else return <div>Draw</div>;
+  } else {
+    const playersString = players.map((p) => p.name).join(", ");
+
+    return (
+      <>
+        <div data-testid="players-drawn">
+          {playersString} have drawn! Have another game to catch them all!
+        </div>
+      </>
+    );
+  }
 };
 
 export default GameWinner;
