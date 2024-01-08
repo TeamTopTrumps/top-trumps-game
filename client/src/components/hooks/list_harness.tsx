@@ -1,11 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchPokemonList } from "./pokemon/fetch_pokemon_list";
+import { useList } from "./use_list";
 
 function ListHarness() {
-  const query = useQuery({
-    queryKey: ["list"],
-    queryFn: fetchPokemonList,
-  });
+  const query = useList();
 
   return (
     <div>
