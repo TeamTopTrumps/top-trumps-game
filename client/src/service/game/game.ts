@@ -1,6 +1,7 @@
-import { Game } from "../types/game/game.types";
-import { Player } from "../types/player/player.types";
-import { Card } from "../types/card/card.types";
+import { Game } from "../../types/game/game.types";
+import { Player } from "../../types/player/player.types";
+import { Card } from "../../types/card/card.types";
+import { DUMMY_CARD_DATA1, DUMMY_CARD_DATA2 } from "../../constants/constants";
 
 export function initialiseGame(
   numberPlayers: number,
@@ -13,21 +14,28 @@ export function initialiseGame(
   const players: Player[] = [];
 
   for (let i = 1; i < numberPlayers + 1; i++) {
-    const cards = getCardsForPlayer(numberOfRoundsToPlay);
+    const cards: Card[] =
+      i === 1
+        ? DUMMY_CARD_DATA1
+        : i === 2
+        ? DUMMY_CARD_DATA2
+        : getCardsForPlayer(numberOfRoundsToPlay);
     const player: Player = {
       id: `player-${i}`,
       name: `Player ${i}`,
       score: 0,
       cards: cards,
+      isCardShown: false,
+      isHuman: false,
     };
     players.push(player);
   }
 
   const game: Game = {
     players: players,
+    currentRound: 0,
     totalRounds: numberOfRoundsToPlay,
     roundWinners: [],
-    currentRound: 0,
   };
   return game;
 }
@@ -37,13 +45,18 @@ function getCardsForPlayer(numCards: number): Card[] {
 
   for (let i = 0; i < numCards; i++) {
     //this will be where we can call some service to get the real cards
-    const card = {
+    const card: Card = {
       id: i,
       name: "some-name",
       imageUrl: "some-string",
       description: "some-description",
       type: "some-type",
-      stats: [],
+      stats: [
+        {
+          name: "hp",
+          value: 23,
+        },
+      ],
     };
     cards.push(card);
   }

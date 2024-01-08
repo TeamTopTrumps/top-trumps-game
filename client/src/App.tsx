@@ -1,12 +1,26 @@
 import "./App.scss";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Header } from "./components/Header/Header";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { Game } from "./types/game/game.types";
-import { DEFAULT_ROUNDS, DEFAULT_PLAYERS } from "./constants/constants";
-import { initialiseGame, getInitialPlayerNames } from "./service/game";
+import { Player, PlayerNameAndId } from "./types/player/player.types";
+import {
+  DEFAULT_ROUNDS,
+  DEFAULT_PLAYERS,
+  DEFAULT_TIMEOUT,
+} from "./constants/constants";
+import { initialiseGame, getInitialPlayerNames } from "./service/game/game";
 import validatePlayerName from "./validation/validate_player_name";
-import { PlayerNameAndId } from "./types/player/player.types";
+import {
+  calculateRoundWinner,
+  chooseRandomStat,
+  updatePlayerCards,
+  updatePlayerIsCardShown,
+  updatePlayerIsCardShownAll,
+  updatePlayerScores,
+  updateRoundWinners,
+} from "./service/round/round";
+import { Stat } from "./types/card/card.types";
 
 function App() {
   const [game, setGame] = useState<Game>(
@@ -14,6 +28,7 @@ function App() {
   );
   const player1 = game.players[0];
   const player2 = game.players[1];
+  const { players, totalRounds, roundWinners } = game;
 
   const [inputPlayerNames, setInputPlayerNames] = useState<PlayerNameAndId[]>(
     getInitialPlayerNames(game.players)
@@ -41,8 +56,112 @@ function App() {
     }
   };
 
+  const currentRoundRef = useRef<number>(0);
+  const currentPlayerRef = useRef<Player>(players[0]);
+
+  const showPlayerCard = (player: Player) => {
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShown(prevGame.players, player.id),
+      };
+    });
+  };
+
+  const showAllCards = () => {
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShownAll(prevGame.players, true),
+      };
+    });
+  };
+
+  const hideAllCards = () => {
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: updatePlayerIsCardShownAll(prevGame.players, false),
+      };
+    });
+  };
+
+  const nextPlayer = () => {
+    const prevPlayer = currentPlayerRef.current;
+    const prevPlayerIndex = players.findIndex(
+      (player) => player.id === prevPlayer.id
+    );
+    let nextPlayer: Player;
+    if (prevPlayerIndex === players.length - 1) {
+      nextPlayer = players[0];
+    } else {
+      nextPlayer = players[prevPlayerIndex + 1];
+    }
+    currentPlayerRef.current = nextPlayer;
+    startRound(nextPlayer);
+  };
+
+  const startRound = (player: Player) => {
+    currentRoundRef.current = currentRoundRef.current + 1;
+
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        currentRound: prevGame.currentRound + 1,
+      };
+    });
+
+    showPlayerCard(player);
+
+    if (!player.isHuman) {
+      const stat = chooseRandomStat(
+        player.cards[0].stats,
+        player.cards[0].stats.length
+      );
+      setTimeout(() => {
+        playRound(stat, player);
+      }, DEFAULT_TIMEOUT);
+    }
+  };
+
+  const playRound = (stat: Stat, player: Player) => {
+    showAllCards();
+
+    setTimeout(() => {
+      const { id } = calculateRoundWinner(players, stat, player);
+      console.log("winner " + id);
+
+      setGame((prevGame: Game) => {
+        return {
+          ...prevGame,
+          players: updatePlayerScores(prevGame.players, id),
+          roundWinners: updateRoundWinners(prevGame.roundWinners, id),
+          //roundsPlayed: prevGame.roundsPlayed + 1,
+        };
+      });
+
+      endRound();
+    }, DEFAULT_TIMEOUT);
+  };
+
+  const endRound = () => {
+    hideAllCards();
+
+    setTimeout(() => {
+      setGame((prevGame: Game) => {
+        return { ...prevGame, players: updatePlayerCards(prevGame.players) };
+      });
+      if (currentRoundRef.current === totalRounds) {
+        console.log("end of game");
+      } else {
+        nextPlayer();
+      }
+    }, DEFAULT_TIMEOUT);
+  };
+
   return (
     <>
+      <Header />
       <PlayerScore
         name={
           inputPlayerNames.find(({ id }) => id === player1.id)?.name ??
@@ -52,9 +171,9 @@ function App() {
         updateName={updatePlayerName}
         validateName={validatePlayerName}
         score={player1.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
+        currentRound={currentRoundRef.current}
+        totalRounds={totalRounds}
+        roundWinners={roundWinners}
       />
       <script></script>
       Player 1 name in game object is: {player1.name}
@@ -67,12 +186,22 @@ function App() {
         updateName={updatePlayerName}
         validateName={validatePlayerName}
         score={player2.score}
-        currentRound={game.currentRound}
-        totalRounds={game.totalRounds}
-        roundWinners={[]}
+        currentRound={currentRoundRef.current}
+        totalRounds={totalRounds}
+        roundWinners={roundWinners}
       />
+      <button onClick={() => startRound(currentPlayerRef.current)}>
+        Start Round
+      </button>
+      <p>Current round is: {game.currentRound}</p>
+      <p>Player 1 score is: {player1.score}</p>
+      <p>Player 1 card is: {player1.cards[0].name}</p>
+      <p>Player 1 card is shown: {player1.isCardShown ? "true" : "false"}</p>
       Player 2 name in game object is: {player2.name}
-      <Header />
+      <p>Player 2 score is {player2.score}</p>
+      <p>Player 2 card is: {player2.cards[0].name}</p>
+      <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
+      <p>The Round Winners are: {roundWinners}</p>
     </>
   );
 }
