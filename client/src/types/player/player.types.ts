@@ -8,8 +8,3 @@ export type Player = {
   isCardShown: boolean;
   isHuman: boolean;
 };
-
-export type PlayerNameAndId = {
-  id: string;
-  name: string;
-};
