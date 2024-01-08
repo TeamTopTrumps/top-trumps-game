@@ -1,5 +1,5 @@
 import React from "react";
-import { Rules } from "../rules/Rules";
+import { Rules } from "../Rules/Rules";
 
 export const Header: React.FC = () => {
   return (

@@ -1,15 +1,13 @@
-import { NonEmptyArray } from "../../types/utility/utility.types";
-
 export type Card = {
   id: number;
   name: string;
   imageUrl: string;
   description: string;
   type: string;
-  stats: NonEmptyArray<Stat>;
+  stats: Stat[];
 };
 
-export type Stat = {
+type Stat = {
   name: StatName;
   value: number;
 };
