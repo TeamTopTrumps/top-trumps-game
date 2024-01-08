@@ -7,8 +7,12 @@ import {
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
 import { Header } from "./components/Header/Header";
-import { determineGameWinner, initialiseGame } from "./service/game/game";
-import { Game } from "./types/game/game.types";
+import {
+  findWinningPlayers,
+  initialiseGame,
+  keepPlaying,
+} from "./service/game/game";
+import { Game, GameStatus } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
 import { Stat } from "./types/card/card.types";
 import {
@@ -51,6 +55,7 @@ function App() {
   const [game, setGame] = useState<Game>(
     initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
   );
+
   const player1 = game.players[0];
   const player2 = game.players[1];
 
@@ -130,13 +135,11 @@ function App() {
     setTimeout(() => {
       const { id } = calculateRoundWinner(players, stat, player);
       console.log("winner " + id);
-
       setGame((prevGame: Game) => {
         return {
           ...prevGame,
           players: updatePlayerScores(prevGame.players, id),
           roundWinners: updateRoundWinners(prevGame.roundWinners, id),
-          //roundsPlayed: prevGame.roundsPlayed + 1,
         };
       });
 
@@ -146,20 +149,43 @@ function App() {
 
   const endRound = () => {
     hideAllCards();
+    console.log(game.gameStatus);
 
     setTimeout(() => {
       setGame((prevGame: Game) => {
         return { ...prevGame, players: updatePlayerCards(prevGame.players) };
       });
-      if (currentRoundRef.current === totalRounds) {
+
+      /**
+       * useMemo - with variable for overallWinners
+       * update that based on setGame
+       *
+       *
+       *
+       */
+      const keepPlaying2 = keepPlaying(
+        players,
+        totalRounds,
+        currentRoundRef.current
+      );
+      console.log(
+        "playing keep",
+        keepPlaying2,
+        "current round",
+        currentRoundRef.current
+      );
+      if (!keepPlaying2) {
+        //this works because the rounds all play but we want to finish if someone win early.
         console.log("end of game");
+        const winners = findWinningPlayers(players);
+        setGame((prevGame: Game) => {
+          return { ...prevGame, overallWinners: winners };
+        });
       } else {
         nextPlayer();
       }
     }, DEFAULT_TIMEOUT);
   };
-
-  const overallWinners = determineGameWinner(game);
 
   return (
     <>
@@ -193,7 +219,9 @@ function App() {
       <p>Player 2 card is: {player2.cards[0].name}</p>
       <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
       <p>The Round Winners are: {roundWinners}</p>
-      {overallWinners && <GameWinner players={overallWinners} />}
+      {/* {overallGameWinner && (
+        <GameWinner players={overallGameWinner.overallWinners} />
+      )} */}
     </>
   );
 }

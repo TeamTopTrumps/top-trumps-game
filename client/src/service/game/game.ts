@@ -62,31 +62,31 @@ function getCardsForPlayer(numCards: number): Card[] {
   return cards;
 }
 
-export function determineGameWinner(game: Game): Player[] | null {
-  return keepPlaying(game) ? null : findWinningPlayers(game);
-}
+export function keepPlaying(
+  players: Player[],
+  totalRounds: number,
+  currentRound: number
+) {
+  const roundsLeft = totalRounds - currentRound;
+  const roundsToWin =
+    totalRounds % 2 === 0
+      ? Math.ceil(totalRounds / 2 + 1)
+      : Math.ceil(totalRounds / 2);
 
-export function keepPlaying(game: Game) {
-  const totalRoundsPlayed = game.players.reduce(
-    (sum, current) => sum + current.score,
-    0
-  );
-  const roundsLeft = game.totalRounds - totalRoundsPlayed;
+  console.log(totalRounds, currentRound, roundsLeft, roundsToWin);
 
   if (roundsLeft === 0) return false;
   else {
-    //not hit amount any player can win yet
-    if (roundsLeft > totalRoundsPlayed) return true;
-    else {
-      //see if any other player can also win/draw
-      const playWithHighestScore = findPlayerWithMaxWins(game.players);
-      const playersThatCanStillWin = game.players.filter(
-        (p) => p.score === playWithHighestScore.score
-      );
-
-      if (playersThatCanStillWin.length > 1) return true;
-      else return false;
-    }
+    //has any player got enough round to win
+    players.map((p) => console.log(p.id, p.score));
+    const playersThatHaveWon = players.filter((p) => p.score === roundsToWin);
+    console.log(
+      "playersThatHaveWon",
+      playersThatHaveWon.map((p) => p.name),
+      playersThatHaveWon.length === 0
+    );
+    if (playersThatHaveWon.length === 0) return true;
+    else return false;
   }
 }
 
@@ -96,7 +96,7 @@ function findPlayerWithMaxWins(players: Player[]) {
   });
 }
 
-function findWinningPlayers(game: Game) {
-  const highestScore = findPlayerWithMaxWins(game.players);
-  return game.players.filter((p) => p.score === highestScore.score);
+export function findWinningPlayers(players: Player[]) {
+  const highestScore = findPlayerWithMaxWins(players);
+  return players.filter((p) => p.score === highestScore.score);
 }
