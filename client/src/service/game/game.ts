@@ -2,7 +2,6 @@ import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
 import { Card } from "../../types/card/card.types";
 import { DUMMY_CARD_DATA1, DUMMY_CARD_DATA2 } from "../../constants/constants";
-
 export function initialiseGame(
   numberPlayers: number,
   numberOfRoundsToPlay: number
@@ -61,4 +60,43 @@ function getCardsForPlayer(numCards: number): Card[] {
     cards.push(card);
   }
   return cards;
+}
+
+export function determineGameWinner(game: Game): Player[] | null {
+  return keepPlaying(game) ? null : findWinningPlayers(game);
+}
+
+export function keepPlaying(game: Game) {
+  const totalRoundsPlayed = game.players.reduce(
+    (sum, current) => sum + current.score,
+    0
+  );
+  const roundsLeft = game.totalRounds - totalRoundsPlayed;
+
+  if (roundsLeft === 0) return false;
+  else {
+    //not hit amount any player can win yet
+    if (roundsLeft > totalRoundsPlayed) return true;
+    else {
+      //see if any other player can also win/draw
+      const playWithHighestScore = findPlayerWithMaxWins(game.players);
+      const playersThatCanStillWin = game.players.filter(
+        (p) => p.score === playWithHighestScore.score
+      );
+
+      if (playersThatCanStillWin.length > 1) return true;
+      else return false;
+    }
+  }
+}
+
+function findPlayerWithMaxWins(players: Player[]) {
+  return players.reduce((prev, current) => {
+    return prev.score > current.score ? prev : current;
+  });
+}
+
+function findWinningPlayers(game: Game) {
+  const highestScore = findPlayerWithMaxWins(game.players);
+  return game.players.filter((p) => p.score === highestScore.score);
 }
