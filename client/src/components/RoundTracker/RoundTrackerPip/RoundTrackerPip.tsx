@@ -16,7 +16,17 @@ const RoundTrackerPip: React.FC<RoundTrackerPipProps> = ({
     [`${baseClassName}--${roundState}`]: roundState,
   });
 
-  return <li className={classNames}></li>;
+  return (
+    <li className={classNames}>
+      <span className="visually-hidden">
+        {roundState === "won"
+          ? "Round Won"
+          : roundState === "lost"
+          ? "Round Lost"
+          : "Un-played Round"}
+      </span>
+    </li>
+  );
 };
 
 export default RoundTrackerPip;

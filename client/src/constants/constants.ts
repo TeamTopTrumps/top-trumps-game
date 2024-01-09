@@ -3,7 +3,7 @@ import { Card } from "../types/card/card.types";
 export const DEFAULT_PLAYERS = 2;
 export const DEFAULT_ROUNDS = 5;
 
-export const DEFAULT_TIMEOUT = 3000;
+export const DEFAULT_TIMEOUT = 1000;
 
 export const DUMMY_CARD_DATA1: Card[] = [
   {
