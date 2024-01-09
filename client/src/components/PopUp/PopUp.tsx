@@ -1,3 +1,4 @@
+import "./Popup.css";
 import React from "react";
 interface PopUpProps {
   trigger: boolean;
@@ -9,7 +10,7 @@ const PopUp: React.FC<PopUpProps> = (props) => {
     <div className="popup">
       <div className="popup-inner">
         <button className="close-btn" onClick={() => props.setTrigger(false)}>
-          Close
+          X
         </button>
         {props.children}
       </div>

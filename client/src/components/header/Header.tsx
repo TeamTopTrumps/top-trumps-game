@@ -1,3 +1,4 @@
+import "./Popup.css";
 import React, { useEffect, useState } from "react";
 import { Rules } from "../Rules/Rules";
 import PopUp from "../PopUp/PopUp";
@@ -15,7 +16,7 @@ export const Header: React.FC = () => {
   };
   return (
     <>
-      <button onClick={() => updateBtnPopUp(true)}> Open Popup</button>
+      <button onClick={() => updateBtnPopUp(true)}> Game Rules </button>
       <PopUp trigger={buttonPopup} setTrigger={updateBtnPopUp}>
         <Rules />
       </PopUp>
