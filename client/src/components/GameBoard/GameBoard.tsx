@@ -16,6 +16,7 @@ import {
   chooseRandomStat,
   calculateRoundWinner,
   moveTopCardToBottom,
+  getNextPlayer,
 } from "../../service/round/round";
 import PlayerScore from "../PlayerScore/PlayerScore";
 import GameWinner from "../Winner/GameWinner";
@@ -65,18 +66,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, updateGame }) => {
   };
 
   const nextPlayer = () => {
-    const prevPlayer = currentPlayerRef.current;
-    const prevPlayerIndex = players.findIndex(
-      (player) => player.id === prevPlayer.id
-    );
-    let nextPlayer: Player;
-    if (prevPlayerIndex === players.length - 1) {
-      nextPlayer = players[0];
-    } else {
-      nextPlayer = players[prevPlayerIndex + 1];
-    }
+    const nextPlayer = getNextPlayer(currentPlayerRef.current, players);
     currentPlayerRef.current = nextPlayer;
-
     startRound(nextPlayer);
   };
 

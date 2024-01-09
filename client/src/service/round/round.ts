@@ -116,3 +116,17 @@ export const updatePlayerCards = (players: Player[]) => {
     return { ...player, cards: moveTopCardToBottom(player.cards) };
   });
 };
+
+export function getNextPlayer(currentPlayer: Player, players: Player[]) {
+  const prevPlayer = currentPlayer;
+  const prevPlayerIndex = players.findIndex(
+    (player) => player.id === prevPlayer.id
+  );
+  let nextPlayer: Player;
+  if (prevPlayerIndex === players.length - 1) {
+    nextPlayer = players[0];
+  } else {
+    nextPlayer = players[prevPlayerIndex + 1];
+  }
+  return nextPlayer;
+}
