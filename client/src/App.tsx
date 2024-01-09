@@ -36,7 +36,10 @@ function App() {
   return (
     <>
       <Header />
-      {!isLoading && <GameBoard game={game} updateGame={handleUpdateGame} />}
+      <main>
+        {isLoading && "Loading..."}
+        {!isLoading && <GameBoard game={game} updateGame={handleUpdateGame} />}
+      </main>
     </>
   );
 }
