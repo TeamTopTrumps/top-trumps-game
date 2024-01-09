@@ -36,6 +36,7 @@ export function initialiseGame(
       score: 0,
       cards: cards,
       isCardShown: false,
+      isCardEnabled: false,
       isHuman: false,
     };
     players.push(player);
@@ -45,6 +46,7 @@ export function initialiseGame(
     players: players,
     totalRounds: numberOfRoundsToPlay,
     roundWinners: [],
+    gameStatus: "READY",
     currentRound: 0,
   };
 
