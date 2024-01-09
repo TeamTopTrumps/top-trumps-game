@@ -10,7 +10,7 @@ test("Given the required props, When the component renders, Then a list should b
 
   const someListItem = screen.getByRole("list");
 
-  expect(someListItem).toHaveClass("player-score__round-list");
+  expect(someListItem).toHaveClass("round-tracker__list");
   expect(someListItem).toBeInTheDocument();
 });
 
@@ -21,18 +21,5 @@ test("Given the required props, When the component renders, Then a the first ele
   };
   const { container } = render(<RoundTracker {...props} />);
 
-  expect(container.firstChild).toHaveClass("player-score__round-tracker");
-});
-
-test("Given the required props, When the component renders, Then the text should be present", () => {
-  const props = {
-    currentRound: 1,
-    rounds: [],
-  };
-  render(<RoundTracker {...props} />);
-
-  const someText = screen.getByText("Rounds:");
-
-  expect(someText).toHaveClass("player-score__round-tracker");
-  expect(someText).toBeInTheDocument();
+  expect(container.firstChild).toHaveClass("round-tracker");
 });
