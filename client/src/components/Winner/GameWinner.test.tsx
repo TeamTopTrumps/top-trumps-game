@@ -8,6 +8,7 @@ test("Displays winning message if one winner", () => {
     score: 3,
     cards: [],
     isCardShown: false,
+    isCardEnabled: false,
     isHuman: false,
   };
   const props = {
@@ -38,6 +39,7 @@ test("Displays draw message if more than 1 player is sent to the component", () 
     score: 3,
     cards: [],
     isCardShown: false,
+    isCardEnabled: false,
     isHuman: false,
   };
 
@@ -47,6 +49,7 @@ test("Displays draw message if more than 1 player is sent to the component", () 
     score: 3,
     cards: [],
     isCardShown: false,
+    isCardEnabled: false,
     isHuman: false,
   };
 
@@ -56,6 +59,7 @@ test("Displays draw message if more than 1 player is sent to the component", () 
     score: 3,
     cards: [],
     isCardShown: false,
+    isCardEnabled: false,
     isHuman: false,
   };
 

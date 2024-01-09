@@ -1,3 +1,5 @@
+import classnames from "classnames";
+import "./GameWinner.scss";
 import { Player } from "../../types/player/player.types";
 
 interface GameWinnerProps {
@@ -5,29 +7,23 @@ interface GameWinnerProps {
 }
 
 const GameWinner: React.FC<GameWinnerProps> = (props) => {
-  const players = props.players;
+  const { players } = props;
 
-  if (players.length === 1) {
-    return (
-      <>
-        {players[0] && (
-          <div className="game-winner">
-            Congratulations {players[0].name}! You caught them all!
-          </div>
-        )}
-      </>
-    );
-  } else {
-    const playersString = players.map((p) => p.name).join(", ");
+  const singleWinner = players.length === 1;
+  const winnerNameString = singleWinner
+    ? players[0].name
+    : players.map((p) => p.name).join(", ");
 
-    return (
-      <>
-        <div data-testid="players-drawn">
-          {playersString} have drawn! Have another game to catch them all!
-        </div>
-      </>
-    );
-  }
+  const winnerText = singleWinner
+    ? `Congratulations ${winnerNameString}! You caught them all!`
+    : `${winnerNameString} have drawn! Have another game to catch them all!`;
+
+  const winnerClass = classnames("game-result", {
+    "game-result--winner": singleWinner,
+    "game-result--draw": !singleWinner,
+  });
+
+  return <>{players[0] && <h1 className={winnerClass}>{winnerText}</h1>}</>;
 };
 
 export default GameWinner;
