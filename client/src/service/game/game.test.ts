@@ -1,4 +1,4 @@
-import { initialiseGame, thresholdToWin } from "./game";
+import { highestScore, initialiseGame, thresholdToWin } from "./game";
 import { pokemon_cards } from "../../mock_api/mock_pokemon_data";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -51,5 +51,14 @@ describe("Winning threshold", () => {
   it("work out the mininum number of games to win", () => {
     expect(thresholdToWin(5)).toBe(3);
     expect(thresholdToWin(6)).toBe(4);
+  });
+});
+
+describe("Highest score for set of players", () => {
+  it("should return the higest score", () => {
+    const game = initialiseGame(2, 5, pokemon_cards);
+    const player1 = { ...game.players[0], score: 3 };
+    const player2 = { ...game.players[1], score: 2 };
+    expect(highestScore([player1, player2])).toBe(3);
   });
 });

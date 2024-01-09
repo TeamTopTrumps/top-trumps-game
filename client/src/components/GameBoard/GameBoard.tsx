@@ -1,7 +1,11 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { initialiseGame, thresholdToWin } from "../../service/game/game";
+import {
+  highestScore,
+  initialiseGame,
+  thresholdToWin,
+} from "../../service/game/game";
 import {
   DEFAULT_PLAYERS,
   DEFAULT_ROUNDS,
@@ -43,17 +47,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, updateGame }) => {
 
   const winThreshold = useMemo(
     () => thresholdToWin(totalRounds),
-
     [totalRounds]
   );
 
-  const currentHighScore = useMemo(
-    () =>
-      players.reduce((prev, current) => {
-        return prev > current.score ? prev : current.score;
-      }, 0),
-    [players]
-  );
+  const currentHighScore = useMemo(() => highestScore(players), [players]);
 
   const calculateGameWinners = useMemo(() => {
     if (gameStatus === "FINISHED") {

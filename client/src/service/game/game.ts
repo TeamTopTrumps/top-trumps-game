@@ -58,3 +58,9 @@ export function thresholdToWin(totalRounds: number) {
     ? Math.ceil(totalRounds / 2 + 1)
     : Math.ceil(totalRounds / 2);
 }
+
+export function highestScore(players: Player[]) {
+  return players.reduce((prev, current) => {
+    return prev > current.score ? prev : current.score;
+  }, 0);
+}
