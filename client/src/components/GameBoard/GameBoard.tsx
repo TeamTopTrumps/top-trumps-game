@@ -5,6 +5,7 @@ import {
   highestScore,
   initialiseGame,
   thresholdToWin,
+  whosWon,
 } from "../../service/game/game";
 import {
   DEFAULT_PLAYERS,
@@ -52,12 +53,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, updateGame }) => {
 
   const currentHighScore = useMemo(() => highestScore(players), [players]);
 
-  const calculateGameWinners = useMemo(() => {
-    if (gameStatus === "FINISHED") {
-      return players.filter((p) => p.score === currentHighScore);
-    }
-    return null;
-  }, [gameStatus, players, currentHighScore]);
+  const calculateGameWinners = useMemo(
+    () => whosWon(gameStatus, currentHighScore, players),
+    [gameStatus, players, currentHighScore]
+  );
 
   const resetGame = () => {
     updateGame(initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS));

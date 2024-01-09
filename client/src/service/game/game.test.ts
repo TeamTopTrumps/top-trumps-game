@@ -1,4 +1,4 @@
-import { highestScore, initialiseGame, thresholdToWin } from "./game";
+import { highestScore, initialiseGame, thresholdToWin, whosWon } from "./game";
 import { pokemon_cards } from "../../mock_api/mock_pokemon_data";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -60,5 +60,25 @@ describe("Highest score for set of players", () => {
     const player1 = { ...game.players[0], score: 3 };
     const player2 = { ...game.players[1], score: 2 };
     expect(highestScore([player1, player2])).toBe(3);
+  });
+});
+
+describe("Which player has won", () => {
+  it("should return player that meet the highest score", () => {
+    const game = initialiseGame(2, 5, pokemon_cards);
+    const player1 = { ...game.players[0], score: 3 };
+    const player2 = { ...game.players[1], score: 2 };
+    expect(whosWon("FINISHED", 3, [player1, player2])).toEqual([player1]);
+  });
+  it("should return players that meet the highest score", () => {
+    const game = initialiseGame(3, 6, pokemon_cards);
+    const player1 = { ...game.players[0], score: 3 };
+    const player2 = { ...game.players[1], score: 0 };
+    const player3 = { ...game.players[1], score: 3 };
+
+    expect(whosWon("FINISHED", 3, [player1, player2, player3])).toEqual([
+      player1,
+      player3,
+    ]);
   });
 });
