@@ -17,18 +17,47 @@ import {
 } from "./service/round/round";
 import GameWinner from "./components/Winner/GameWinner";
 
+import { fetchPokemonPack } from "./components/hooks/use_pack";
+
+const EMPTY_GAME = {
+  players: [],
+  totalRounds: 0,
+  currentRound: 0,
+  roundWinners: [],
+};
+
+const EMPTY_PLAYER = {
+  id: "",
+  name: "",
+  score: 0,
+  cards: [],
+  isCardShown: false,
+  isHuman: false,
+};
+
 function App() {
-  const [game, setGame] = useState<Game>(
-    initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
-  );
+  const [game, setGame] = useState<Game>(EMPTY_GAME);
+  const currentRoundRef = useRef<number>(0);
+  const currentPlayerRef = useRef<Player>(EMPTY_PLAYER);
+
+  useEffect(() => {
+    async function fetchPack() {
+      const pack = await fetchPokemonPack();
+
+      const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
+      setGame(game);
+      currentPlayerRef.current = game.players[0];
+    }
+
+    fetchPack();
+  }, []);
+
+  if (game.players.length === 0) return <p>Loading pack...</p>;
 
   const { players, totalRounds, roundWinners, gameStatus } = game;
 
   const player1 = players[0];
   const player2 = players[1];
-
-  const currentRoundRef = useRef<number>(0);
-  const currentPlayerRef = useRef<Player>(players[0]);
 
   const updatePlayerName = (id: string, value: string) => {
     setGame((currentGame) => {
