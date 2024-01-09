@@ -1,7 +1,12 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { initialiseGame } from "../../service/game/game";
+import {
+  highestScore,
+  initialiseGame,
+  thresholdToWin,
+  whosWon,
+} from "../../service/game/game";
 import {
   DEFAULT_PLAYERS,
   DEFAULT_ROUNDS,
@@ -11,6 +16,7 @@ import {
   chooseRandomStat,
   calculateRoundWinner,
   moveTopCardToBottom,
+  getNextPlayer,
 } from "../../service/round/round";
 import PlayerScore from "../PlayerScore/PlayerScore";
 import GameWinner from "../Winner/GameWinner";
@@ -46,27 +52,16 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
   const [currentRoundWinner, setCurrentRoundWinner] = useState<string>("");
 
   const winThreshold = useMemo(
-    () =>
-      totalRounds % 2 === 0
-        ? Math.ceil(totalRounds / 2 + 1)
-        : Math.ceil(totalRounds / 2),
+    () => thresholdToWin(totalRounds),
     [totalRounds]
   );
 
-  const currentHighScore = useMemo(
-    () =>
-      players.reduce((prev, current) => {
-        return prev > current.score ? prev : current.score;
-      }, 0),
-    [players]
-  );
+  const currentHighScore = useMemo(() => highestScore(players), [players]);
 
-  const calculateGameWinners = useMemo(() => {
-    if (gameStatus === "FINISHED") {
-      return players.filter((p) => p.score === currentHighScore);
-    }
-    return null;
-  }, [gameStatus, players, currentHighScore]);
+  const calculateGameWinners = useMemo(
+    () => whosWon(gameStatus, currentHighScore, players),
+    [gameStatus, players, currentHighScore]
+  );
 
   const resetGame = () => {
     setGame(initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack));
@@ -75,18 +70,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
   };
 
   const nextPlayer = () => {
-    const prevPlayer = currentPlayerRef.current;
-    const prevPlayerIndex = players.findIndex(
-      (player) => player.id === prevPlayer.id
-    );
-    let nextPlayer: Player;
-    if (prevPlayerIndex === players.length - 1) {
-      nextPlayer = players[0];
-    } else {
-      nextPlayer = players[prevPlayerIndex + 1];
-    }
+    const nextPlayer = getNextPlayer(currentPlayerRef.current, players);
     currentPlayerRef.current = nextPlayer;
-
     startRound(nextPlayer);
   };
 
