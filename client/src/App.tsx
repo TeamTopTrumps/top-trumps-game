@@ -1,19 +1,19 @@
 import "./App.scss";
 import { useState, useRef, useMemo, useEffect } from "react";
+import { Header } from "./components/header/Header";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
+import { Game } from "./types/game/game.types";
+import { Player } from "./types/player/player.types";
 import {
   DEFAULT_ROUNDS,
   DEFAULT_PLAYERS,
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
-import { Header } from "./components/Header/Header";
 import { initialiseGame } from "./service/game/game";
-import { Game } from "./types/game/game.types";
-import { Player } from "./types/player/player.types";
 import {
-  chooseRandomStat,
   calculateRoundWinner,
   moveTopCardToBottom,
+  chooseRandomStat,
 } from "./service/round/round";
 import GameWinner from "./components/Winner/GameWinner";
 
@@ -22,13 +22,25 @@ function App() {
     initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
   );
 
-  const player1 = game.players[0];
-  const player2 = game.players[1];
-
   const { players, totalRounds, roundWinners, gameStatus } = game;
+
+  const player1 = players[0];
+  const player2 = players[1];
 
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(players[0]);
+
+  const updatePlayerName = (id: string, value: string) => {
+    setGame((currentGame) => {
+      const updatedPlayers = currentGame.players.map((player) => {
+        return player.id === id ? { ...player, name: value.trim() } : player;
+      });
+      return {
+        ...currentGame,
+        players: updatedPlayers,
+      };
+    });
+  };
 
   const [currentRoundWinner, setCurrentRoundWinner] = useState<string>("");
 
@@ -198,19 +210,19 @@ function App() {
     <>
       <Header />
       <PlayerScore
-        playerName={player1.name}
-        playerId={player1.id}
-        updateName={() => {}}
-        playerScore={player1.score}
+        name={player1.name}
+        id={player1.id}
+        updateName={updatePlayerName}
+        score={player1.score}
         currentRound={currentRoundRef.current}
         totalRounds={totalRounds}
         roundWinners={roundWinners}
       />
       <PlayerScore
-        playerName={player2.name}
-        playerId={player2.id}
-        updateName={() => {}}
-        playerScore={player2.score}
+        name={player1.name}
+        id={player2.id}
+        updateName={updatePlayerName}
+        score={player2.score}
         currentRound={currentRoundRef.current}
         totalRounds={totalRounds}
         roundWinners={roundWinners}
