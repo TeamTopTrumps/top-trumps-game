@@ -1,3 +1,5 @@
+@import "./functions";
+
 $red: #e3350d;
 $orange: #ee6b2f;
 $yellow: #e6bc2f;
@@ -7,9 +9,20 @@ $purple: #855ac9;
 
 $white: #fff;
 $light-grey: #e5e5e5;
-$grey: #919191;
+//$grey: #919191;
+$grey: #aaa;
 $dark-grey: #555;
 $black: #000;
+
+$grey-100: tint($grey, 80%); //#eee
+$grey-200: tint($grey, 60%); //#ddd
+$grey-300: tint($grey, 40%); //#ccc
+$grey-400: tint($grey, 20%); //#bbb
+$grey-500: $grey;
+$grey-600: shade($grey, 20%); //#888
+$grey-700: shade($grey, 40%); //#666
+$grey-800: shade($grey, 60%); //#444
+$grey-900: shade($grey, 80%); //#222
 
 $warning: $red;
 
