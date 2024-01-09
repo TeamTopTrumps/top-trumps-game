@@ -1,22 +1,26 @@
-import "./Popup.css";
-import React from "react";
+import "./Popup.scss";
+import classnames from "classnames";
+
 interface PopUpProps {
-  trigger: boolean;
-  setTrigger: (value: boolean) => void;
+  className?: string;
+  isShown: boolean;
+  handleIsShown: (value: boolean) => void;
   children?: React.ReactNode;
 }
 const PopUp: React.FC<PopUpProps> = (props) => {
-  return props.trigger ? (
-    <div className="popup">
+  const { className, isShown, handleIsShown, children } = props;
+
+  const classNames = classnames("popup", { "popup--open": isShown }, className);
+
+  return (
+    <div className={classNames}>
       <div className="popup-inner">
-        <button className="close-btn" onClick={() => props.setTrigger(false)}>
-          X
+        <button className="close-btn" onClick={() => handleIsShown(false)}>
+          X<span className="visually-hidden">Close</span>
         </button>
-        {props.children}
+        {children}
       </div>
     </div>
-  ) : (
-    ""
   );
 };
 export default PopUp;

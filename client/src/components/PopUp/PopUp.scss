@@ -33,15 +33,18 @@ li {
 }
 
 .popup {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 200vh;
   background-color: rgba(0, 0, 0, 0.2);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &--open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .popup-inner {
@@ -58,14 +61,12 @@ li {
   right: 30px;
 }
 
-
 h2 {
   text-align: center;
   margin-top: 30px;
   font-size: 28px;
   color: #333;
 }
-
 
 .button {
   display: inline-block;
