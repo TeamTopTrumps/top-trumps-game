@@ -1,0 +1,32 @@
+@import "../../styles/functions";
+@import "../../styles/variables";
+
+$btn-background: $red;
+$btn-border: shade($btn-background, 40%);
+
+.btn {
+  --btn-background-color: #{$btn-background};
+  --btn-border-color: #{$btn-border};
+
+  border-radius: 8px;
+  border: 3px solid var(--btn-border-color);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--btn-background-color);
+  cursor: pointer;
+  transition: all 0.25s;
+
+  @media (prefers-color-scheme: dark) {
+  }
+  &:hover {
+    --btn-background-color: #{shade($btn-background, 40%)};
+    --btn-border-color: #{shade($btn-border, 40%)};
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+}

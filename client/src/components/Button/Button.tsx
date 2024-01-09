@@ -1,3 +1,5 @@
+import "./Button.scss";
+
 import classnames from "classnames";
 
 interface ButtonProps {
