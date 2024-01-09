@@ -20,7 +20,6 @@ function App() {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
       setIsLoading(false);
-      setIsLoading(false);
       const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
       setGame(game);
     }
