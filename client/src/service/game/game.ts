@@ -1,7 +1,6 @@
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
 import { Card } from "../../types/card/card.types";
-import { DUMMY_CARD_DATA1, DUMMY_CARD_DATA2 } from "../../constants/constants";
 export function initialiseGame(
   numberPlayers: number,
   numberOfRoundsToPlay: number
@@ -13,18 +12,14 @@ export function initialiseGame(
   const players: Player[] = [];
 
   for (let i = 1; i < numberPlayers + 1; i++) {
-    const cards: Card[] =
-      i === 1
-        ? DUMMY_CARD_DATA1
-        : i === 2
-        ? DUMMY_CARD_DATA2
-        : getCardsForPlayer(numberOfRoundsToPlay);
+    const cards: Card[] = getCardsForPlayer(numberOfRoundsToPlay);
     const player: Player = {
       id: `player-${i}`,
       name: `Player ${i}`,
       score: 0,
       cards: cards,
       isCardShown: false,
+      isCardEnabled: false,
       isHuman: false,
     };
     players.push(player);
@@ -35,6 +30,7 @@ export function initialiseGame(
     currentRound: 0,
     totalRounds: numberOfRoundsToPlay,
     roundWinners: [],
+    gameStatus: "READY",
   };
   return game;
 }
@@ -53,50 +49,27 @@ function getCardsForPlayer(numCards: number): Card[] {
       stats: [
         {
           name: "hp",
-          value: 23,
+          value: Math.floor(Math.random() * 101),
+        },
+        {
+          name: "attack",
+          value: Math.floor(Math.random() * 101),
+        },
+        {
+          name: "defense",
+          value: Math.floor(Math.random() * 101),
+        },
+        {
+          name: "speed",
+          value: Math.floor(Math.random() * 101),
+        },
+        {
+          name: "weight",
+          value: Math.floor(Math.random() * 101),
         },
       ],
     };
     cards.push(card);
   }
   return cards;
-}
-
-export function determineGameWinner(game: Game): Player[] | null {
-  return keepPlaying(game) ? null : findWinningPlayers(game);
-}
-
-export function keepPlaying(game: Game) {
-  const totalRoundsPlayed = game.players.reduce(
-    (sum, current) => sum + current.score,
-    0
-  );
-  const roundsLeft = game.totalRounds - totalRoundsPlayed;
-
-  if (roundsLeft === 0) return false;
-  else {
-    //not hit amount any player can win yet
-    if (roundsLeft > totalRoundsPlayed) return true;
-    else {
-      //see if any other player can also win/draw
-      const playWithHighestScore = findPlayerWithMaxWins(game.players);
-      const playersThatCanStillWin = game.players.filter(
-        (p) => p.score === playWithHighestScore.score
-      );
-
-      if (playersThatCanStillWin.length > 1) return true;
-      else return false;
-    }
-  }
-}
-
-function findPlayerWithMaxWins(players: Player[]) {
-  return players.reduce((prev, current) => {
-    return prev.score > current.score ? prev : current;
-  });
-}
-
-function findWinningPlayers(game: Game) {
-  const highestScore = findPlayerWithMaxWins(game.players);
-  return game.players.filter((p) => p.score === highestScore.score);
 }

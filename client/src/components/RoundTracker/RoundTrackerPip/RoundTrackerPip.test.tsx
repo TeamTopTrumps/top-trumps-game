@@ -11,7 +11,7 @@ test("Given the required props, When the component renders, Then a listitem shou
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).toHaveClass("player-score__round");
+  expect(someListItem).toHaveClass("round-pip");
   expect(someListItem).toBeInTheDocument();
 });
 
@@ -24,7 +24,7 @@ test("Given a winning roundState prop, When the component renders, Then a listit
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).toHaveClass(`player-score__round--${props.roundState}`);
+  expect(someListItem).toHaveClass(`round-pip--${props.roundState}`);
 });
 
 test("Given a losing roundState prop, When the component renders, Then a listitem with the correct className should be present", () => {
@@ -36,7 +36,7 @@ test("Given a losing roundState prop, When the component renders, Then a listite
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).toHaveClass(`player-score__round--${props.roundState}`);
+  expect(someListItem).toHaveClass(`round-pip--${props.roundState}`);
 });
 
 test("Given an unresolved roundState prop, When the component renders, Then a listitem with the correct className should be present", () => {
@@ -48,7 +48,7 @@ test("Given an unresolved roundState prop, When the component renders, Then a li
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).toHaveClass(`player-score__round--${props.roundState}`);
+  expect(someListItem).toHaveClass(`round-pip--${props.roundState}`);
 });
 
 test("Given a true isCurrentRound prop, When the component renders, Then a listitem with the correct className should be present", () => {
@@ -60,7 +60,7 @@ test("Given a true isCurrentRound prop, When the component renders, Then a listi
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).toHaveClass(`player-score__round--current`);
+  expect(someListItem).toHaveClass(`round-pip--current`);
 });
 
 test("Given a false isCurrentRound prop, When the component renders, Then a listitem with the correct className should be present", () => {
@@ -72,5 +72,5 @@ test("Given a false isCurrentRound prop, When the component renders, Then a list
 
   const someListItem = screen.getByRole("listitem");
 
-  expect(someListItem).not.toHaveClass(`player-score__round--current`);
+  expect(someListItem).not.toHaveClass(`round-pip--current`);
 });

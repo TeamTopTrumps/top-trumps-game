@@ -1,0 +1,31 @@
+@import "../../styles/variables";
+
+.text-input {
+  --warning-color: #{$warning};
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__field {
+    border-radius: 5px;
+    max-width: 100%;
+  }
+
+  &__error {
+    font-size: 0.875rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--warning-color);
+  }
+
+  &--error {
+    .text-input__field {
+      border-color: var(--warning-color);
+
+      &:focus-visible {
+        outline: var(--warning-color);
+      }
+    }
+  }
+}

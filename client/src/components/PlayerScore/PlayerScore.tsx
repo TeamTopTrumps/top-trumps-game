@@ -1,3 +1,5 @@
+import "./PlayerScore.scss";
+
 import { useState } from "react";
 import RoundTracker from "../RoundTracker/RoundTracker";
 import TextInput from "../TextInput/TextInput";
