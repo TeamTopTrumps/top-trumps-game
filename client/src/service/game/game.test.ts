@@ -1,9 +1,10 @@
 import { initialiseGame, determineGameWinner, keepPlaying } from "./game";
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
+import { pokemon_cards } from "../../mock_api/mock_pokemon_data";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
-    const game = initialiseGame(3, 4);
+    const game = initialiseGame(3, 4, pokemon_cards);
 
     expect(game.totalRounds).toBe(4);
     expect(game.roundWinners.length).toBe(0);
