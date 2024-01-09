@@ -1,4 +1,4 @@
-import "./Popup.css";
+//import "./Popup.css";
 import React, { useEffect, useState } from "react";
 import { Rules } from "../Rules/Rules";
 import PopUp from "../PopUp/PopUp";

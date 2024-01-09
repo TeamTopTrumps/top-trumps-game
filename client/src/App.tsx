@@ -1,8 +1,8 @@
 import "./App.scss";
 import { useState, useRef, useMemo, useEffect } from "react";
-import { Header } from "./components/header/Header";
+import { Header } from "./components/Header/Header";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
-import { Game } from "./types/game/game.types";
+import { Game, GameStatusKind } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
 import {
   DEFAULT_ROUNDS,
@@ -24,6 +24,7 @@ const EMPTY_GAME = {
   totalRounds: 0,
   currentRound: 0,
   roundWinners: [],
+  gameStatus: "READY" as GameStatusKind,
 };
 
 const EMPTY_PLAYER = {
@@ -32,6 +33,7 @@ const EMPTY_PLAYER = {
   score: 0,
   cards: [],
   isCardShown: false,
+  isCardEnabled: false,
   isHuman: false,
 };
 
@@ -39,11 +41,12 @@ function App() {
   const [game, setGame] = useState<Game>(EMPTY_GAME);
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(EMPTY_PLAYER);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
-
+      setIsLoading(false);
       const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
       setGame(game);
       currentPlayerRef.current = game.players[0];
@@ -51,8 +54,6 @@ function App() {
 
     fetchPack();
   }, []);
-
-  if (game.players.length === 0) return <p>Loading pack...</p>;
 
   const { players, totalRounds, roundWinners, gameStatus } = game;
 
@@ -237,59 +238,76 @@ function App() {
 
   return (
     <>
-      <Header />
-      <div className="player-scores">
-        <PlayerScore
-          name={player1.name}
-          id={player1.id}
-          updateName={updatePlayerName}
-          score={player1.score}
-          currentRound={currentRoundRef.current}
-          totalRounds={totalRounds}
-          roundWinners={roundWinners}
-        />
-        <PlayerScore
-          name={player1.name}
-          id={player2.id}
-          updateName={updatePlayerName}
-          score={player2.score}
-          currentRound={currentRoundRef.current}
-          totalRounds={totalRounds}
-          roundWinners={roundWinners}
-        />
-      </div>
-      {(gameStatus === "READY" ||
-        gameStatus === "ROUND_READY" ||
-        gameStatus === "FINISHED") && (
-        <button onClick={() => handleOnClick()}>{buttonText}</button>
-      )}
-      {player1.isCardShown && (
-        <div>
-          <p>Player 1 card is visible </p>
-          <button onClick={() => playRound()} disabled={!player1.isCardEnabled}>
-            Choose a Stat
-          </button>
-        </div>
-      )}
-      {player2.isCardShown && (
-        <div>
-          <p>Player 2 card is visible </p>
-          <button onClick={() => playRound()} disabled={!player2.isCardEnabled}>
-            Choose a Stat
-          </button>
-        </div>
-      )}
-      <p></p>
-      <p>Current round is: {game.currentRound}</p>
-      <p>Player 1 score is: {player1.score}</p>
-      <p>Player 1 card is: {player1.cards[0].name}</p>
-      <p>Player 1 card is shown: {player1.isCardShown ? "true" : "false"}</p>
-      <p>Player 2 score is {player2.score}</p>
-      <p>Player 2 card is: {player2.cards[0].name}</p>
-      <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
-      <p>The Round Winners are: {roundWinners}</p>
+      {isLoading && "LOADING"}
+      {!isLoading && (
+        <>
+          <Header />
+          <div className="player-scores">
+            <PlayerScore
+              name={player1.name}
+              id={player1.id}
+              updateName={updatePlayerName}
+              score={player1.score}
+              currentRound={currentRoundRef.current}
+              totalRounds={totalRounds}
+              roundWinners={roundWinners}
+            />
+            <PlayerScore
+              name={player1.name}
+              id={player2.id}
+              updateName={updatePlayerName}
+              score={player2.score}
+              currentRound={currentRoundRef.current}
+              totalRounds={totalRounds}
+              roundWinners={roundWinners}
+            />
+          </div>
+          {(gameStatus === "READY" ||
+            gameStatus === "ROUND_READY" ||
+            gameStatus === "FINISHED") && (
+            <button onClick={() => handleOnClick()}>{buttonText}</button>
+          )}
+          {player1.isCardShown && (
+            <div>
+              <p>Player 1 card is visible </p>
+              <button
+                onClick={() => playRound()}
+                disabled={!player1.isCardEnabled}
+              >
+                Choose a Stat
+              </button>
+            </div>
+          )}
+          {player2.isCardShown && (
+            <div>
+              <p>Player 2 card is visible </p>
+              <button
+                onClick={() => playRound()}
+                disabled={!player2.isCardEnabled}
+              >
+                Choose a Stat
+              </button>
+            </div>
+          )}
+          <p></p>
+          <p>Current round is: {game.currentRound}</p>
+          <p>Player 1 score is: {player1.score}</p>
+          <p>Player 1 card is: {player1.cards[0].name}</p>
+          <p>
+            Player 1 card is shown: {player1.isCardShown ? "true" : "false"}
+          </p>
+          <p>Player 2 score is {player2.score}</p>
+          <p>Player 2 card is: {player2.cards[0].name}</p>
+          <p>
+            Player 2 card is shown: {player2.isCardShown ? "true" : "false"}
+          </p>
+          <p>The Round Winners are: {roundWinners}</p>
 
-      {calculateGameWinners && <GameWinner players={calculateGameWinners} />}
+          {calculateGameWinners && (
+            <GameWinner players={calculateGameWinners} />
+          )}
+        </>
+      )}
     </>
   );
 }
