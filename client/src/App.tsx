@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import {
   DEFAULT_ROUNDS,
@@ -28,6 +28,8 @@ function App() {
 
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(players[0]);
+
+  const [currentRoundWinner, setCurrentRoundWinner] = useState<string>("");
 
   const winThreshold = useMemo(
     () =>
@@ -106,33 +108,40 @@ function App() {
       };
     });
 
-    setTimeout(() => {
-      const { id } = calculateRoundWinner(
-        players,
-        stat,
-        currentPlayerRef.current
-      );
+    const { id } = calculateRoundWinner(
+      players,
+      stat,
+      currentPlayerRef.current
+    );
 
-      setGame((prevGame: Game) => {
-        return {
-          ...prevGame,
-          players: prevGame.players.map((player) => {
-            const updatedCards = moveTopCardToBottom(player.cards);
-            return player.id === id
-              ? {
-                  ...player,
-                  score: player.score + 1,
-                  isCardShown: false,
-                  cards: updatedCards,
-                }
-              : { ...player, isCardShown: false, cards: updatedCards };
-          }),
-          roundWinners: [...prevGame.roundWinners, id],
-          gameStatus: "ROUND_FINISHED",
-        };
-      });
-    }, DEFAULT_TIMEOUT);
+    setCurrentRoundWinner(id);
   };
+
+  useEffect(() => {
+    if (gameStatus === "ROUND_IN_PROGRESS" && currentRoundWinner) {
+      setTimeout(() => {
+        setGame((prevGame: Game) => {
+          return {
+            ...prevGame,
+            players: prevGame.players.map((player) => {
+              const updatedCards = moveTopCardToBottom(player.cards);
+              return player.id === currentRoundWinner
+                ? {
+                    ...player,
+                    score: player.score + 1,
+                    isCardShown: false,
+                    cards: updatedCards,
+                  }
+                : { ...player, isCardShown: false, cards: updatedCards };
+            }),
+            roundWinners: [...prevGame.roundWinners, currentRoundWinner],
+            gameStatus: "ROUND_FINISHED",
+          };
+        });
+        setCurrentRoundWinner("");
+      }, DEFAULT_TIMEOUT);
+    }
+  }, [currentRoundWinner, gameStatus]);
 
   if (gameStatus === "ROUND_FINISHED") {
     if (currentHighScore === winThreshold) {
