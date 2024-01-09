@@ -81,4 +81,19 @@ describe("Which player has won", () => {
       player3,
     ]);
   });
+  it("should return no players if the game is not finished", () => {
+    const game = initialiseGame(3, 6, pokemon_cards);
+    const player1 = { ...game.players[0], score: 3 };
+    const player2 = { ...game.players[1], score: 0 };
+    const player3 = { ...game.players[1], score: 3 };
+
+    expect(whosWon("READY", 3, [player1, player2, player3])).toBeNull;
+  });
+  it("should return empty list if the game is finished but no one has the highest score", () => {
+    const game = initialiseGame(2, 6, pokemon_cards);
+    const player1 = { ...game.players[0], score: 3 };
+    const player2 = { ...game.players[1], score: 0 };
+
+    expect(whosWon("FINISHED", 6, [player1, player2])).toEqual([]);
+  });
 });
