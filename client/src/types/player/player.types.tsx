@@ -6,5 +6,6 @@ export type Player = {
   score: number;
   cards: Card[];
   isCardShown: boolean;
+  isCardEnabled: boolean;
   isHuman: boolean;
 };

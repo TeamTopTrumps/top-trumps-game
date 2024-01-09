@@ -8,5 +8,11 @@ export type Game = {
   gameStatus: GameStatusKind;
 };
 
-export const GameStatus = ["READY", "IN_PROGRESS", "FINISHED"] as const;
+export const GameStatus = [
+  "READY",
+  "ROUND_IN_PROGRESS",
+  "ROUND_FINISHED",
+  "ROUND_READY",
+  "FINISHED",
+] as const;
 export type GameStatusKind = (typeof GameStatus)[number];

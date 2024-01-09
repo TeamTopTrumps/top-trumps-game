@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import {
   DEFAULT_ROUNDS,
@@ -7,49 +7,14 @@ import {
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
 import { Header } from "./components/Header/Header";
-import {
-  findWinningPlayers,
-  initialiseGame,
-  keepPlaying,
-} from "./service/game/game";
-import { Game, GameStatus } from "./types/game/game.types";
+import { initialiseGame } from "./service/game/game";
+import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
-import { Stat } from "./types/card/card.types";
 import {
   chooseRandomStat,
   calculateRoundWinner,
-  updateRoundWinners,
-  updatePlayerScores,
-  updatePlayerCards,
-  updatePlayerIsCardShown,
-  updatePlayerIsCardShownAll,
+  moveTopCardToBottom,
 } from "./service/round/round";
-import GameWinner from "./components/Winner/GameWinner";
-
-//Game starts with two players each with five cards
-//Clicking "Play" triggers startRound to start the first round (and the game)
-//showPlayerCard reveals the top card in the current player's hand
-
-//If the player !isHuman there is a setTimeout to mimic a human choosing a stat
-//chooseRandomStat selects a random stat from the current player's card
-//playRound then runs with the chosen stat
-
-//If the player isHuman there should be a prompt to pick a stat from the card i.e. "Please chose a stat player 2"
-//The player clicks on a stat which triggers playRound to run with their chosen stat
-
-//showAllCards reveals all of the player's top cards
-//A setTimeout is used to allow time for all the cards to be shown
-//calculateRoundWinner then compares the value of chosen stat with the value of that stat on the top card of every other player
-//The player with the card with the highest value for that characteristic wins the round
-//If there is a draw between multiple highest values then the current player wins the round
-
-//endRound then runs to end the round and prepare for the next round
-//hideAllCards turns all the cards face down
-//A setTimeout is used to allow time for all of the cards to be hidden
-//The top card, i.e. the card used this round, for each player is set to the bottom of their hand
-
-//If the currentRoundRef === game.totalRounds then the game ends and a winner is declared
-//If the curerntRoundRef !== game.totalRounds then startRound() runs and to start the round for the next player
 
 function App() {
   const [game, setGame] = useState<Game>(
@@ -59,36 +24,38 @@ function App() {
   const player1 = game.players[0];
   const player2 = game.players[1];
 
-  const { players, totalRounds, roundWinners } = game;
+  const { players, totalRounds, roundWinners, gameStatus } = game;
 
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(players[0]);
 
-  const showPlayerCard = (player: Player) => {
-    setGame((prevGame: Game) => {
-      return {
-        ...prevGame,
-        players: updatePlayerIsCardShown(prevGame.players, player.id),
-      };
-    });
-  };
+  const winThreshold = useMemo(
+    () =>
+      totalRounds % 2 === 0
+        ? Math.ceil(totalRounds / 2 + 1)
+        : Math.ceil(totalRounds / 2),
+    [totalRounds]
+  );
 
-  const showAllCards = () => {
-    setGame((prevGame: Game) => {
-      return {
-        ...prevGame,
-        players: updatePlayerIsCardShownAll(prevGame.players, true),
-      };
-    });
-  };
+  const currentHighScore = useMemo(
+    () =>
+      players.reduce((prev, current) => {
+        return prev > current.score ? prev : current.score;
+      }, 0),
+    [players]
+  );
 
-  const hideAllCards = () => {
-    setGame((prevGame: Game) => {
-      return {
-        ...prevGame,
-        players: updatePlayerIsCardShownAll(prevGame.players, false),
-      };
-    });
+  const calculateGameWinners = useMemo(() => {
+    if (gameStatus === "FINISHED") {
+      return players.filter((p) => p.score === currentHighScore);
+    }
+    return null;
+  }, [gameStatus, players, currentHighScore]);
+
+  const resetGame = () => {
+    setGame(initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS));
+    currentPlayerRef.current = players[0];
+    currentRoundRef.current = 0;
   };
 
   const nextPlayer = () => {
@@ -103,89 +70,119 @@ function App() {
       nextPlayer = players[prevPlayerIndex + 1];
     }
     currentPlayerRef.current = nextPlayer;
+
     startRound(nextPlayer);
   };
 
-  const startRound = (player: Player) => {
+  const startRound = (currPlayer: Player) => {
     currentRoundRef.current = currentRoundRef.current + 1;
 
     setGame((prevGame: Game) => {
       return {
         ...prevGame,
         currentRound: prevGame.currentRound + 1,
+        gameStatus: "ROUND_IN_PROGRESS",
+        players: prevGame.players.map((prevPlayer) =>
+          prevPlayer.id === currPlayer.id
+            ? { ...prevPlayer, isCardShown: true, isCardEnabled: true }
+            : prevPlayer
+        ),
+      };
+    });
+  };
+
+  const playRound = () => {
+    const stat = chooseRandomStat(
+      currentPlayerRef.current.cards[0].stats,
+      currentPlayerRef.current.cards[0].stats.length
+    );
+
+    setGame((prevGame: Game) => {
+      return {
+        ...prevGame,
+        players: prevGame.players.map((player) => {
+          return { ...player, isCardShown: true, isCardEnabled: false };
+        }),
       };
     });
 
-    showPlayerCard(player);
-
-    if (!player.isHuman) {
-      const stat = chooseRandomStat(
-        player.cards[0].stats,
-        player.cards[0].stats.length
-      );
-      setTimeout(() => {
-        playRound(stat, player);
-      }, DEFAULT_TIMEOUT);
-    }
-  };
-
-  const playRound = (stat: Stat, player: Player) => {
-    showAllCards();
-
     setTimeout(() => {
-      const { id } = calculateRoundWinner(players, stat, player);
-      console.log("winner " + id);
+      const { id } = calculateRoundWinner(
+        players,
+        stat,
+        currentPlayerRef.current
+      );
+
       setGame((prevGame: Game) => {
         return {
           ...prevGame,
-          players: updatePlayerScores(prevGame.players, id),
-          roundWinners: updateRoundWinners(prevGame.roundWinners, id),
+          players: prevGame.players.map((player) => {
+            const updatedCards = moveTopCardToBottom(player.cards);
+            return player.id === id
+              ? {
+                  ...player,
+                  score: player.score + 1,
+                  isCardShown: false,
+                  cards: updatedCards,
+                }
+              : { ...player, isCardShown: false, cards: updatedCards };
+          }),
+          roundWinners: [...prevGame.roundWinners, id],
+          gameStatus: "ROUND_FINISHED",
         };
       });
-
-      endRound();
     }, DEFAULT_TIMEOUT);
   };
 
-  const endRound = () => {
-    hideAllCards();
-    console.log(game.gameStatus);
+  if (gameStatus === "ROUND_FINISHED") {
+    if (currentHighScore === winThreshold) {
+      console.log("there is a winner");
 
-    setTimeout(() => {
       setGame((prevGame: Game) => {
-        return { ...prevGame, players: updatePlayerCards(prevGame.players) };
+        return {
+          ...prevGame,
+          gameStatus: "FINISHED",
+        };
       });
+      console.log(calculateGameWinners);
+    } else if (currentRoundRef.current === totalRounds) {
+      console.log("end of game");
 
-      /**
-       * useMemo - with variable for overallWinners
-       * update that based on setGame
-       *
-       *
-       *
-       */
-      const keepPlaying2 = keepPlaying(
-        players,
-        totalRounds,
-        currentRoundRef.current
-      );
-      console.log(
-        "playing keep",
-        keepPlaying2,
-        "current round",
-        currentRoundRef.current
-      );
-      if (!keepPlaying2) {
-        //this works because the rounds all play but we want to finish if someone win early.
-        console.log("end of game");
-        const winners = findWinningPlayers(players);
-        setGame((prevGame: Game) => {
-          return { ...prevGame, overallWinners: winners };
-        });
-      } else {
-        nextPlayer();
-      }
-    }, DEFAULT_TIMEOUT);
+      setGame((prevGame: Game) => {
+        return {
+          ...prevGame,
+          gameStatus: "FINISHED",
+        };
+      });
+      console.log(calculateGameWinners);
+    } else {
+      setGame((prevGame: Game) => {
+        return {
+          ...prevGame,
+          gameStatus: "ROUND_READY",
+        };
+      });
+    }
+  }
+
+  const handleOnClick = () => {
+    if (gameStatus === "READY") {
+      startRound(currentPlayerRef.current);
+    } else if (gameStatus === "ROUND_READY") {
+      nextPlayer();
+    } else if (gameStatus === "FINISHED") {
+      resetGame();
+    }
   };
+
+  const buttonText =
+    gameStatus === "READY"
+      ? "Start Game"
+      : gameStatus === "ROUND_READY"
+      ? "Next Round"
+      : gameStatus === "FINISHED"
+      ? "Play Again?"
+      : "";
 
   return (
     <>
@@ -208,9 +205,33 @@ function App() {
         totalRounds={totalRounds}
         roundWinners={roundWinners}
       />
-      <button onClick={() => startRound(currentPlayerRef.current)}>
-        Start Round
-      </button>
+      {(gameStatus === "READY" ||
+        gameStatus === "ROUND_READY" ||
+        gameStatus === "FINISHED") && (
+        <button onClick={() => handleOnClick()}>{buttonText}</button>
+      )}
+      {player1.isCardShown && (
+        <div>
+          <p>Player 1 card is visible </p>
+          <button onClick={() => playRound()} disabled={!player1.isCardEnabled}>
+            Choose a Stat
+          </button>
+        </div>
+      )}
+      {player2.isCardShown && (
+        <div>
+          <p>Player 2 card is visible </p>
+          <button onClick={() => playRound()} disabled={!player2.isCardEnabled}>
+            Choose a Stat
+          </button>
+        </div>
+      )}
+      <p>
+        Winner is:
+        {calculateGameWinners?.map((w) => {
+          return w.name;
+        })}
+      </p>
       <p>Current round is: {game.currentRound}</p>
       <p>Player 1 score is: {player1.score}</p>
       <p>Player 1 card is: {player1.cards[0].name}</p>
@@ -219,6 +240,7 @@ function App() {
       <p>Player 2 card is: {player2.cards[0].name}</p>
       <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
       <p>The Round Winners are: {roundWinners}</p>
+
       {/* {overallGameWinner && (
         <GameWinner players={overallGameWinner.overallWinners} />
       )} */}
