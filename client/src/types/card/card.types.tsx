@@ -1,10 +1,12 @@
+import { NonEmptyArray } from "../../types/utility/utility.types";
+
 export type Card = {
   id: number;
   name: string;
   imageUrl: string;
   description: string;
   type: string;
-  stats: Stat[];
+  stats: NonEmptyArray<Stat>;
 };
 
 export type Stat = {

@@ -137,50 +137,41 @@ test("Given a className prop, When the component renders, Then className should 
   expect(container.firstChild).toHaveClass(props.className);
 });
 
-test("Given the required props, When the component is rendered and there is an error, Then the validate function should be called and the error message should be present", async () => {
-  const errorMessages = ["Error message"];
-
-  const mockValidate = vi.fn();
-  mockValidate.mockReturnValue(errorMessages);
-
+test("Given the required props, When the component is rendered and there is an error, Then the error message should be present", async () => {
   const props = {
     label: "",
     name: "",
+    type: "text",
     id: "",
     value: "test",
     onChange: () => {},
-    validate: mockValidate,
+    onBlur: () => {},
+    validationErrors: ["Error message"],
   };
 
   render(<TextInput {...props} />);
 
-  const errorMessage = screen.getByText(errorMessages[0]);
+  const errorMessage = screen.getByText(props.validationErrors[0]);
 
-  expect(mockValidate).toBeCalled();
   expect(errorMessage).toBeInTheDocument();
 });
 
-test("Given the required props, When the component is rendered and there are multiple errors, Then the validate function should be called and all the error messages should be present", async () => {
-  const errorMessages = ["Error message 1", "Error message 2"];
-
-  const mockValidate = vi.fn();
-  mockValidate.mockReturnValue(errorMessages);
-
+test("Given the required props, When the component is rendered and there are multiple errors, Then all the error messages should be present", async () => {
   const props = {
     label: "",
     name: "",
+    type: "text",
     id: "",
     value: "",
     onChange: () => {},
-    validate: mockValidate,
+    onBlur: () => {},
+    validationErrors: ["Error message 1", "Error message 2"],
   };
 
   render(<TextInput {...props} />);
 
-  const errorMessage1 = screen.getByText(errorMessages[0]);
-  const errorMessage2 = screen.getByText(errorMessages[1]);
-
-  expect(mockValidate).toBeCalled();
+  const errorMessage1 = screen.getByText(props.validationErrors[0]);
+  const errorMessage2 = screen.getByText(props.validationErrors[1]);
   expect(errorMessage1).toBeInTheDocument();
   expect(errorMessage2).toBeInTheDocument();
 });

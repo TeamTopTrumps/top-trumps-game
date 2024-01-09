@@ -1,7 +1,9 @@
 import "./PlayerScore.scss";
 
+import { useState } from "react";
 import RoundTracker from "../RoundTracker/RoundTracker";
 import TextInput from "../TextInput/TextInput";
+import validatePlayerName from "../../validation/validate_player_name";
 
 interface PlayerScoreProps {
   name: string;
@@ -11,19 +13,33 @@ interface PlayerScoreProps {
   currentRound: number;
   totalRounds: number;
   roundWinners: string[];
-  validateName: (value: string) => string[];
 }
 
-const PlayerScore: React.FC<PlayerScoreProps> = ({
-  name,
-  id,
-  updateName,
-  score,
-  currentRound,
-  totalRounds,
-  roundWinners,
-  validateName,
-}) => {
+const PlayerScore: React.FC<PlayerScoreProps> = (props) => {
+  const {
+    name,
+    id,
+    updateName,
+    score,
+    currentRound,
+    totalRounds,
+    roundWinners,
+  } = props;
+
+  const [inputPlayerName, setInputPlayerName] = useState<string>(name);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  const handleChange = (id: string, value: string) => {
+    setInputPlayerName(value);
+
+    const errors = validatePlayerName(value);
+    setValidationErrors(errors);
+
+    if (errors.length === 0) {
+      updateName(id, value);
+    }
+  };
+
   const roundScores = roundWinners.map((roundWinner) =>
     roundWinner === id ? "won" : "lost"
   );
@@ -33,22 +49,20 @@ const PlayerScore: React.FC<PlayerScoreProps> = ({
 
   return (
     <div className="player-score">
-      <TextInput
-        className="player-score__name"
-        value={name}
-        label="Player name"
-        isHiddenLabel={true}
-        name={id}
-        id={id}
-        onChange={updateName}
-        validate={validateName}
-      />
-      <RoundTracker
-        className={"player-score__rounds"}
-        rounds={allRounds}
-        currentRound={currentRound}
-      />
-      <span className="player-score__total">{score}</span>
+      <div>
+        <TextInput
+          className="player-score__name"
+          value={inputPlayerName}
+          label="Player name"
+          isHiddenLabel={true}
+          name={id}
+          id={id}
+          onChange={handleChange}
+          validationErrors={validationErrors}
+        />
+        <span className="player-score__total">{score}</span>
+      </div>
+      <RoundTracker rounds={allRounds} currentRound={currentRound} />
     </div>
   );
 };

@@ -5,9 +5,6 @@ export type Player = {
   name: string;
   score: number;
   cards: Card[];
-};
-
-export type PlayerNameAndId = {
-  id: string;
-  name: string;
+  isCardShown: boolean;
+  isHuman: boolean;
 };

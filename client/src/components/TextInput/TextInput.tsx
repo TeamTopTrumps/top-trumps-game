@@ -11,7 +11,7 @@ interface TextInputProps {
   id: string;
   value: string;
   onChange: (id: string, value: string) => void;
-  validate?: (value: string) => string[];
+  validationErrors?: string[];
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
@@ -23,16 +23,14 @@ const TextInput: React.FC<TextInputProps> = (props) => {
     id,
     value,
     onChange,
-    validate,
+    validationErrors,
   } = props;
-
-  const errorMessages = validate && validate(value);
 
   return (
     <div
       className={classnames(
         "text-input",
-        { "text-input--error": errorMessages?.length },
+        { "text-input--error": validationErrors },
         className
       )}
     >
@@ -48,10 +46,10 @@ const TextInput: React.FC<TextInputProps> = (props) => {
           value={value}
           onChange={(e) => onChange(e.target.id, e.target.value)}
         />
-        {errorMessages && errorMessages.length > 0 && (
+        {validationErrors && validationErrors.length > 0 && (
           <ErrorMessage
             className={"text-input__error"}
-            messages={errorMessages}
+            messages={validationErrors}
           />
         )}
       </label>
