@@ -5,12 +5,14 @@ type StatsListProps = {
   stats: Stat[];
   playerId: string;
   handleStatChosen: () => void;
+  isEnabled: boolean;
 };
 
 export const StatsList: React.FC<StatsListProps> = ({
   stats,
   playerId,
   handleStatChosen,
+  isEnabled,
 }) => {
   return (
     <div data-testid="stats-list">
@@ -20,6 +22,7 @@ export const StatsList: React.FC<StatsListProps> = ({
           stat={stat}
           playerId={playerId}
           handleStatChosen={handleStatChosen}
+          isEnabled={isEnabled}
         />
       ))}
     </div>
