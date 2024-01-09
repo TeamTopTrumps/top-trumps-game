@@ -1,62 +1,50 @@
 import "./App.scss";
 import { useState, useRef } from "react";
+import { Header } from "./components/Header/Header";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
+import { Game } from "./types/game/game.types";
+import { Player } from "./types/player/player.types";
 import {
   DEFAULT_ROUNDS,
   DEFAULT_PLAYERS,
   DEFAULT_TIMEOUT,
 } from "./constants/constants";
-import { Header } from "./components/Header/Header";
 import { initialiseGame } from "./service/game/game";
-import { Game } from "./types/game/game.types";
-import { Player } from "./types/player/player.types";
-import { Stat } from "./types/card/card.types";
 import {
-  chooseRandomStat,
   calculateRoundWinner,
-  updateRoundWinners,
-  updatePlayerScores,
+  chooseRandomStat,
   updatePlayerCards,
   updatePlayerIsCardShown,
   updatePlayerIsCardShownAll,
+  updatePlayerScores,
+  updateRoundWinners,
 } from "./service/round/round";
-
-//Game starts with two players each with five cards
-//Clicking "Play" triggers startRound to start the first round (and the game)
-//showPlayerCard reveals the top card in the current player's hand
-
-//If the player !isHuman there is a setTimeout to mimic a human choosing a stat
-//chooseRandomStat selects a random stat from the current player's card
-//playRound then runs with the chosen stat
-
-//If the player isHuman there should be a prompt to pick a stat from the card i.e. "Please chose a stat player 2"
-//The player clicks on a stat which triggers playRound to run with their chosen stat
-
-//showAllCards reveals all of the player's top cards
-//A setTimeout is used to allow time for all the cards to be shown
-//calculateRoundWinner then compares the value of chosen stat with the value of that stat on the top card of every other player
-//The player with the card with the highest value for that characteristic wins the round
-//If there is a draw between multiple highest values then the current player wins the round
-
-//endRound then runs to end the round and prepare for the next round
-//hideAllCards turns all the cards face down
-//A setTimeout is used to allow time for all of the cards to be hidden
-//The top card, i.e. the card used this round, for each player is set to the bottom of their hand
-
-//If the currentRoundRef === game.totalRounds then the game ends and a winner is declared
-//If the curerntRoundRef !== game.totalRounds then startRound() runs and to start the round for the next player
+import { Stat } from "./types/card/card.types";
 
 function App() {
   const [game, setGame] = useState<Game>(
     initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS)
   );
-  const player1 = game.players[0];
-  const player2 = game.players[1];
 
   const { players, totalRounds, roundWinners } = game;
 
+  const player1 = players[0];
+  const player2 = players[1];
+
   const currentRoundRef = useRef<number>(0);
   const currentPlayerRef = useRef<Player>(players[0]);
+
+  const updatePlayerName = (id: string, value: string) => {
+    setGame((currentGame) => {
+      const updatedPlayers = currentGame.players.map((player) => {
+        return player.id === id ? { ...player, name: value.trim() } : player;
+      });
+      return {
+        ...currentGame,
+        players: updatedPlayers,
+      };
+    });
+  };
 
   const showPlayerCard = (player: Player) => {
     setGame((prevGame: Game) => {
@@ -162,19 +150,19 @@ function App() {
     <>
       <Header />
       <PlayerScore
-        playerName={player1.name}
-        playerId={player1.id}
-        updateName={() => {}}
-        playerScore={player1.score}
+        name={player1.name}
+        id={player1.id}
+        updateName={updatePlayerName}
+        score={player1.score}
         currentRound={currentRoundRef.current}
         totalRounds={totalRounds}
         roundWinners={roundWinners}
       />
       <PlayerScore
-        playerName={player2.name}
-        playerId={player2.id}
-        updateName={() => {}}
-        playerScore={player2.score}
+        name={player1.name}
+        id={player2.id}
+        updateName={updatePlayerName}
+        score={player2.score}
         currentRound={currentRoundRef.current}
         totalRounds={totalRounds}
         roundWinners={roundWinners}
