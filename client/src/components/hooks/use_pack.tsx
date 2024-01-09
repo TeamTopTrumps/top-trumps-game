@@ -39,4 +39,4 @@ function usePack(packName: string = "pokemon") {
   return { isPending, isSuccess, isError, status, data, error };
 }
 
-export { usePack };
+export { usePack, fetchPokemonPack };
