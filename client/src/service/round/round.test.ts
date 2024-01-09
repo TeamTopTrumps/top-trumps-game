@@ -10,6 +10,7 @@ import {
   updatePlayerCards,
   updatePlayerIsCardShown,
   updatePlayerIsCardShownAll,
+  getNextPlayer,
 } from "./round";
 
 describe("chooseRandomStat", () => {
@@ -1769,5 +1770,40 @@ describe("moveTopCardToBottom should throw an error if given an empty array", ()
     expect(() => {
       moveTopCardToBottom(cards);
     }).toThrow("Please provide an array of cards to update");
+  });
+});
+
+describe("nextPlayer functionality", () => {
+  test("should get the next player in the round after the current player", () => {
+    const player1a = {
+      id: "player-1",
+      name: "some-name",
+      score: 0,
+      cards: [],
+      isCardShown: true,
+      isHuman: false,
+      isCardEnabled: false,
+    };
+    const player2a = {
+      id: "player-2",
+      name: "some-name",
+      score: 0,
+      cards: [],
+      isCardShown: false,
+      isHuman: false,
+      isCardEnabled: false,
+    };
+    const player3a = {
+      id: "player-2",
+      name: "some-name",
+      score: 0,
+      cards: [],
+      isCardShown: false,
+      isHuman: false,
+      isCardEnabled: false,
+    };
+    expect(getNextPlayer(player1a, [player1a, player2a, player3a])).toBe(
+      player2a
+    );
   });
 });
