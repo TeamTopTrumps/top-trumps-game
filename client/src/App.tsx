@@ -1,42 +1,32 @@
 import "./App.scss";
 import { useState, useEffect } from "react";
 import { Header } from "./components/Header/Header";
-import { Game } from "./types/game/game.types";
-import {
-  DEFAULT_ROUNDS,
-  DEFAULT_PLAYERS,
-  PLACEHOLDER_GAME,
-} from "./constants/constants";
-import { initialiseGame } from "./service/game/game";
 
 import { fetchPokemonPack } from "./components/hooks/use_pack";
 import GameBoard from "./components/GameBoard/GameBoard";
+import { Card } from "./types/card/card.types";
 
 function App() {
-  const [game, setGame] = useState<Game>(PLACEHOLDER_GAME);
+  const [pack, setPack] = useState<Card[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
       setIsLoading(false);
-      const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
-      setGame(game);
+      setPack(pack);
     }
 
     fetchPack();
   }, []);
 
-  const handleUpdateGame = (game: Game) => {
-    setGame((currentGame) => {
-      return { ...currentGame, ...game };
-    });
-  };
-
   return (
     <>
       <Header />
-      {!isLoading && <GameBoard game={game} updateGame={handleUpdateGame} />}
+      <main>
+        {isLoading && "Loading..."}
+        {!isLoading && <GameBoard pack={pack} />}
+      </main>
     </>
   );
 }
