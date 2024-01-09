@@ -23,7 +23,9 @@ export const Rules = () => (
         chosen by the player is compared.
       </li>
       <li>
-        The player with the higher stat for that attribute wins the round!
+        The player with the higher stat for that attribute wins the round! (If
+        both players have the same stat score then the first player of the round
+        wins the point.)
       </li>
       <li>The player with the most wins in 5 rounds is the winner!</li>
     </ol>
