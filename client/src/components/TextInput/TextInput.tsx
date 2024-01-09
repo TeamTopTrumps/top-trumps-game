@@ -1,5 +1,6 @@
-import classnames from "classnames";
+import "./TextInput.scss";
 
+import classnames from "classnames";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface TextInputProps {
@@ -26,31 +27,35 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   } = props;
 
   return (
-    <label
+    <div
       className={classnames(
-        "text-input__label",
-        validationErrors && "text-input__label--error",
+        "text-input",
+        {
+          "text-input--error": validationErrors && validationErrors?.length > 0,
+        },
         className
       )}
     >
-      <span
-        className={classnames({ "visually-hidden": isHiddenLabel })}
-      >{`${label}: `}</span>
-      <input
-        className="text-input"
-        type="text"
-        name={name}
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.id, e.target.value)}
-      />
-      {validationErrors && validationErrors.length > 0 && (
-        <ErrorMessage
-          className={"text-input__error"}
-          messages={validationErrors}
+      <label className="text-input__label">
+        <span
+          className={classnames({ "visually-hidden": isHiddenLabel })}
+        >{`${label}: `}</span>
+        <input
+          className="text-input__field"
+          type="text"
+          name={name}
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.id, e.target.value)}
         />
-      )}
-    </label>
+        {validationErrors && validationErrors.length > 0 && (
+          <ErrorMessage
+            className={"text-input__error"}
+            messages={validationErrors}
+          />
+        )}
+      </label>
+    </div>
   );
 };
 

@@ -1,0 +1,31 @@
+.player-score {
+  font-family: "Press Start 2P", system-ui;
+  display: grid;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+
+  &__name {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    grid-column: 1;
+    grid-row: 1;
+
+    input {
+      border-color: transparent;
+      background-color: inherit;
+    }
+  }
+
+  &__rounds {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  &__total {
+    grid-area: 1 / 2 / span 2 / span 1;
+    font-size: 2.25rem;
+  }
+}
