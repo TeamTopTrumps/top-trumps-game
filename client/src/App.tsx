@@ -20,14 +20,13 @@ function App() {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
       setIsLoading(false);
+      setIsLoading(false);
       const game = initialiseGame(DEFAULT_PLAYERS, DEFAULT_ROUNDS, pack);
       setGame(game);
     }
 
     fetchPack();
   }, []);
-
-  //if (game.players.length === 0) return <p>Loading pack...</p>;
 
   const handleUpdateGame = (game: Game) => {
     setGame((currentGame) => {
