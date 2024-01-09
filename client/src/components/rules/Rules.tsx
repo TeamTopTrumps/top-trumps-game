@@ -2,9 +2,10 @@ export const Rules = () => (
   <section className="section">
     <div>
       <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
+      <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
     </div>
     <div>
-      <h2>Here are the rules to play.</h2>
+      <h2>Here are the Rules to play.</h2>
     </div>
     <ol>
       <li> The game is out of 5 rounds.</li>
@@ -17,7 +18,6 @@ export const Rules = () => (
         A player gets to turn their card first and pick an attribute to compare
         against the other players.
       </li>
-
       <li>
         The other players cards then flip over and the stat of the attribute
         chosen by the player is compared.
