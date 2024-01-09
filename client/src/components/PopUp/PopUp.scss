@@ -40,11 +40,9 @@ li {
   width: 200vh;
   background-color: rgba(0, 0, 0, 0.2);
 
-  &--open {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .popup-inner {
