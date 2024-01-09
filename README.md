@@ -79,5 +79,5 @@ Navigate to localhost: http://localhost:5173/ and have fun!
 - [Becca Rothwell](https://github.com/beccarothwell)
 - [Jenny Sivapalan](https://github.com/jennysivapalan)
 - [Kruth Bharath](https://github.com/Kruthibharath)
-- [Paul Wharin](https://github.com/orogeny)
 - [Mansoor Afzal Durrani](https://github.com/MansoorAfzalDurrani)
+- [Paul Wharin](https://github.com/orogeny)
