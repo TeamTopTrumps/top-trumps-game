@@ -4,13 +4,13 @@ import { StatButton } from "./StatButton";
 type StatsListProps = {
   stats: Stat[];
   playerId: string;
-  playRound: () => void;
+  handleStatChosen: () => void;
 };
 
 export const StatsList: React.FC<StatsListProps> = ({
   stats,
   playerId,
-  playRound,
+  handleStatChosen,
 }) => {
   return (
     <div data-testid="stats-list">
@@ -19,7 +19,7 @@ export const StatsList: React.FC<StatsListProps> = ({
           key={index}
           stat={stat}
           playerId={playerId}
-          playRound={playRound}
+          handleStatChosen={handleStatChosen}
         />
       ))}
     </div>

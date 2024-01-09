@@ -9,13 +9,13 @@ describe("Stats List Component", () => {
     { name: "speed", value: 1760 },
   ];
   const playerId = "234";
-  const playRound = () => {};
+  const handleStatChosen = () => {};
   test("components renders without fail", () => {
     render(
       <StatsList
         stats={mockStatsList}
         playerId={playerId}
-        playRound={playRound}
+        handleStatChosen={handleStatChosen}
       />
     );
     expect(screen.getByTestId("stats-list")).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe("Stats List Component", () => {
       <StatsList
         stats={mockStatsList}
         playerId={playerId}
-        playRound={playRound}
+        handleStatChosen={handleStatChosen}
       />
     );
     const statsList = screen.getAllByTestId("stats-list");

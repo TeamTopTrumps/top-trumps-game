@@ -3,18 +3,20 @@ import { Stat } from "../../types/card/card.types";
 interface StatButtonProps {
   stat: Stat;
   playerId: string;
-  playRound: (stat: Stat, playerId: string) => void;
+  handleStatChosen: (stat: Stat, playerId: string) => void;
 }
 export const StatButton: React.FC<StatButtonProps> = ({
   stat,
   playerId,
-  playRound,
+  handleStatChosen,
 }) => {
-  const handleButtonClick = () => {
-    playRound(stat, playerId);
-  };
   return (
-    <button data-testid="stat-button" onClick={handleButtonClick}>
+    <button
+      data-testid="stat-button"
+      onClick={() => {
+        handleStatChosen(stat, playerId);
+      }}
+    >
       {stat.name}:{stat.value}
     </button>
   );
