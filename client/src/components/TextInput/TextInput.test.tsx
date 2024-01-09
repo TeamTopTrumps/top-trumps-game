@@ -31,7 +31,7 @@ test("Given the required props, When the component is rendered, Then there shoul
 
   const { container } = render(<TextInput {...props} />);
 
-  expect(container.firstChild?.nodeName === "LABEL").toBe(true);
+  expect(container.firstChild?.firstChild?.nodeName === "LABEL").toBe(true);
 });
 
 test("Given the required props, When the component is rendered, Then the input element should be within a label element", () => {
@@ -45,7 +45,7 @@ test("Given the required props, When the component is rendered, Then the input e
 
   const { container } = render(<TextInput {...props} />);
 
-  const label = container.firstChild;
+  const label = container.firstChild?.firstChild;
   const someTextInput = screen.getByRole("textbox");
   const containsInput = label?.contains(someTextInput);
 

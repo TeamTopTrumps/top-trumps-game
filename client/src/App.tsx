@@ -238,24 +238,26 @@ function App() {
   return (
     <>
       <Header />
-      <PlayerScore
-        name={player1.name}
-        id={player1.id}
-        updateName={updatePlayerName}
-        score={player1.score}
-        currentRound={currentRoundRef.current}
-        totalRounds={totalRounds}
-        roundWinners={roundWinners}
-      />
-      <PlayerScore
-        name={player1.name}
-        id={player2.id}
-        updateName={updatePlayerName}
-        score={player2.score}
-        currentRound={currentRoundRef.current}
-        totalRounds={totalRounds}
-        roundWinners={roundWinners}
-      />
+      <div className="player-scores">
+        <PlayerScore
+          name={player1.name}
+          id={player1.id}
+          updateName={updatePlayerName}
+          score={player1.score}
+          currentRound={currentRoundRef.current}
+          totalRounds={totalRounds}
+          roundWinners={roundWinners}
+        />
+        <PlayerScore
+          name={player1.name}
+          id={player2.id}
+          updateName={updatePlayerName}
+          score={player2.score}
+          currentRound={currentRoundRef.current}
+          totalRounds={totalRounds}
+          roundWinners={roundWinners}
+        />
+      </div>
       {(gameStatus === "READY" ||
         gameStatus === "ROUND_READY" ||
         gameStatus === "FINISHED") && (
