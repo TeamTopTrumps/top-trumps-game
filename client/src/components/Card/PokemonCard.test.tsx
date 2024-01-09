@@ -21,7 +21,8 @@ describe("PokemonCard Component", () => {
     pokemon: mockPokemon,
     isFlipped: false,
     playerId: "23",
-    playRound: () => {},
+    handleStatChosen: () => {},
+    isEnabled: true,
   };
 
   it("component renders without fail", () => {

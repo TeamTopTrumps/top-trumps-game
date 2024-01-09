@@ -5,14 +5,16 @@ type PokemonCardProps = {
   pokemon: Card;
   isFlipped: boolean;
   playerId: string;
-  playRound: () => void;
+  handleStatChosen: () => void;
+  isEnabled: boolean;
 };
 
 export const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   isFlipped,
   playerId,
-  playRound,
+  handleStatChosen,
+  isEnabled,
 }) => {
   return (
     <div key={pokemon.id}>
@@ -25,7 +27,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
           <StatsList
             stats={pokemon.stats}
             playerId={playerId}
-            playRound={playRound}
+            handleStatChosen={handleStatChosen}
+            isEnabled={isEnabled}
           />
         </div>
       ) : (
