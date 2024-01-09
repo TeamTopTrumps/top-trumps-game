@@ -1,46 +1,61 @@
-import classnames from "classnames";
+import "./TextInput.scss";
 
+import classnames from "classnames";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface TextInputProps {
   className?: string;
   label: string;
+  isHiddenLabel?: boolean;
   name: string;
   id: string;
   value: string;
   onChange: (id: string, value: string) => void;
-  validate?: (value: string) => string[];
+  validationErrors?: string[];
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
-  const { className, label, name, id, value, onChange, validate } = props;
-
-  const errorMessages = validate && validate(value);
+  const {
+    className,
+    label,
+    isHiddenLabel = false,
+    name,
+    id,
+    value,
+    onChange,
+    validationErrors,
+  } = props;
 
   return (
-    <label
+    <div
       className={classnames(
-        "text-input__label",
-        errorMessages && "text-input__label--error",
+        "text-input",
+        {
+          "text-input--error": validationErrors && validationErrors?.length > 0,
+        },
         className
       )}
     >
-      {label && `${label}: `}
-      <input
-        className="text-input"
-        type="text"
-        name={name}
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.id, e.target.value)}
-      />
-      {errorMessages && errorMessages.length > 0 && (
-        <ErrorMessage
-          className={"text-input__error"}
-          messages={errorMessages}
+      <label className="text-input__label">
+        <span
+          className={classnames({ "visually-hidden": isHiddenLabel })}
+        >{`${label}: `}</span>
+        <input
+          className="text-input__field"
+          type="text"
+          name={name}
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.id, e.target.value)}
         />
-      )}
-    </label>
+        {validationErrors && validationErrors.length > 0 && (
+          <ErrorMessage
+            className={"text-input__error"}
+            messages={validationErrors}
+          />
+        )}
+      </label>
+    </div>
   );
 };
 

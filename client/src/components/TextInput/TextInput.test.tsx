@@ -31,7 +31,7 @@ test("Given the required props, When the component is rendered, Then there shoul
 
   const { container } = render(<TextInput {...props} />);
 
-  expect(container.firstChild?.nodeName === "LABEL").toBe(true);
+  expect(container.firstChild?.firstChild?.nodeName === "LABEL").toBe(true);
 });
 
 test("Given the required props, When the component is rendered, Then the input element should be within a label element", () => {
@@ -45,7 +45,7 @@ test("Given the required props, When the component is rendered, Then the input e
 
   const { container } = render(<TextInput {...props} />);
 
-  const label = container.firstChild;
+  const label = container.firstChild?.firstChild;
   const someTextInput = screen.getByRole("textbox");
   const containsInput = label?.contains(someTextInput);
 
@@ -65,6 +65,23 @@ test("Given the required props, When the component is rendered, Then the label t
 
   const someLabelText = screen.getByLabelText(`${props.label}:`);
   expect(someLabelText).toBeInTheDocument();
+});
+
+test("Given an isHiddenLabel prop of true and Label prop text, When the component is rendered, Then the text element should have the correct className", () => {
+  const props = {
+    label: "Some label",
+    isHiddenLabel: true,
+    name: "",
+    id: "",
+    value: "",
+    onChange: () => {},
+  };
+
+  render(<TextInput {...props} />);
+
+  const someText = screen.getByText(`${props.label}:`);
+  expect(someText).toBeInTheDocument();
+  expect(someText).toHaveClass("visually-hidden");
 });
 
 test("Given the required props, When the component is rendered, Then the input value should be present", () => {
@@ -118,4 +135,43 @@ test("Given a className prop, When the component renders, Then className should 
   const { container } = render(<TextInput {...props} />);
 
   expect(container.firstChild).toHaveClass(props.className);
+});
+
+test("Given the required props, When the component is rendered and there is an error, Then the error message should be present", async () => {
+  const props = {
+    label: "",
+    name: "",
+    type: "text",
+    id: "",
+    value: "test",
+    onChange: () => {},
+    onBlur: () => {},
+    validationErrors: ["Error message"],
+  };
+
+  render(<TextInput {...props} />);
+
+  const errorMessage = screen.getByText(props.validationErrors[0]);
+
+  expect(errorMessage).toBeInTheDocument();
+});
+
+test("Given the required props, When the component is rendered and there are multiple errors, Then all the error messages should be present", async () => {
+  const props = {
+    label: "",
+    name: "",
+    type: "text",
+    id: "",
+    value: "",
+    onChange: () => {},
+    onBlur: () => {},
+    validationErrors: ["Error message 1", "Error message 2"],
+  };
+
+  render(<TextInput {...props} />);
+
+  const errorMessage1 = screen.getByText(props.validationErrors[0]);
+  const errorMessage2 = screen.getByText(props.validationErrors[1]);
+  expect(errorMessage1).toBeInTheDocument();
+  expect(errorMessage2).toBeInTheDocument();
 });

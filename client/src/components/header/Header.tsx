@@ -1,6 +1,6 @@
 import "./Popup.css";
 import React, { useEffect, useState } from "react";
-import { Rules } from "../Rules/Rules";
+import { Rules } from "../rules/Rules";
 import PopUp from "../PopUp/PopUp";
 
 export const Header: React.FC = () => {

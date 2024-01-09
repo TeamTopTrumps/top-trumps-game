@@ -1,6 +1,5 @@
 import { initialiseGame } from "./game";
-
-describe("Game", () => {
+describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
     const game = initialiseGame(3, 4);
 

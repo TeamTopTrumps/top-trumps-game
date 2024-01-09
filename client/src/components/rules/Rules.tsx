@@ -2,6 +2,7 @@ export const Rules = () => (
   <section className="section">
     <div>
       <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
+      <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
     </div>
     <div>
       <h2>Here are the Rules to play.</h2>
