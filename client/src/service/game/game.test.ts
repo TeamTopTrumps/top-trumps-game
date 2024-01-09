@@ -1,4 +1,4 @@
-import { initialiseGame } from "./game";
+import { initialiseGame, thresholdToWin } from "./game";
 import { pokemon_cards } from "../../mock_api/mock_pokemon_data";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -44,5 +44,12 @@ describe("Game initialisation", () => {
     expect(() => {
       initialiseGame(3, 0);
     }).toThrow("Number of rounds must be at least 1");
+  });
+});
+
+describe("Winning threshold", () => {
+  it("work out the mininum number of games to win", () => {
+    expect(thresholdToWin(5)).toBe(3);
+    expect(thresholdToWin(6)).toBe(4);
   });
 });

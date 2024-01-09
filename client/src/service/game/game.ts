@@ -52,3 +52,9 @@ export function initialiseGame(
 
   return game;
 }
+
+export function thresholdToWin(totalRounds: number) {
+  return totalRounds % 2 === 0
+    ? Math.ceil(totalRounds / 2 + 1)
+    : Math.ceil(totalRounds / 2);
+}

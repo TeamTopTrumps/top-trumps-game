@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { initialiseGame } from "../../service/game/game";
+import { initialiseGame, thresholdToWin } from "../../service/game/game";
 import {
   DEFAULT_PLAYERS,
   DEFAULT_ROUNDS,
@@ -42,10 +42,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ game, updateGame }) => {
   const [currentRoundWinner, setCurrentRoundWinner] = useState<string>("");
 
   const winThreshold = useMemo(
-    () =>
-      totalRounds % 2 === 0
-        ? Math.ceil(totalRounds / 2 + 1)
-        : Math.ceil(totalRounds / 2),
+    () => thresholdToWin(totalRounds),
+
     [totalRounds]
   );
 
