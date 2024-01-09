@@ -30,7 +30,9 @@ const TextInput: React.FC<TextInputProps> = (props) => {
     <div
       className={classnames(
         "text-input",
-        { "text-input--error": validationErrors },
+        {
+          "text-input--error": validationErrors && validationErrors?.length > 0,
+        },
         className
       )}
     >
