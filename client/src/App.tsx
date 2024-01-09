@@ -15,6 +15,7 @@ import {
   calculateRoundWinner,
   moveTopCardToBottom,
 } from "./service/round/round";
+import GameWinner from "./components/Winner/GameWinner";
 
 function App() {
   const [game, setGame] = useState<Game>(
@@ -235,12 +236,7 @@ function App() {
           </button>
         </div>
       )}
-      <p>
-        Winner is:
-        {calculateGameWinners?.map((w) => {
-          return w.name;
-        })}
-      </p>
+      <p></p>
       <p>Current round is: {game.currentRound}</p>
       <p>Player 1 score is: {player1.score}</p>
       <p>Player 1 card is: {player1.cards[0].name}</p>
@@ -250,9 +246,7 @@ function App() {
       <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
       <p>The Round Winners are: {roundWinners}</p>
 
-      {/* {overallGameWinner && (
-        <GameWinner players={overallGameWinner.overallWinners} />
-      )} */}
+      {calculateGameWinners && <GameWinner players={calculateGameWinners} />}
     </>
   );
 }
