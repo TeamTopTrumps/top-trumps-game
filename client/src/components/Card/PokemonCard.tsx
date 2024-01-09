@@ -1,14 +1,14 @@
 import { Card } from "../../types/card/card.types";
-import { StatsList } from "../StatList/StatList";
+import { StatsList } from "../StatsList/StatsList";
 
-type cardProps = {
+type PokemonCardProps = {
   pokemon: Card;
   isFlipped: boolean;
   playerId: string;
   playRound: () => void;
 };
 
-export const PokemonCard: React.FC<cardProps> = ({
+export const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   isFlipped,
   playerId,

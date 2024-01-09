@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { PokemonCard } from "./PokemonCard";
 import { Card } from "../../types/card/card.types";
 
