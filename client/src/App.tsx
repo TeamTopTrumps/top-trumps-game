@@ -1,6 +1,6 @@
 import "./App.scss";
 import { useState, useRef, useEffect } from "react";
-import { Header } from "./components/Header/Header";
+import { Header } from "./components/header/Header";
 import PlayerScore from "./components/PlayerScore/PlayerScore";
 import { Game } from "./types/game/game.types";
 import { Player } from "./types/player/player.types";
@@ -19,9 +19,9 @@ import {
   updatePlayerScores,
   updateRoundWinners,
 } from "./service/round/round";
-import { Card, Stat } from "./types/card/card.types";
+import { Stat } from "./types/card/card.types";
 
-import { fetchPokemonPack, usePack } from "./components/hooks/use_pack";
+import { fetchPokemonPack } from "./components/hooks/use_pack";
 
 const EMPTY_GAME = {
   players: [],
