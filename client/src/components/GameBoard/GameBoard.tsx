@@ -1,3 +1,5 @@
+import "./GameBoard.scss";
+
 import { useState, useRef, useMemo, useEffect } from "react";
 import { Game } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
@@ -20,6 +22,8 @@ import {
 } from "../../service/round/round";
 import PlayerScore from "../PlayerScore/PlayerScore";
 import GameWinner from "../Winner/GameWinner";
+import { PokemonCard } from "../Card/PokemonCard";
+import Button from "../Button/Button";
 import { Card } from "../../types/card/card.types";
 
 interface GameBoardProps {
@@ -198,37 +202,27 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
           roundWinners={roundWinners}
         />
       </div>
+      <div className="gameboard__cards">
+        <PokemonCard
+          pokemon={player1.cards[0]}
+          isFlipped={player1.isCardShown}
+          playerId={player1.id}
+          handleStatChosen={playRound}
+          isEnabled={player1.isCardEnabled}
+        />
+        <PokemonCard
+          pokemon={player2.cards[0]}
+          isFlipped={player2.isCardShown}
+          playerId={player2.id}
+          handleStatChosen={playRound}
+          isEnabled={player2.isCardEnabled}
+        />
+      </div>
       {(gameStatus === "READY" ||
         gameStatus === "ROUND_READY" ||
         gameStatus === "FINISHED") && (
-        <button onClick={() => handleOnClick()}>{buttonText}</button>
+        <Button text={buttonText} onClick={handleOnClick} />
       )}
-      {player1.isCardShown && (
-        <div>
-          <p>Player 1 card is visible </p>
-          <button onClick={() => playRound()} disabled={!player1.isCardEnabled}>
-            Choose a Stat
-          </button>
-        </div>
-      )}
-      {player2.isCardShown && (
-        <div>
-          <p>Player 2 card is visible </p>
-          <button onClick={() => playRound()} disabled={!player2.isCardEnabled}>
-            Choose a Stat
-          </button>
-        </div>
-      )}
-      <p></p>
-      <p>Current round is: {game.currentRound}</p>
-      <p>Player 1 score is: {player1.score}</p>
-      <p>Player 1 card is: {player1.cards[0].name}</p>
-      <p>Player 1 card is shown: {player1.isCardShown ? "true" : "false"}</p>
-      <p>Player 2 score is {player2.score}</p>
-      <p>Player 2 card is: {player2.cards[0].name}</p>
-      <p>Player 2 card is shown: {player2.isCardShown ? "true" : "false"}</p>
-      <p>The Round Winners are: {roundWinners}</p>
-
       {calculateGameWinners && <GameWinner players={calculateGameWinners} />}
     </>
   );
