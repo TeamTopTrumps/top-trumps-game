@@ -16,8 +16,6 @@
   "dependencies": {
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.18",
-    "classname": "^0.0.0",
-    "classnames": "^2.5.1",
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "eslint": "^8.29.0",
@@ -39,7 +37,6 @@
   },
   "homepage": "https://github.com/techreturners/lm-code-intro-react-router-fakelandia#readme",
   "devDependencies": {
-    "@types/cors": "^2.8.13",
-    "sass": "^1.69.7"
+    "@types/cors": "^2.8.13"
   }
 }
