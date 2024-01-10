@@ -166,8 +166,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
       startRound(currentPlayerRef.current);
     } else if (gameStatus === "ROUND_READY") {
       nextPlayer();
-    } else if (gameStatus === "FINISHED") {
-      resetGame();
     }
   };
   const buttonText =
