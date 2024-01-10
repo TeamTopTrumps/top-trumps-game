@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import "./GameWinner.scss";
 import { Player } from "../../types/player/player.types";
 
@@ -14,16 +13,27 @@ const GameWinner: React.FC<GameWinnerProps> = (props) => {
     ? players[0].name
     : players.map((p) => p.name).join(", ");
 
-  const winnerText = singleWinner
-    ? `Congratulations ${winnerNameString}! You caught them all!`
-    : `${winnerNameString} have drawn! Have another game to catch them all!`;
-
-  const winnerClass = classnames("game-result", {
-    "game-result--winner": singleWinner,
-    "game-result--draw": !singleWinner,
-  });
-
-  return <>{players[0] && <h1 className={winnerClass}>{winnerText}</h1>}</>;
+  return (
+    <>
+      {players[0] &&
+        (singleWinner ? (
+          <div className="game-result game-result--winner">
+            <p className="game-result__text">{`Congratulations ${winnerNameString}!`}</p>
+            <p className="game-result__text">You caught them all!</p>
+          </div>
+        ) : (
+          <div className="game-result game-result--draw">
+            <p
+              data-testid="players-drawn1"
+              className="game-result__text"
+            >{`${winnerNameString} have drawn!`}</p>
+            <p data-testid="players-drawn2" className="game-result__text">
+              Have another game to catch them all!
+            </p>
+          </div>
+        ))}
+    </>
+  );
 };
 
 export default GameWinner;

@@ -16,11 +16,11 @@ test("Displays winning message if one winner", () => {
   };
   render(<GameWinner {...props} />);
 
-  const winningMessage = screen.getByText(
-    "Congratulations Player 2! You caught them all!"
-  );
+  const winningMessage1 = screen.getByText("Congratulations Player 2!");
+  const winningMessage2 = screen.getByText("You caught them all!");
 
-  expect(winningMessage).toBeInTheDocument();
+  expect(winningMessage1).toBeInTheDocument();
+  expect(winningMessage2).toBeInTheDocument();
 });
 
 test("Displays no winning message if no players sent to the component", () => {
@@ -67,7 +67,10 @@ test("Displays draw message if more than 1 player is sent to the component", () 
     players: [player1, player2, player3],
   };
   render(<GameWinner {...props} />);
-  expect(screen.getByTestId("players-drawn").textContent).toBe(
-    "Alice, Bob, Caroline have drawn! Have another game to catch them all!"
+  expect(screen.getByTestId("players-drawn1").textContent).toBe(
+    "Alice, Bob, Caroline have drawn!"
+  );
+  expect(screen.getByTestId("players-drawn2").textContent).toBe(
+    "Have another game to catch them all!"
   );
 });
