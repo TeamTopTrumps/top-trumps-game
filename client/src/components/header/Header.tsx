@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   return (
     <header className="header">
       <Button
-        className={"header__rules-btn"}
+        className={"header__rules-btn btn--yellow"}
         text="Game Rules"
         onClick={updateBtnPopUp}
       />

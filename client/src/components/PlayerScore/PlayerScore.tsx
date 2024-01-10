@@ -49,20 +49,19 @@ const PlayerScore: React.FC<PlayerScoreProps> = (props) => {
 
   return (
     <div className="player-score">
-      <div>
-        <TextInput
-          className="player-score__name"
-          value={inputPlayerName}
-          label="Player name"
-          isHiddenLabel={true}
-          name={id}
-          id={id}
-          onChange={handleChange}
-          validationErrors={validationErrors}
-        />
-        <span className="player-score__total">{score}</span>
-      </div>
+      <TextInput
+        className="player-score__name"
+        value={inputPlayerName}
+        label="Player name"
+        isHiddenLabel={true}
+        name={id}
+        id={id}
+        onChange={handleChange}
+        validationErrors={validationErrors}
+      />
+
       <RoundTracker rounds={allRounds} currentRound={currentRound} />
+      <span className="player-score__total">{score}</span>
     </div>
   );
 };

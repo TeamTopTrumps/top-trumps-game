@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@import "../../assets/styles/variables";
 
 .text-input {
   --warning-color: #{$warning};
@@ -17,6 +17,7 @@
     font-size: 0.875rem;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--warning-color);
+    display: block;
   }
 
   &--error {

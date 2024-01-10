@@ -1,7 +1,7 @@
-@import "./styles/reset";
-@import "./styles/helpers";
-@import "./styles/variables";
-@import "./fonts/PressStart2P-Regular";
+@import "./assets/styles/reset";
+@import "./assets/styles/helpers";
+@import "./assets/styles/variables";
+@import "./assets/fonts/PressStart2P-Regular";
 
 :root {
   --primary-text-color: #{$grey-900};

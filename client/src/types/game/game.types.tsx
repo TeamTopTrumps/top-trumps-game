@@ -11,6 +11,7 @@ export type Game = {
 export const GameStatus = [
   "READY",
   "ROUND_IN_PROGRESS",
+  "STAT_CHOSEN",
   "ROUND_FINISHED",
   "ROUND_READY",
   "FINISHED",
