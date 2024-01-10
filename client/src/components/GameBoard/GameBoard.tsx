@@ -15,7 +15,6 @@ import {
   DEFAULT_TIMEOUT,
 } from "../../constants/constants";
 import {
-  chooseRandomStat,
   calculateRoundWinner,
   moveTopCardToBottom,
   getNextPlayer,
@@ -24,7 +23,7 @@ import PlayerScore from "../PlayerScore/PlayerScore";
 import GameWinner from "../Winner/GameWinner";
 import { PokemonCard } from "../Card/PokemonCard";
 import Button from "../Button/Button";
-import { Card } from "../../types/card/card.types";
+import { Card, Stat } from "../../types/card/card.types";
 import PopUp from "../PopUp/PopUp";
 
 interface GameBoardProps {
@@ -96,18 +95,14 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
     });
   };
 
-  const playRound = () => {
-    const stat = chooseRandomStat(
-      currentPlayerRef.current.cards[0].stats,
-      currentPlayerRef.current.cards[0].stats.length
-    );
-
+  const playRound = (stat: Stat) => {
     setGame((currentGame) => {
       return {
         ...currentGame,
         players: players.map((player) => {
           return { ...player, isCardShown: true, isCardEnabled: false };
         }),
+        gameStatus: "STAT_CHOSEN",
       };
     });
 
@@ -121,21 +116,19 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
   };
 
   useEffect(() => {
-    if (gameStatus === "ROUND_IN_PROGRESS" && currentRoundWinner) {
+    if (gameStatus === "STAT_CHOSEN" && currentRoundWinner) {
       setTimeout(() => {
         setGame((currentGame) => {
           return {
             ...currentGame,
             players: players.map((player) => {
-              const updatedCards = moveTopCardToBottom(player.cards);
               return player.id === currentRoundWinner
                 ? {
                     ...player,
                     score: player.score + 1,
                     isCardShown: false,
-                    cards: updatedCards,
                   }
-                : { ...player, isCardShown: false, cards: updatedCards };
+                : { ...player, isCardShown: false };
             }),
             roundWinners: [...roundWinners, currentRoundWinner],
             gameStatus: "ROUND_FINISHED",
@@ -148,19 +141,23 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
 
   if (gameStatus === "ROUND_FINISHED") {
     if (currentHighScore === winThreshold) {
-      console.log("there is a winner");
       setGame((currentGame) => {
         return { ...currentGame, gameStatus: "FINISHED" };
       });
     } else if (currentRoundRef.current === totalRounds) {
-      console.log("end of game");
       setGame((currentGame) => {
         return { ...currentGame, gameStatus: "FINISHED" };
       });
-      console.log(calculateGameWinners);
     } else {
       setGame((currentGame) => {
-        return { ...currentGame, gameStatus: "ROUND_READY" };
+        return {
+          ...currentGame,
+          players: players.map((player) => {
+            const updatedCards = moveTopCardToBottom(player.cards);
+            return { ...player, cards: updatedCards };
+          }),
+          gameStatus: "ROUND_READY",
+        };
       });
     }
   }
@@ -176,10 +173,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
       ? "Start Game"
       : gameStatus === "ROUND_READY"
       ? "Next Round"
-      : "";
+      : "Play";
   return (
-    <>
-      <div className="player-scores">
+    <div className="gameboard">
+      <div className="gameboard__header">
         <PlayerScore
           name={player1.name}
           id={player1.id}
@@ -189,8 +186,20 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
           totalRounds={totalRounds}
           roundWinners={roundWinners}
         />
+        {(gameStatus === "READY" || gameStatus === "ROUND_READY") && (
+          <Button text={buttonText} onClick={handleOnClick} />
+        )}
+        {gameStatus === "STAT_CHOSEN" && currentRoundWinner && (
+          <h2 className="gameboard__prompt">
+            {`${players.find((p) => p.id === currentRoundWinner)?.name} wins the
+            round!`}
+          </h2>
+        )}
+        {gameStatus === "ROUND_IN_PROGRESS" && !currentRoundWinner && (
+          <h2 className="gameboard__prompt">{`Chose a stat ${currentPlayerRef.current.name}!`}</h2>
+        )}
         <PlayerScore
-          name={player1.name}
+          name={player2.name}
           id={player2.id}
           updateName={updatePlayerName}
           score={player2.score}
@@ -202,31 +211,26 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
       <div className="gameboard__cards">
         <PokemonCard
           pokemon={player1.cards[0]}
-          isFlipped={player1.isCardShown}
+          isShown={player1.isCardShown}
           playerId={player1.id}
           handleStatChosen={playRound}
           isEnabled={player1.isCardEnabled}
         />
         <PokemonCard
           pokemon={player2.cards[0]}
-          isFlipped={player2.isCardShown}
+          isShown={player2.isCardShown}
           playerId={player2.id}
           handleStatChosen={playRound}
           isEnabled={player2.isCardEnabled}
         />
       </div>
-      {(gameStatus === "READY" ||
-        gameStatus === "ROUND_READY" ||
-        gameStatus === "FINISHED") && (
-        <Button text={buttonText} onClick={handleOnClick} />
-      )}
       {calculateGameWinners && (
-        <PopUp isShown={true} hasClose={false}>
+        <PopUp isShown={true}>
           <GameWinner players={calculateGameWinners} />
           <Button text={"Play Again?"} onClick={resetGame} />
         </PopUp>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,33 +1,27 @@
+import "./Rules.scss";
+
 export const Rules = () => (
-  <section className="section">
-    <div>
-      <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
-      <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
-    </div>
-    <div>
-      <h2>Here are the Rules to play.</h2>
-    </div>
+  <div className="rules">
+    <h1>Welcome to Pokémon Top Trumps! Gotta Catch ‘Em All!</h1>
+    <h2>Rules to play.</h2>
     <ol>
-      <li> The game is out of 5 rounds.</li>
-      <li>Each player is given 5 random Pokémon cards. </li>
+      <li>A game is 5 rounds.</li>
+      <li>Each player is given 5 random Pokémon cards.</li>
       <li>
-        Each card has details about the Pokemon include 5 key stats that can be
-        compared. These stats are. Attack,Speed,Defence,Hit Point(hp),Weight
+        Each card has 5 key Pokémon attributes that can be compared: Attack,
+        Speed, Defence, Hit Points (HP), and Weight
       </li>
       <li>
-        A player gets to turn their card first and pick an attribute to compare
-        against the other players.
+        Each round one player turns their card and picks an attribute to
+        compare.
       </li>
+      <li>The other players' cards are then revealed.</li>
       <li>
-        The other players cards then flip over and the stat of the attribute
-        chosen by the player is compared.
-      </li>
-      <li>
-        The player with the higher stat for that attribute wins the round! (If
-        both players have the same stat score then the first player of the round
-        wins the point.)
+        The player with the highest value stat for the chosen attribute wins the
+        round! (If two or more players have the same highest value stat then the
+        current player wins the round.)
       </li>
       <li>The player with the most wins in 5 rounds is the winner!</li>
     </ol>
-  </section>
+  </div>
 );
