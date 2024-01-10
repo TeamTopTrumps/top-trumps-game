@@ -1,26 +1,27 @@
-import { Stat } from "../../types/card/card.types";
+import "./StatButton.scss";
+import { Stat } from "../../../types/card/card.types";
 
 interface StatButtonProps {
   stat: Stat;
-  playerId: string;
-  handleStatChosen: (stat: Stat, playerId: string) => void;
+  handleStatChosen: (stat: Stat) => void;
   isEnabled: boolean;
 }
 export const StatButton: React.FC<StatButtonProps> = ({
   stat,
-  playerId,
   handleStatChosen,
   isEnabled,
 }) => {
   return (
     <button
+      className="stat-button"
       data-testid="stat-button"
       onClick={() => {
-        handleStatChosen(stat, playerId);
+        handleStatChosen(stat);
       }}
       disabled={!isEnabled}
     >
-      {stat.name}:{stat.value}
+      <span>{stat.name}</span>
+      <span>{stat.value}</span>
     </button>
   );
 };
