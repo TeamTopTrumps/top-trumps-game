@@ -1,17 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { Stat } from "../../types/card/card.types";
+import { Stat } from "../../../types/card/card.types";
 import { StatButton } from "./StatButton";
 
 describe("Stats List Component", () => {
   const mockStat: Stat = { name: "attack", value: 80 };
-  const playerId = "234";
   const handleStatChosen = () => {};
   const isEnabled = false;
   test("components renders without fail", () => {
     render(
       <StatButton
         stat={mockStat}
-        playerId={playerId}
         handleStatChosen={handleStatChosen}
         isEnabled={isEnabled}
       />
@@ -21,7 +19,6 @@ describe("Stats List Component", () => {
     render(
       <StatButton
         stat={mockStat}
-        playerId={playerId}
         handleStatChosen={handleStatChosen}
         isEnabled={isEnabled}
       />
@@ -33,7 +30,6 @@ describe("Stats List Component", () => {
     render(
       <StatButton
         stat={mockStat}
-        playerId={playerId}
         handleStatChosen={handleStatChosen}
         isEnabled={isEnabled}
       />

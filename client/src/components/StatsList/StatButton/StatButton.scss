@@ -1,0 +1,22 @@
+@import "../../../assets/styles/functions";
+@import "../../../assets/styles/variables";
+
+$stat-btn-background-color: shade($blue, 40%);
+$stat-btn-text-color: $grey-100;
+
+.stat-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  border: transparent;
+  padding: 5px 16px;
+  text-transform: capitalize;
+  background-color: shade($blue, 30%);
+  color: $stat-btn-text-color;
+
+  &:hover,
+  &:focus {
+    background-color: shade($stat-btn-background-color, 20%);
+  }
+}
