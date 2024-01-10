@@ -40,16 +40,4 @@ describe("PokemonCard Component", () => {
     const imageElement = screen.getByAltText("Image for Pikachu");
     expect(imageElement).toBeInTheDocument();
   });
-
-  /*it("checking for the conditional rendering of PokemonCard component", () => {
-    render(<PokemonCard {...mockProps} />);
-    const nameElement = screen.getByText("Pikachu");
-    const imageElement = screen.getByAltText("Image for Pikachu");
-    const descriptionElement = screen.queryByText("Electric type Pokemon");
-    const typeElement = screen.queryByText("Electric");
-    expect(nameElement).toBeInTheDocument();
-    expect(imageElement).toBeInTheDocument();
-    expect(descriptionElement).not.toBeInTheDocument();
-    expect(typeElement).not.toBeInTheDocument();
-  });*/
 });
