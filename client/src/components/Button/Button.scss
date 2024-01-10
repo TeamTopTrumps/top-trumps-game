@@ -1,12 +1,18 @@
-@import "../../styles/functions";
-@import "../../styles/variables";
+@import "../../assets/styles/functions";
+@import "../../assets/styles/variables";
 
 $btn-background: $red;
 $btn-border: shade($btn-background, 40%);
+$btn-text: $grey-100;
+
+$btn-background--yellow: $yellow;
+$btn-border--yellow: shade($yellow, 40%);
+$btn-text--yellow: $grey-900;
 
 .btn {
   --btn-background-color: #{$btn-background};
   --btn-border-color: #{$btn-border};
+  --btn-text-color: #{$btn-text};
 
   border-radius: 8px;
   border: 3px solid var(--btn-border-color);
@@ -15,6 +21,7 @@ $btn-border: shade($btn-background, 40%);
   font-weight: 500;
   font-family: inherit;
   background-color: var(--btn-background-color);
+  color: var(--btn-text-color);
   cursor: pointer;
   transition: all 0.25s;
 
@@ -28,5 +35,17 @@ $btn-border: shade($btn-background, 40%);
   &:focus,
   &:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
+  }
+
+  &--yellow {
+    --btn-background-color: #{$btn-background--yellow};
+    --btn-border-color: #{$btn-border--yellow};
+    --btn-text-color: #{$btn-text--yellow};
+
+    &:hover {
+      --btn-background-color: #{shade($btn-background--yellow, 40%)};
+      --btn-border-color: #{shade($btn-border--yellow, 40%)};
+      --btn-text-color: #{$grey-100};
+    }
   }
 }
