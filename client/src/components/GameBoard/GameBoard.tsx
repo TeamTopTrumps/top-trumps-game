@@ -25,6 +25,7 @@ import GameWinner from "../Winner/GameWinner";
 import { PokemonCard } from "../Card/PokemonCard";
 import Button from "../Button/Button";
 import { Card } from "../../types/card/card.types";
+import PopUp from "../PopUp/PopUp";
 
 interface GameBoardProps {
   pack: Card[];
@@ -168,8 +169,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
       startRound(currentPlayerRef.current);
     } else if (gameStatus === "ROUND_READY") {
       nextPlayer();
-    } else if (gameStatus === "FINISHED") {
-      resetGame();
     }
   };
   const buttonText =
@@ -177,8 +176,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
       ? "Start Game"
       : gameStatus === "ROUND_READY"
       ? "Next Round"
-      : gameStatus === "FINISHED"
-      ? "Play Again?"
       : "";
   return (
     <>
@@ -223,7 +220,12 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
         gameStatus === "FINISHED") && (
         <Button text={buttonText} onClick={handleOnClick} />
       )}
-      {calculateGameWinners && <GameWinner players={calculateGameWinners} />}
+      {calculateGameWinners && (
+        <PopUp isShown={true} hasClose={false}>
+          <GameWinner players={calculateGameWinners} />
+          <Button text={"Play Again?"} onClick={resetGame} />
+        </PopUp>
+      )}
     </>
   );
 };
