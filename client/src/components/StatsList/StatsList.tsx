@@ -1,26 +1,29 @@
+import "./StatsList.scss";
+
+import classnames from "classnames";
 import { Stat } from "../../types/card/card.types";
-import { StatButton } from "./StatButton";
+import { StatButton } from "./StatButton/StatButton";
 
 type StatsListProps = {
+  className?: string;
   stats: Stat[];
-  playerId: string;
-  handleStatChosen: () => void;
+  handleStatChosen: (stat: Stat) => void;
   isEnabled: boolean;
 };
 
 export const StatsList: React.FC<StatsListProps> = ({
+  className,
   stats,
-  playerId,
   handleStatChosen,
   isEnabled,
 }) => {
+  const classNames = classnames("stats-list", className);
   return (
-    <div data-testid="stats-list">
+    <div data-testid="stats-list" className={classNames}>
       {stats.map((stat: Stat, index) => (
         <StatButton
           key={index}
           stat={stat}
-          playerId={playerId}
           handleStatChosen={handleStatChosen}
           isEnabled={isEnabled}
         />
