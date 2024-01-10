@@ -4,7 +4,7 @@ import classnames from "classnames";
 interface PopUpProps {
   className?: string;
   isShown: boolean;
-  handleIsShown: (value: boolean) => void;
+  handleIsShown?: (value: boolean) => void;
   children?: React.ReactNode;
 }
 const PopUp: React.FC<PopUpProps> = (props) => {
@@ -17,9 +17,14 @@ const PopUp: React.FC<PopUpProps> = (props) => {
       {isShown && (
         <div className={classNames}>
           <div className="popup-inner">
-            <button className="close-btn" onClick={() => handleIsShown(false)}>
-              X<span className="visually-hidden">Close</span>
-            </button>
+            {handleIsShown && (
+              <button
+                className="close-btn"
+                onClick={() => handleIsShown(false)}
+              >
+                X<span className="visually-hidden">Close</span>
+              </button>
+            )}
             {children}
           </div>
         </div>
