@@ -1,25 +1,25 @@
-import "./Popup.scss";
+import "./Modal.scss";
 import classnames from "classnames";
 
-interface PopupProps {
+interface ModalProps {
   className?: string;
   isShown: boolean;
   handleIsShown?: (value: boolean) => void;
   children?: React.ReactNode;
 }
-const Popup: React.FC<PopupProps> = (props) => {
+const Modal: React.FC<ModalProps> = (props) => {
   const { className, isShown, handleIsShown, children } = props;
 
-  const classNames = classnames("popup", className);
+  const classNames = classnames("modal", className);
 
   return (
     <>
       {isShown && (
         <div className={classNames}>
-          <div className="popup__inner">
+          <div className="modal__inner">
             {handleIsShown && (
               <button
-                className="popup__close-btn"
+                className="modal__close-btn"
                 onClick={() => handleIsShown(false)}
               >
                 <svg
@@ -43,4 +43,4 @@ const Popup: React.FC<PopupProps> = (props) => {
     </>
   );
 };
-export default Popup;
+export default Modal;
