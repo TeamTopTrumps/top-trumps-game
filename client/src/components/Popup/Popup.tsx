@@ -1,13 +1,13 @@
 import "./Popup.scss";
 import classnames from "classnames";
 
-interface PopUpProps {
+interface PopupProps {
   className?: string;
   isShown: boolean;
   handleIsShown?: (value: boolean) => void;
   children?: React.ReactNode;
 }
-const PopUp: React.FC<PopUpProps> = (props) => {
+const Popup: React.FC<PopupProps> = (props) => {
   const { className, isShown, handleIsShown, children } = props;
 
   const classNames = classnames("popup", className);
@@ -43,4 +43,4 @@ const PopUp: React.FC<PopUpProps> = (props) => {
     </>
   );
 };
-export default PopUp;
+export default Popup;
