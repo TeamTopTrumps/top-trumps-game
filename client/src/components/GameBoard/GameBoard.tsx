@@ -24,7 +24,7 @@ import GameWinner from "../Winner/GameWinner";
 import { PokemonCard } from "../Card/PokemonCard";
 import Button from "../Button/Button";
 import { Card, Stat } from "../../types/card/card.types";
-import Popup from "../Popup/Popup";
+import Modal from "../Modal/Modal";
 
 interface GameBoardProps {
   pack: Card[];
@@ -225,10 +225,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ pack }) => {
         />
       </div>
       {calculateGameWinners && (
-        <Popup isShown={true}>
+        <Modal isShown={true}>
           <GameWinner players={calculateGameWinners} />
           <Button text={"Play Again?"} onClick={resetGame} />
-        </Popup>
+        </Modal>
       )}
     </div>
   );
