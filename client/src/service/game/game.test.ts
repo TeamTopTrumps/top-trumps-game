@@ -111,10 +111,7 @@ describe("updateCardsThatHaveTopTrumpStat functionality", () => {
       highestAttackCard?.stats.find((s) => s.name === "attack")?.isTopTrump
     ).toBeUndefined;
 
-    const updatedCards = updateCardsThatHaveTopTrumpStat(
-      pokemon_cards,
-      "attack"
-    );
+    const updatedCards = updateCardsThatHaveTopTrumpStat(pokemon_cards);
     const updatedHighestAttackCard = updatedCards.find((c) => c.id === 15);
     expect(
       updatedHighestAttackCard?.stats.find((s) => s.name === "attack")
@@ -128,14 +125,67 @@ describe("updateCardsThatHaveTopTrumpStat functionality", () => {
       highestDefenseCard?.stats.find((s) => s.name === "defense")?.isTopTrump
     ).toBeUndefined;
 
-    const updatedCards = updateCardsThatHaveTopTrumpStat(
-      pokemon_cards,
-      "defense"
-    );
+    const updatedCards = updateCardsThatHaveTopTrumpStat(pokemon_cards);
     const updatedHighestDefenseCard = updatedCards.find((c) => c.id === 9);
     expect(
       updatedHighestDefenseCard?.stats.find((s) => s.name === "defense")
         ?.isTopTrump
+    ).toBe(true);
+  });
+  it("should return a set of cards with the top trump set to each card for all the stats ", () => {
+    const cards = pokemon_cards;
+
+    const highestAttackCard = cards.find((c) => c.id === 15); //this is highest attack score from mock data file
+    expect(
+      highestAttackCard?.stats.find((s) => s.name === "attack")?.isTopTrump
+    ).toBeUndefined;
+
+    const highestDefenseCard = cards.find((c) => c.id === 9); //this is highest defense score from mock data file
+    expect(
+      highestDefenseCard?.stats.find((s) => s.name === "defense")?.isTopTrump
+    ).toBeUndefined;
+
+    const highestSpeedCard = cards.find((c) => c.id === 18); //this is highest speed score from mock data file
+    expect(highestSpeedCard?.stats.find((s) => s.name === "speed")?.isTopTrump)
+      .toBeUndefined;
+
+    const highestWeightCard = cards.find((c) => c.id === 3); //this is highest weight score from mock data file
+    expect(
+      highestWeightCard?.stats.find((s) => s.name === "weight")?.isTopTrump
+    ).toBeUndefined;
+
+    const highestHpCard = cards.find((c) => c.id === 18); //this is highest hp score from mock data file
+    expect(highestHpCard?.stats.find((s) => s.name === "hp")?.isTopTrump)
+      .toBeUndefined;
+
+    const updatedCards = updateCardsThatHaveTopTrumpStat(pokemon_cards);
+
+    const updatedHighestAttackCard = updatedCards.find((c) => c.id === 15);
+    expect(
+      updatedHighestAttackCard?.stats.find((s) => s.name === "attack")
+        ?.isTopTrump
+    ).toBe(true);
+
+    const updatedHighestDefenseCard = updatedCards.find((c) => c.id === 9);
+    expect(
+      updatedHighestDefenseCard?.stats.find((s) => s.name === "defense")
+        ?.isTopTrump
+    ).toBe(true);
+
+    const updatedHighestSpeedCard = updatedCards.find((c) => c.id === 18);
+    expect(
+      updatedHighestSpeedCard?.stats.find((s) => s.name === "speed")?.isTopTrump
+    ).toBe(true);
+
+    const updatedHighestWeightCard = updatedCards.find((c) => c.id === 3);
+    expect(
+      updatedHighestWeightCard?.stats.find((s) => s.name === "weight")
+        ?.isTopTrump
+    ).toBe(true);
+
+    const updatedHighestHpCard = updatedCards.find((c) => c.id === 18);
+    expect(
+      updatedHighestHpCard?.stats.find((s) => s.name === "hp")?.isTopTrump
     ).toBe(true);
   });
 });
