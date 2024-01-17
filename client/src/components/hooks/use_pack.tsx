@@ -20,7 +20,9 @@ async function fetchPokemonPack() {
     ) as PromiseFulfilledResult<Card>[];
 
     const cards = fulfilled.map((p) => p.value); // extract the Cards
-
+    console.log("----");
+    console.log(cards[0].stats);
+    console.log("----");
     return cards;
   } catch (err) {
     const error =

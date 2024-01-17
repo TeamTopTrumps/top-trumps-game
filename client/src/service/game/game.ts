@@ -75,3 +75,25 @@ export function whosWon(
   }
   return null;
 }
+
+export function updateCardsThatHaveTopTrumpStat(cards: Card[]) {
+  //order by attack stat - highest will shift to the front
+  const packOrderedByAttack = cards.sort((a, b) => {
+    const bStat = b.stats.find((s) => s.name === "attack");
+    const aStat = a.stats.find((s) => s.name === "attack");
+
+    const bStatValue = bStat ? bStat.value : 0;
+    const aStatValue = aStat ? aStat.value : 0;
+    return bStatValue - aStatValue;
+  });
+
+  //update highest attack stat to have isTopTrump true set
+  const topTrumpForAttack = packOrderedByAttack.shift();
+  if (topTrumpForAttack) {
+    topTrumpForAttack?.stats.map((s) => {
+      if (s.name === "attack") s.isTopTrump = true;
+    });
+    packOrderedByAttack.push(topTrumpForAttack);
+  }
+  return packOrderedByAttack;
+}

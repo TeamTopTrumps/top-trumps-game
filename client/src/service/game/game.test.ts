@@ -1,4 +1,10 @@
-import { highestScore, initialiseGame, thresholdToWin, whosWon } from "./game";
+import {
+  highestScore,
+  initialiseGame,
+  thresholdToWin,
+  updateCardsThatHaveTopTrumpStat,
+  whosWon,
+} from "./game";
 import { pokemon_cards } from "../../mock_api/mock_pokemon_data";
 describe("Game initialisation", () => {
   it("initialise games with 3 players and 4 rounds", () => {
@@ -95,5 +101,22 @@ describe("Which player has won", () => {
     const player2 = { ...game.players[1], score: 0 };
 
     expect(whosWon("FINISHED", 6, [player1, player2])).toEqual([]);
+  });
+});
+describe("updateCardsThatHaveTopTrumpStat functionality", () => {
+  it("should return a set of cards with the card with highest attack score as a top trump for that stat ", () => {
+    //id:15
+    const cards = pokemon_cards;
+    const highestAttackCard = cards.find((c) => c.id === 15); //this is highest attack score
+    expect(
+      highestAttackCard?.stats.find((s) => s.name === "attack")?.isTopTrump
+    ).toBeUndefined;
+
+    const updatedCards = updateCardsThatHaveTopTrumpStat(pokemon_cards);
+    const updatedHighestAttackCard = updatedCards.find((c) => c.id === 15);
+    expect(
+      updatedHighestAttackCard?.stats.find((s) => s.name === "attack")
+        ?.isTopTrump
+    ).toBe(true);
   });
 });
