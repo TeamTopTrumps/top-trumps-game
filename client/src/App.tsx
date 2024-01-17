@@ -5,6 +5,7 @@ import { Header } from "./components/Header/Header";
 import { fetchPokemonPack } from "./components/hooks/use_pack";
 import GameBoard from "./components/GameBoard/GameBoard";
 import { Card } from "./types/card/card.types";
+import { updateCardsThatHaveTopTrumpStat } from "./service/game/game";
 
 function App() {
   const [pack, setPack] = useState<Card[]>([]);
@@ -14,7 +15,8 @@ function App() {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
       setIsLoading(false);
-      setPack(pack);
+      const packWithTopTrumpStat = updateCardsThatHaveTopTrumpStat(pack);
+      setPack(packWithTopTrumpStat);
     }
 
     fetchPack();

@@ -11,9 +11,12 @@ export const StatButton: React.FC<StatButtonProps> = ({
   handleStatChosen,
   isEnabled,
 }) => {
+  const winningTopTrumpClassName = stat.isTopTrump
+    ? "stat-button--top-trump"
+    : "stat-button";
   return (
     <button
-      className="stat-button"
+      className={winningTopTrumpClassName}
       data-testid="stat-button"
       onClick={() => {
         handleStatChosen(stat);
