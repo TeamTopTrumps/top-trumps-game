@@ -1,6 +1,6 @@
 import { Game, GameStatusKind } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { Card } from "../../types/card/card.types";
+import { Card, StatName } from "../../types/card/card.types";
 import { dealCards } from "../deal_cards";
 
 export function initialiseGame(
@@ -76,24 +76,27 @@ export function whosWon(
   return null;
 }
 
-export function updateCardsThatHaveTopTrumpStat(cards: Card[]) {
-  //order by attack stat - highest will shift to the front
-  const packOrderedByAttack = cards.sort((a, b) => {
-    const bStat = b.stats.find((s) => s.name === "attack");
-    const aStat = a.stats.find((s) => s.name === "attack");
+export function updateCardsThatHaveTopTrumpStat(
+  pack: Card[],
+  statName: StatName
+) {
+  //order by stat - highest will shift to the front
+  const packOrderedByStat = pack.sort((a, b) => {
+    const bStat = b.stats.find((s) => s.name === statName);
+    const aStat = a.stats.find((s) => s.name === statName);
 
     const bStatValue = bStat ? bStat.value : 0;
     const aStatValue = aStat ? aStat.value : 0;
     return bStatValue - aStatValue;
   });
 
-  //update highest attack stat to have isTopTrump true set
-  const topTrumpForAttack = packOrderedByAttack.shift();
-  if (topTrumpForAttack) {
-    topTrumpForAttack?.stats.map((s) => {
-      if (s.name === "attack") s.isTopTrump = true;
+  //update highest stat to have isTopTrump true set
+  const topTrumpForStat = packOrderedByStat.shift();
+  if (topTrumpForStat) {
+    topTrumpForStat?.stats.map((s) => {
+      if (s.name === statName) s.isTopTrump = true;
     });
-    packOrderedByAttack.push(topTrumpForAttack);
+    packOrderedByStat.push(topTrumpForStat);
   }
-  return packOrderedByAttack;
+  return packOrderedByStat;
 }

@@ -105,17 +105,36 @@ describe("Which player has won", () => {
 });
 describe("updateCardsThatHaveTopTrumpStat functionality", () => {
   it("should return a set of cards with the card with highest attack score as a top trump for that stat ", () => {
-    //id:15
     const cards = pokemon_cards;
-    const highestAttackCard = cards.find((c) => c.id === 15); //this is highest attack score
+    const highestAttackCard = cards.find((c) => c.id === 15); //this is highest attack score from mock data file
     expect(
       highestAttackCard?.stats.find((s) => s.name === "attack")?.isTopTrump
     ).toBeUndefined;
 
-    const updatedCards = updateCardsThatHaveTopTrumpStat(pokemon_cards);
+    const updatedCards = updateCardsThatHaveTopTrumpStat(
+      pokemon_cards,
+      "attack"
+    );
     const updatedHighestAttackCard = updatedCards.find((c) => c.id === 15);
     expect(
       updatedHighestAttackCard?.stats.find((s) => s.name === "attack")
+        ?.isTopTrump
+    ).toBe(true);
+  });
+  it("should return a set of cards with the card with highest defense score as a top trump for that stat ", () => {
+    const cards = pokemon_cards;
+    const highestDefenseCard = cards.find((c) => c.id === 9); //this is highest defense score from mock data file
+    expect(
+      highestDefenseCard?.stats.find((s) => s.name === "defense")?.isTopTrump
+    ).toBeUndefined;
+
+    const updatedCards = updateCardsThatHaveTopTrumpStat(
+      pokemon_cards,
+      "defense"
+    );
+    const updatedHighestDefenseCard = updatedCards.find((c) => c.id === 9);
+    expect(
+      updatedHighestDefenseCard?.stats.find((s) => s.name === "defense")
         ?.isTopTrump
     ).toBe(true);
   });
