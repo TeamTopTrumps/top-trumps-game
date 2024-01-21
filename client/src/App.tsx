@@ -15,7 +15,9 @@ function App() {
     async function fetchPack() {
       const pack = await fetchPokemonPack();
       setIsLoading(false);
-      const packWithTopTrumpStat = updateCardsThatHaveTopTrumpStat(pack);
+      const packWithTopTrumpStat = updateCardsThatHaveTopTrumpStat(
+        pack.slice(0, 10)
+      );
       setPack(packWithTopTrumpStat);
     }
 
