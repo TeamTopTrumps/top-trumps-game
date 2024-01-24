@@ -2,7 +2,7 @@ import "./App.scss";
 import { useState, useEffect } from "react";
 import { Header } from "./components/Header/Header";
 
-import { fetchPokemonPack } from "./components/hooks/use_pack";
+import { fetchPokemonPack } from "./hooks/pokemon/fetchPokemonPack";
 import GameBoard from "./components/GameBoard/GameBoard";
 import { Card } from "./types/card/card.types";
 
