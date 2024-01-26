@@ -2,7 +2,7 @@ import "./Header.scss";
 
 import { useState } from "react";
 import { Rules } from "../Rules/Rules";
-import PopUp from "../PopUp/PopUp";
+import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
 
 export const Header: React.FC = () => {
@@ -18,9 +18,9 @@ export const Header: React.FC = () => {
         text="Game Rules"
         onClick={updateBtnPopUp}
       />
-      <PopUp isShown={buttonPopup} handleIsShown={updateBtnPopUp}>
+      <Modal isShown={buttonPopup} handleIsShown={updateBtnPopUp}>
         <Rules />
-      </PopUp>
+      </Modal>
       <h2 className="header__title">
         Pokémon Top Trumps - Gotta Catch 'Em All!
       </h2>
