@@ -1,6 +1,6 @@
 import { Game, GameStatusKind } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { Card, STAT_NAME, StatName } from "../../types/card/card.types";
+import { Card, STAT_NAME } from "../../types/card/card.types";
 import { dealCards } from "../deal_cards";
 
 export function initialiseGame(
@@ -77,9 +77,11 @@ export function whosWon(
 }
 
 export function updateCardsThatHaveTopTrumpStat(pack: Card[]) {
-  return STAT_NAME.flatMap((statName) => {
+  let updatedPack = pack;
+
+  STAT_NAME.forEach((statName) => {
     //order by stat - highest will shift to the front
-    const packOrderedByStat = pack.sort((a, b) => {
+    const packOrderedByStat = updatedPack.sort((a, b) => {
       const bStat = b.stats.find((s) => s.name === statName);
       const aStat = a.stats.find((s) => s.name === statName);
 
@@ -96,6 +98,7 @@ export function updateCardsThatHaveTopTrumpStat(pack: Card[]) {
       });
       packOrderedByStat.push(topTrumpForStat);
     }
-    return packOrderedByStat;
+    updatedPack = packOrderedByStat;
   });
+  return updatedPack;
 }
