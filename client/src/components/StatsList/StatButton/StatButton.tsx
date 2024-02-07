@@ -1,5 +1,6 @@
 import "./StatButton.scss";
 import { Stat } from "../../../types/card/card.types";
+import classnames from "classnames";
 
 interface StatButtonProps {
   stat: Stat;
@@ -11,9 +12,13 @@ export const StatButton: React.FC<StatButtonProps> = ({
   handleStatChosen,
   isEnabled,
 }) => {
+  const baseClassName = "stat-button";
+  const classNames = classnames(baseClassName, {
+    [`${baseClassName}--top-trump`]: stat.isTopTrump,
+  });
   return (
     <button
-      className="stat-button"
+      className={classNames}
       data-testid="stat-button"
       onClick={() => {
         handleStatChosen(stat);

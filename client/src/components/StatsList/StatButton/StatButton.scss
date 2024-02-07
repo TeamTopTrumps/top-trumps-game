@@ -3,8 +3,10 @@
 
 $stat-btn-background-color: shade($blue, 40%);
 $stat-btn-text-color: $grey-100;
+$stat-btn-background-color--top-trump: shade($yellow, 30%);
 
 .stat-button {
+  --background-color: #{$stat-btn-background-color};
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -12,11 +14,19 @@ $stat-btn-text-color: $grey-100;
   border: transparent;
   padding: 5px 16px;
   text-transform: capitalize;
-  background-color: shade($blue, 30%);
+  background-color: var(--background-color);
   color: $stat-btn-text-color;
 
   &:hover,
   &:focus {
-    background-color: shade($stat-btn-background-color, 20%);
+    background-color: #{shade($stat-btn-background-color, 20%)};
+  }
+}
+
+.stat-button--top-trump {
+  --background-color: #{$stat-btn-background-color--top-trump};
+  &:hover,
+  &:focus {
+    --background-color: #{shade($stat-btn-background-color--top-trump, 20%)};
   }
 }

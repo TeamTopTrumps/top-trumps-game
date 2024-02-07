@@ -1,6 +1,6 @@
 import { Game, GameStatusKind } from "../../types/game/game.types";
 import { Player } from "../../types/player/player.types";
-import { Card } from "../../types/card/card.types";
+import { Card, STAT_NAME } from "../../types/card/card.types";
 import { dealCards } from "../deal_cards";
 
 export function initialiseGame(
@@ -74,4 +74,31 @@ export function whosWon(
     return players.filter((p) => p.score === currentHighScore);
   }
   return null;
+}
+
+export function updateCardsThatHaveTopTrumpStat(pack: Card[]) {
+  let updatedPack = pack;
+
+  STAT_NAME.forEach((statName) => {
+    //order by stat - highest will shift to the front
+    const packOrderedByStat = updatedPack.sort((a, b) => {
+      const bStat = b.stats.find((s) => s.name === statName);
+      const aStat = a.stats.find((s) => s.name === statName);
+
+      const bStatValue = bStat ? bStat.value : 0;
+      const aStatValue = aStat ? aStat.value : 0;
+      return bStatValue - aStatValue;
+    });
+
+    //update highest stat to have isTopTrump true set
+    const topTrumpForStat = packOrderedByStat.shift();
+    if (topTrumpForStat) {
+      topTrumpForStat?.stats.map((s) => {
+        if (s.name === statName) s.isTopTrump = true;
+      });
+      packOrderedByStat.push(topTrumpForStat);
+    }
+    updatedPack = packOrderedByStat;
+  });
+  return updatedPack;
 }

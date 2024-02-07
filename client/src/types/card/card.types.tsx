@@ -12,6 +12,7 @@ export type Card = {
 export type Stat = {
   name: StatName;
   value: number;
+  isTopTrump?: boolean;
 };
 
 export const STAT_NAME = [
